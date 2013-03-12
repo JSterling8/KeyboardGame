@@ -19,9 +19,9 @@ public class RandomLocation {
 	 * @return A random X coordinate.
 	 */
 	public int getX(){
-		// Generates a number in range of 0 - 610
+		// Generates a number in range of 0 - 600
 		if (Settings.wordSize == 1){
-			randX = randGen.nextInt((610 - 0 + 1) + 0); 
+			randX = randGen.nextInt((600 - 0 + 1) + 0); 
 		}
 		// Generates a number in range of 0 - 590
 		else if(Settings.wordSize == 2){

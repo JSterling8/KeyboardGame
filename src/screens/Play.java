@@ -173,6 +173,10 @@ public class Play extends BasicGameState{
 		// Decrements the time based on delta.
 		time -= delta;
 		
+		if (time/1000 == 0){
+			sbg.enterState(Game.LEVEL_CLEARED_STATE);
+		}
+		
 		// A generic input collector.
 		Input input = gc.getInput();
 		
@@ -203,6 +207,7 @@ public class Play extends BasicGameState{
 		    }
 		    // Clears the input text field.
 		    clear = true;													
+		    input.clearKeyPressedRecord();
 		    
 		    addNewEnemy(xLoc.getX());										
 		}
