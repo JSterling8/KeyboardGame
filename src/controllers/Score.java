@@ -3,7 +3,7 @@ package controllers;
 public class Score {
 
 	private int multiplier;
-	int letterBonus;
+	private int letterBonus;
 	private int numberConsecutive;
 	private int numConsecMult;
 	
@@ -11,9 +11,14 @@ public class Score {
 		numberConsecutive = 0;
 		numConsecMult = 1;
 		letterBonus = 0;
+		Settings.score = 0;
+		Settings.totalKilled = 0;
+		Settings.totalMissed = 0;
+		
 	}
 
 	public void enemyKilled(int wordLength) {
+		Settings.totalKilled++;
 		numberConsecutive++;
 		
 		if (numberConsecutive == 5){numConsecMult = 2;}
@@ -40,7 +45,10 @@ public class Score {
 	}
 
 	public void missedEnemy() {
+		Settings.totalMissed++;
+		
 		numberConsecutive = 0;
 		numConsecMult = 1;
+		
 	}
 }

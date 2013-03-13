@@ -9,19 +9,31 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import controllers.Game;
+import controllers.Settings;
 
 public class Death extends BasicGameState{
 
+	private int accuracy;
+	
 	private String dead;
 	
 	public Death(int state){}
 	
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException{
-		dead = "Would you like to try again?" +
-				"\n" +
-				"(Y)es" +
-				"\n" +
+		if (Settings.totalKilled + Settings.totalMissed > 0){
+			accuracy = Settings.totalKilled / (Settings.totalKilled + Settings.totalMissed);
+		}
+		else{
+			accuracy = 0;
+		}
+		
+		dead = "You killed " + Settings.totalKilled + " enemies.\n" + 
+				"You missed " + Settings.totalMissed + " enemies.\n" +
+				"Accuracy: " + accuracy + " %\n" + 
+				"Would you like to try again?\n" +
+				"(Y)es\n" +
 				"(N)o";
+		
 	}
 	
 	/* Draws GFX

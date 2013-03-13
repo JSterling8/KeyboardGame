@@ -89,8 +89,8 @@ public class Play extends BasicGameState{
 		// Initializes the boolean variable to whether or not a Word List has been generated to false.
 		wordListGenerated = false;
 		
-		// Initializes the level time to 60 seconds.
-		time = 60 * 1000;
+		// Initializes the level time to 0 seconds.
+		time = 0;
 	}
 	
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException{
@@ -150,7 +150,12 @@ public class Play extends BasicGameState{
 		}
 		
 		// Draws the time on the screen.
-		g.drawString("Time Left: " + time/1000, 500, 50);
+		g.drawString("Time: " + time/1000, 500, 50);
+		
+		if (time == 0){
+			addNewEnemy();
+		}
+		
 	}
 		
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException{
@@ -170,12 +175,8 @@ public class Play extends BasicGameState{
 			}
 		}
 		
-		// Decrements the time based on delta.
-		time -= delta;
-		
-		if (time/1000 == 0){
-			sbg.enterState(Game.LEVEL_CLEARED_STATE);
-		}
+		// Increments the time based on delta.
+		time += delta;
 		
 		// A generic input collector.
 		Input input = gc.getInput();
@@ -199,7 +200,7 @@ public class Play extends BasicGameState{
 		    	
 		    	// If the user hit enter but the word was incorrect.
 		    	else {
-		    		if(wordEnteredTF != null){
+		    		if(!wordEnteredTF.getText().equals("") && !wordEnteredTF.getText().equals(null)){
 		    			score.missedEnemy();
 		    		}
 		    	}
@@ -209,7 +210,7 @@ public class Play extends BasicGameState{
 		    clear = true;													
 		    input.clearKeyPressedRecord();
 		    
-		    addNewEnemy(xLoc.getX());										
+		    addNewEnemy();										
 		}
 
 		// If input box is clicked, then set the clear variable to true.
@@ -247,6 +248,8 @@ public class Play extends BasicGameState{
 				Settings.health -= 10;
 				
 				if(Settings.health == 0){
+					sbg.addState(new Death(Game.DEATH_STATE));
+					sbg.getState(Game.DEATH_STATE).init(gc, sbg);
 					sbg.enterState(Game.DEATH_STATE);
 				}
 				
@@ -263,10 +266,7 @@ public class Play extends BasicGameState{
 	    */
 	   @Override
 	   public void mousePressed ( int button, int x, int y ){
-		   addNewBullet(x,y);
-		   randX = xLoc.getX();
-		  
-		   try {addNewEnemy(randX);
+		   try {addNewEnemy();
 		   } catch (SlickException e) {
 				   e.printStackTrace();
 		   }
@@ -281,8 +281,9 @@ public class Play extends BasicGameState{
 	      bulletList.add(new Bullet(330, 340, targetX, targetY));
 	   }
 	   
-	   private void addNewEnemy(int randX) throws SlickException{
+	   private void addNewEnemy() throws SlickException{
 		   
+		   randX = xLoc.getX();
 		   wordAlreadyExists = false;
 			   
 		   Enemy enemy = new Enemy(randX);
