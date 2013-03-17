@@ -14,9 +14,7 @@ public class WordList {
 	public static HashMap<Integer, String> dic;
 	private Path path;
 	
-	public WordList() throws IOException {
-		System.out.println("This is the word list constructor being called again.");
-	}
+	public WordList() throws IOException {}
 
 	public void populateList() { 
 		dic = new HashMap<>();
@@ -45,8 +43,6 @@ public class WordList {
 		else if(Settings.wordSize == 7){
 			path = Paths.get("G:/UniversityWork/Software Design and Development/Modelling/Eclipse files/KMD/res/dic/noLimitWords.txt");
 		}
-		
-		System.out.println(Settings.wordSize);
 		
 		if (path != null){
 			// This scans through the word file and for each line it adds a new entry to the HashMap and gives it a sequential number.

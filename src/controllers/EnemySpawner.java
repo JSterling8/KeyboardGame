@@ -1,28 +1,35 @@
 package controllers;
 
+import maths.RandomLocation;
+
 import org.newdawn.slick.SlickException;
 
+import screens.Play;
 import entities.Enemy;
 
 public class EnemySpawner {
 
 	private boolean wordAlreadyExists;
+	private RandomLocation xLoc;
+	private int time;
+	private boolean spawned;
 	
-	public EnemySpawner() {}
-	
-	public Enemy spawnEnemy(){
-		Enemy enemy;
-		try {
-			enemy = new Enemy(1);
-		} catch (SlickException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			enemy = null;
-		}
-		return enemy;
+	public EnemySpawner() throws SlickException {
+		xLoc = new RandomLocation();
+		spawned = true;
+		time = 0;
 	}
 	
-	   private void addNewEnemy() throws SlickException{
+	public void timedSpawn() throws SlickException{
+		time = Play.secondsPlayed;
+		time %= 3; 
+		if ((Play.secondsPlayed > 0 && Play.secondsPlayed <= 20) && (time != 0 && time == 2)){
+				addNewEnemy();
+				time = 1;
+		}
+	}
+	
+	   public void addNewEnemy() throws SlickException{
 		   // Gets a new random X location.
 		   int randX = xLoc.getX();
 		   
@@ -35,11 +42,11 @@ public class EnemySpawner {
 			   // Words are innocent until proven guilty.
 			   wordAlreadyExists  = false;
 			   // If there are still words that haven't been used.
-			   if (enemiesOnScreen.size() < words.size() && enemiesOnScreen.size() != 0){
+			   if (Play.enemiesOnScreen.size() < Play.words.size() && Play.enemiesOnScreen.size() != 0){
 				   // Loops through enemies currently on the screen.
-				   for(int i = 0; i < enemiesOnScreen.size(); i++){
+				   for(int i = 0; i < Play.enemiesOnScreen.size(); i++){
 					   // Check to see if the new enemy has a word that already exists.
-					   if(enemy.getWord().equals(enemiesOnScreen.get(i).getWord())){
+					   if(enemy.getWord().equals(Play.enemiesOnScreen.get(i).getWord())){
 						   // If it does then keep the boolean variable true.
 						   wordAlreadyExists = true;
 						   // Set a new word for the enemy.
@@ -50,11 +57,11 @@ public class EnemySpawner {
 				   }
 			   }
 			   // If there are currently no enemies on the screen, go ahead and add one.
-			   else if (enemiesOnScreen.size() == 0){
+			   else if (Play.enemiesOnScreen.size() == 0){
 				   wordAlreadyExists = false;
 			   } 
 			   // If there are not anymore unused words in the list.
-			   else if(enemiesOnScreen.size() == words.size()){
+			   else if(Play.enemiesOnScreen.size() == Play.words.size()){
 				   // The word must already exist.
 				   wordAlreadyExists = true;
 				   // But we need to break out because that will remain true until an enemy is shot or reaches the bottom.
@@ -64,7 +71,7 @@ public class EnemySpawner {
 		   
 		   if (!wordAlreadyExists){
 			   // Add the enemy to the screen.
-			   enemiesOnScreen.add(enemy);
+			   Play.enemiesOnScreen.add(enemy);
 		   }
 	   }
 

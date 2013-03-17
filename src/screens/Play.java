@@ -16,6 +16,7 @@ import org.newdawn.slick.gui.TextField;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+import controllers.EnemySpawner;
 import controllers.Game;
 import controllers.Score;
 import controllers.Settings;
@@ -27,11 +28,13 @@ import entities.WordList;
 public class Play extends BasicGameState{
 	
 	public static WordList words;
+	public static ArrayList<Enemy> enemiesOnScreen;			// An ArrayList of the current enemies on the screen.
+	public static int secondsPlayed;
 	
 	private boolean wordListGenerated;
 	private Image gameBackground;						// This is the games background
 	// private Image turret90;								// This is the turret at the bottom of the screen that fires
-	private ArrayList<Enemy> enemiesOnScreen;			// An ArrayList of the current enemies on the screen.
+	
 	private ArrayList<Bullet> bulletList;  				// An ArrayList of bullets on the screen.
 	
 	// These variables store the mouses x and y coordinates.
@@ -50,13 +53,18 @@ public class Play extends BasicGameState{
 	private int time;							// The time that the level has been running.
 	private boolean wordAlreadyExists;			// A boolean variable to see if a Word List has already been made or not
 
-	private RandomLocation xLoc;	// Will be used to create a random x-coordinate.
+	private RandomLocation xLoc;				// Will be used to create a random x-coordinate.
 	
-	private boolean alreadySpawned;
+	private EnemySpawner spawner;
+	private boolean missed;
+	
 	
 	public Play(int state){}
 	
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException{
+		// Initializes the enemy spawner.
+		spawner = new EnemySpawner();
+		
 		// Initializes the background image
 		gameBackground = new Image("res/gamebg.png");
 		// turret90 = new Image ("/res/turrets/standard/turret90.png");
@@ -94,7 +102,8 @@ public class Play extends BasicGameState{
 		// Initializes the level time to 0 seconds.
 		time = 0;
 		
-		alreadySpawned = false;
+		// Initializes the missed target variable to false.
+		missed = false;
 	}
 	
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException{
@@ -154,13 +163,7 @@ public class Play extends BasicGameState{
 		}
 		
 		// Draws the time on the screen.
-		g.drawString("Time: " + time/1000, 500, 50);
-		
-		if (time/1000 == 1 && !alreadySpawned){
-			addNewEnemy();
-			alreadySpawned = true;
-			System.out.println("Test");
-		}
+		g.drawString("Time: " + secondsPlayed, 500, 50);
 		
 		
 	}
@@ -184,6 +187,8 @@ public class Play extends BasicGameState{
 		
 		// Increments the time based on delta.
 		time += delta;
+		secondsPlayed = time/1000;
+		spawner.timedSpawn();
 		
 		// A generic input collector.
 		Input input = gc.getInput();
@@ -202,25 +207,27 @@ public class Play extends BasicGameState{
 		    		score.enemyKilled(enemy.getWord().length());
 	
 					// Remove the enemy from the screen.
-		    		enemiesOnScreen.remove(i);	
-		    		
-				    input.clearKeyPressedRecord();
+		    		enemiesOnScreen.remove(i);
+		    		missed = false;
+		    		break;
+				    // input.clearKeyPressedRecord();
 		    	}
 		    	
 		    	// If the user hit enter but the word was incorrect.
 		    	else {
-		    		if(!wordEnteredTF.getText().equals("")){
-		    			score.missedEnemy();
-		    		    input.clearKeyPressedRecord();
+		    		missed = true;
 		    		}
 		    	}
-		    	
+		    
+		    if (missed){
+		    	score.missedEnemy();
 		    }
+
 		    // Clears the input text field.
 		    clear = true;													
 
 		    
-		    addNewEnemy();										
+		    // spawner.addNewEnemy();										
 		}
 
 		// If input box is clicked, then set the clear variable to true.
@@ -255,7 +262,7 @@ public class Play extends BasicGameState{
 			// Removes enemies that go off screen and decrements the player's health by 10.
 			if (enemy.returnY() > 369 ){
 				enemiesOnScreen.remove(i);
-				// Settings.health -= 10;
+				Settings.health -= 10;
 				
 				if(Settings.health == 0){
 					sbg.addState(new Death(Game.DEATH_STATE));
@@ -275,7 +282,7 @@ public class Play extends BasicGameState{
 	    */
 	   @Override
 	   public void mousePressed ( int button, int x, int y ){
-		   try {addNewEnemy();
+		   try {spawner.addNewEnemy();
 		   } catch (SlickException e) {
 				   e.printStackTrace();
 		   }
@@ -283,58 +290,12 @@ public class Play extends BasicGameState{
 	   
 	   /**
 	    * Shoots a bullet at the current target.
-	    * @param x
-	    * @param y
+	    * @param targetX The x coordinate that the bullet will head towards.
+	    * @param targetY The y coordinate that the bullet will head towards.
 	    */
 	   private void addNewBullet(float targetX, float targetY){
 	      bulletList.add(new Bullet(330, 340, targetX, targetY));
 	   }
-	   
-	   private void addNewEnemy() throws SlickException{
-		   // Gets a new random X location.
-		   randX = xLoc.getX();
-		   
-		   // Makes an enemy at (randX, 0), but doesn't display it on the screen.
-		   Enemy enemy = new Enemy(randX);
-		   
-		   // Runs at least once, then loops if the new enemy's word is the same as any of the current enemies.
-		   do{
-			   // Words are innocent until proven guilty.
-			   wordAlreadyExists = false;
-			   // If there are still words that haven't been used.
-			   if (enemiesOnScreen.size() < words.size() && enemiesOnScreen.size() != 0){
-				   // Loops through enemies currently on the screen.
-				   for(int i = 0; i < enemiesOnScreen.size(); i++){
-					   // Check to see if the new enemy has a word that already exists.
-					   if(enemy.getWord().equals(enemiesOnScreen.get(i).getWord())){
-						   // If it does then keep the boolean variable true.
-						   wordAlreadyExists = true;
-						   // Set a new word for the enemy.
-						   enemy.setWord();
-						   // Break out of the for loop because it only needs to match against one other so going further is pointless.
-						   break;
-					   }
-				   }
-			   }
-			   // If there are currently no enemies on the screen, go ahead and add one.
-			   else if (enemiesOnScreen.size() == 0){
-				   wordAlreadyExists = false;
-			   } 
-			   // If there are not anymore unused words in the list.
-			   else if(enemiesOnScreen.size() == words.size()){
-				   // The word must already exist.
-				   wordAlreadyExists = true;
-				   // But we need to break out because that will remain true until an enemy is shot or reaches the bottom.
-				   break;
-			   }
-		   } while(wordAlreadyExists);
-		   
-		   if (!wordAlreadyExists){
-			   // Add the enemy to the screen.
-			   enemiesOnScreen.add(enemy);
-		   }
-	   }
-
 	   
 	public int getID(){
 		return Game.PLAY_STATE;

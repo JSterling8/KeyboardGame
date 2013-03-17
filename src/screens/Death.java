@@ -13,7 +13,7 @@ import controllers.Settings;
 
 public class Death extends BasicGameState{
 
-	private int accuracy;
+	private double accuracy;
 	
 	private String dead;
 	
@@ -21,7 +21,7 @@ public class Death extends BasicGameState{
 	
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException{
 		if (Settings.totalKilled + Settings.totalMissed > 0){
-			accuracy = Settings.totalKilled / (Settings.totalKilled + Settings.totalMissed);
+			accuracy = ((double)Settings.totalKilled / (double)(Settings.totalKilled + Settings.totalMissed)) * 100;
 		}
 		else{
 			accuracy = 0;
