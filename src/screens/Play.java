@@ -52,6 +52,8 @@ public class Play extends BasicGameState{
 
 	private RandomLocation xLoc;	// Will be used to create a random x-coordinate.
 	
+	private boolean alreadySpawned;
+	
 	public Play(int state){}
 	
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException{
@@ -91,6 +93,8 @@ public class Play extends BasicGameState{
 		
 		// Initializes the level time to 0 seconds.
 		time = 0;
+		
+		alreadySpawned = false;
 	}
 	
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException{
@@ -141,7 +145,7 @@ public class Play extends BasicGameState{
 			
 			// Draws a black rectangle above the enemy, varying in size by the size of the word associated to the enemy.
 			g.setColor(Color.black);
-			float rectXSize = enemy.getWord().length() * 10;
+			float rectXSize = (enemy.getWord().length() * 10) + 2;
 			g.fillRect((float)enemy.returnX() + 15, (float)enemy.returnY() - 5, rectXSize, 20);
 			
 			// Draws a red word in that black rectangle.
@@ -152,9 +156,12 @@ public class Play extends BasicGameState{
 		// Draws the time on the screen.
 		g.drawString("Time: " + time/1000, 500, 50);
 		
-		if (time == 0){
+		if (time/1000 == 1 && !alreadySpawned){
 			addNewEnemy();
+			alreadySpawned = true;
+			System.out.println("Test");
 		}
+		
 		
 	}
 		
@@ -195,20 +202,23 @@ public class Play extends BasicGameState{
 		    		score.enemyKilled(enemy.getWord().length());
 	
 					// Remove the enemy from the screen.
-		    		enemiesOnScreen.remove(i);		
+		    		enemiesOnScreen.remove(i);	
+		    		
+				    input.clearKeyPressedRecord();
 		    	}
 		    	
 		    	// If the user hit enter but the word was incorrect.
 		    	else {
-		    		if(!wordEnteredTF.getText().equals("") && !wordEnteredTF.getText().equals(null)){
+		    		if(!wordEnteredTF.getText().equals("")){
 		    			score.missedEnemy();
+		    		    input.clearKeyPressedRecord();
 		    		}
 		    	}
 		    	
 		    }
 		    // Clears the input text field.
 		    clear = true;													
-		    input.clearKeyPressedRecord();
+
 		    
 		    addNewEnemy();										
 		}
@@ -245,7 +255,7 @@ public class Play extends BasicGameState{
 			// Removes enemies that go off screen and decrements the player's health by 10.
 			if (enemy.returnY() > 369 ){
 				enemiesOnScreen.remove(i);
-				Settings.health -= 10;
+				// Settings.health -= 10;
 				
 				if(Settings.health == 0){
 					sbg.addState(new Death(Game.DEATH_STATE));
@@ -256,7 +266,6 @@ public class Play extends BasicGameState{
 			}
 	      
 		}		
-		
 		
 	}
 	
@@ -282,22 +291,51 @@ public class Play extends BasicGameState{
 	   }
 	   
 	   private void addNewEnemy() throws SlickException{
-		   
+		   // Gets a new random X location.
 		   randX = xLoc.getX();
-		   wordAlreadyExists = false;
-			   
+		   
+		   // Makes an enemy at (randX, 0), but doesn't display it on the screen.
 		   Enemy enemy = new Enemy(randX);
-		   for(int i = 0; i < enemiesOnScreen.size(); i++){
-			   if (enemy.getWord().equals(enemiesOnScreen.get(i).getWord())){
-				   wordAlreadyExists = true;
+		   
+		   // Runs at least once, then loops if the new enemy's word is the same as any of the current enemies.
+		   do{
+			   // Words are innocent until proven guilty.
+			   wordAlreadyExists = false;
+			   // If there are still words that haven't been used.
+			   if (enemiesOnScreen.size() < words.size() && enemiesOnScreen.size() != 0){
+				   // Loops through enemies currently on the screen.
+				   for(int i = 0; i < enemiesOnScreen.size(); i++){
+					   // Check to see if the new enemy has a word that already exists.
+					   if(enemy.getWord().equals(enemiesOnScreen.get(i).getWord())){
+						   // If it does then keep the boolean variable true.
+						   wordAlreadyExists = true;
+						   // Set a new word for the enemy.
+						   enemy.setWord();
+						   // Break out of the for loop because it only needs to match against one other so going further is pointless.
+						   break;
+					   }
+				   }
 			   }
-		   }
-		   if(!wordAlreadyExists){
-			   enemiesOnScreen.add(enemy);	 
+			   // If there are currently no enemies on the screen, go ahead and add one.
+			   else if (enemiesOnScreen.size() == 0){
+				   wordAlreadyExists = false;
+			   } 
+			   // If there are not anymore unused words in the list.
+			   else if(enemiesOnScreen.size() == words.size()){
+				   // The word must already exist.
+				   wordAlreadyExists = true;
+				   // But we need to break out because that will remain true until an enemy is shot or reaches the bottom.
+				   break;
+			   }
+		   } while(wordAlreadyExists);
+		   
+		   if (!wordAlreadyExists){
+			   // Add the enemy to the screen.
+			   enemiesOnScreen.add(enemy);
 		   }
 	   }
-	
-	 
+
+	   
 	public int getID(){
 		return Game.PLAY_STATE;
 	}

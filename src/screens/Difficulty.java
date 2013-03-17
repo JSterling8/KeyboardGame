@@ -16,9 +16,6 @@ import controllers.Settings;
 
 public class Difficulty extends BasicGameState{
 	
-	private int difficulty;
-	private int wordSize;
-	
 	// This is the difficulty text.
 	private Image difficultyText;	
 	
@@ -70,8 +67,8 @@ public class Difficulty extends BasicGameState{
 	
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException{
 		// Initialises the difficulty and amount of characters selected to 0 to indicate no selection.
-		difficulty = 0;
-		wordSize = 0;
+		Settings.difficulty = 0;
+		Settings.wordSize = 0;
 
 		// Initialises the "Difficulty" text.
 		difficultyText = new Image("/res/buttons/difficulty.png");
@@ -126,13 +123,13 @@ public class Difficulty extends BasicGameState{
 		g.drawImage(difficultyText, 10, 0);
 
 		// Draw the difficulties, and highlight the selected one.
-		if(difficulty != 1){g.drawImage(easyButton, 50, 100);}
+		if(Settings.difficulty != 1){g.drawImage(easyButton, 50, 100);}
 		else{g.drawImage(easyButtonSel, 50, 100);}
-		if(difficulty != 2){g.drawImage(mediumButton, 50, 150);}
+		if(Settings.difficulty != 2){g.drawImage(mediumButton, 50, 150);}
 		else{g.drawImage(mediumButtonSel, 50, 150);}
-		if(difficulty != 3){g.drawImage(hardButton, 50, 200);}
+		if(Settings.difficulty != 3){g.drawImage(hardButton, 50, 200);}
 		else{g.drawImage(hardButtonSel, 50, 200);}
-		if(difficulty != 4){g.drawImage(insaneButton, 50, 250);}
+		if(Settings.difficulty != 4){g.drawImage(insaneButton, 50, 250);}
 		else{g.drawImage(insaneButtonSel, 50, 250);}
 
 
@@ -140,19 +137,19 @@ public class Difficulty extends BasicGameState{
 		g.drawImage(modeText, 370, 0);
 
 		// Draw the number of character options, and highlight the selected option.
-		if(wordSize != 1){g.drawImage(oneCharsButton, 345, 75);}
+		if(Settings.wordSize != 1){g.drawImage(oneCharsButton, 345, 75);}
 		else{g.drawImage(oneCharsButtonSel, 345, 75);}
-		if(wordSize != 2){g.drawImage(twoCharsButton, 345, 110);}
+		if(Settings.wordSize != 2){g.drawImage(twoCharsButton, 345, 110);}
 		else{g.drawImage(twoCharsButtonSel, 345, 110);}
-		if(wordSize != 3){g.drawImage(threeCharsButton, 345, 145);}
+		if(Settings.wordSize != 3){g.drawImage(threeCharsButton, 345, 145);}
 		else{g.drawImage(threeCharsButtonSel, 345, 145);}
-		if(wordSize != 4){g.drawImage(fourCharsButton, 345, 180);}
+		if(Settings.wordSize != 4){g.drawImage(fourCharsButton, 345, 180);}
 		else{g.drawImage(fourCharsButtonSel, 345, 180);}
-		if(wordSize != 5){g.drawImage(fiveCharsButton, 345, 215);}
+		if(Settings.wordSize != 5){g.drawImage(fiveCharsButton, 345, 215);}
 		else{g.drawImage(fiveCharsButtonSel, 345, 215);}
-		if(wordSize != 6){g.drawImage(sixCharsButton,345, 250);}
+		if(Settings.wordSize != 6){g.drawImage(sixCharsButton,345, 250);}
 		else{g.drawImage(sixCharsButtonSel,345, 250);}
-		if(wordSize != 7){g.drawImage(noLimitButton, 345, 285);}
+		if(Settings.wordSize != 7){g.drawImage(noLimitButton, 345, 285);}
 		else{g.drawImage(noLimitButtonSel, 345, 285);}
 
 
@@ -196,88 +193,77 @@ public class Difficulty extends BasicGameState{
 		// If the user clicks easy, highlight it and set Settings.difficulty to the corresponding value.
 		if ((mouseX >= 50 && mouseX <= 250) && (mouseY >= 100 && mouseY <= 150)){
 			if(Mouse.isButtonDown(0)){
-				difficulty = 1;
-				Settings.difficulty = difficulty;
+				Settings.difficulty = 1;
 			}
 		}
 		
 		// If the user clicks medium, highlight it and set Settings.difficulty to the corresponding value.
 		if ((mouseX >= 50 && mouseX <= 250) && (mouseY >= 150 && mouseY <= 200)){
 			if(Mouse.isButtonDown(0)){
-				difficulty = 2;
-				Settings.difficulty = difficulty;
+				Settings.difficulty = 2;
 			}
 		}
 		
 		// If the user clicks hard, highlight it and set Settings.difficulty to the corresponding value.
 		if ((mouseX >= 50 && mouseX <= 250) && (mouseY >= 200 && mouseY <= 250)){
 			if(Mouse.isButtonDown(0)){
-				difficulty = 3;
-				Settings.difficulty = difficulty;
+				Settings.difficulty = 3;
 			}
 		}
 		
 		// If the user clicks insane, highlight it and set Settings.difficulty to the corresponding value.
 		if ((mouseX >= 50 && mouseX <= 250) && (mouseY >= 250 && mouseY <= 300)){
 			if(Mouse.isButtonDown(0)){
-				difficulty = 4;
-				Settings.difficulty = difficulty;
+				Settings.difficulty = 4;
 			}
 		}
 		
 		// If the user clicks 1 char, highlight it and set Settings.wordSize to the corresponding value.
 		if ((mouseX >= 345 && mouseX <= 595) && (mouseY >= 75 && mouseY < 110)){
 			if(Mouse.isButtonDown(0)){
-				wordSize = 1;
-				Settings.wordSize = wordSize;
+				Settings.wordSize = 1;
 			}
 		}
 		
 		// If the user clicks 2 chars, highlight it and set Settings.wordSize to the corresponding value.
 		if ((mouseX >= 345 && mouseX <= 595) && (mouseY >= 110 && mouseY < 145)){
 			if(Mouse.isButtonDown(0)){
-				wordSize = 2;
-				Settings.wordSize = wordSize;
+				Settings.wordSize = 2;
 			}
 		}
 		
 		// If the user clicks 3 chars, highlight it and set Settings.wordSize to the corresponding value.
 		if ((mouseX >= 345 && mouseX <= 595) && (mouseY >= 145 && mouseY < 180)){
 			if(Mouse.isButtonDown(0)){
-				wordSize = 3;
-				Settings.wordSize = wordSize;
+				Settings.wordSize = 3;
 			}
 		}
 		
 		// If the user clicks 4 chars, highlight it and set Settings.wordSize to the corresponding value.
 		if ((mouseX >= 345 && mouseX <= 595) && (mouseY >= 180 && mouseY < 215)){
 			if(Mouse.isButtonDown(0)){
-				wordSize = 4;
-				Settings.wordSize = wordSize;
+				Settings.wordSize = 4;
 			}
 		}
 		
 		// If the user clicks 5 chars, highlight it and set Settings.wordSize to the corresponding value.
 		if ((mouseX >= 345 && mouseX <= 595) && (mouseY >= 215 && mouseY < 250)){
 			if(Mouse.isButtonDown(0)){
-				wordSize = 5;
-				Settings.wordSize = wordSize;
+				Settings.wordSize = 5;
 			}
 		}
 		
 		// If the user clicks 6 chars, highlight it and set Settings.wordSize to the corresponding value.
 		if ((mouseX >= 345 && mouseX <= 595) && (mouseY >= 250 && mouseY < 285)){
 			if(Mouse.isButtonDown(0)){
-				wordSize = 6;
-				Settings.wordSize = wordSize;
+				Settings.wordSize = 6;
 			}
 		}
 		
 		// If the user clicks no char limit, highlight it and set Settings.wordSize to the corresponding value.
 		if ((mouseX >= 345 && mouseX <= 595) && (mouseY >= 285 && mouseY < 320)){
 			if(Mouse.isButtonDown(0)){
-				wordSize = 7;
-				Settings.wordSize = wordSize;
+				Settings.wordSize = 7;
 			}
 		}
 		

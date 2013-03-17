@@ -22,28 +22,28 @@ public class WordList {
 		dic = new HashMap<>();
 		
 		if (Settings.wordSize == 1){
-			path = Paths.get("G:/UniversityWork/Software Design and Development/Modelling/Eclipse files/Keyboard Missile Defense/res/dic/oneLetterWords.txt");
+			path = Paths.get("G:/UniversityWork/Software Design and Development/Modelling/Eclipse files/KMD/res/dic/oneLetterWords.txt");
 		}
 		if(Settings.wordSize == 2){
-			path = Paths.get("G:/UniversityWork/Software Design and Development/Modelling/Eclipse files/Keyboard Missile Defense/res/dic/twoLetterWords.txt");
+			path = Paths.get("G:/UniversityWork/Software Design and Development/Modelling/Eclipse files/KMD/res/dic/twoLetterWords.txt");
 		}
 		else if(Settings.wordSize == 3){
-			path = Paths.get("G:/UniversityWork/Software Design and Development/Modelling/Eclipse files/Keyboard Missile Defense/res/dic/threeLetterWords.txt");
+			path = Paths.get("G:/UniversityWork/Software Design and Development/Modelling/Eclipse files/KMD/res/dic/threeLetterWords.txt");
 
 		}
 		else if(Settings.wordSize == 4){
-			path = Paths.get("G:/UniversityWork/Software Design and Development/Modelling/Eclipse files/Keyboard Missile Defense/res/dic/fourLetterWords.txt");
+			path = Paths.get("G:/UniversityWork/Software Design and Development/Modelling/Eclipse files/KMD/res/dic/fourLetterWords.txt");
 
 		}
 		else if(Settings.wordSize == 5){
-			path = Paths.get("G:/UniversityWork/Software Design and Development/Modelling/Eclipse files/Keyboard Missile Defense/res/dic/fiveLetterWords.txt");
+			path = Paths.get("G:/UniversityWork/Software Design and Development/Modelling/Eclipse files/KMD/res/dic/fiveLetterWords.txt");
 
 		}
 		else if(Settings.wordSize == 6){
-			path = Paths.get("G:/UniversityWork/Software Design and Development/Modelling/Eclipse files/Keyboard Missile Defense/res/dic/sixLetterWords.txt");
+			path = Paths.get("G:/UniversityWork/Software Design and Development/Modelling/Eclipse files/KMD/res/dic/sixLetterWords.txt");
 		}
 		else if(Settings.wordSize == 7){
-			path = Paths.get("G:/UniversityWork/Software Design and Development/Modelling/Eclipse files/Keyboard Missile Defense/res/dic/noLimitWords.txt");
+			path = Paths.get("G:/UniversityWork/Software Design and Development/Modelling/Eclipse files/KMD/res/dic/noLimitWords.txt");
 		}
 		
 		System.out.println(Settings.wordSize);
@@ -81,6 +81,10 @@ public class WordList {
 		
 		String randWord = dic.get(i);
 		return randWord;
+	}
+	
+	public int size(){
+		return dic.size();
 	}
 
 }
