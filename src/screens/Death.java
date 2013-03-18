@@ -14,21 +14,31 @@ import controllers.Settings;
 public class Death extends BasicGameState{
 
 	private double accuracy;
+	private double wpm;
 	
 	private String dead;
 	
 	public Death(int state){}
 	
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException{
-		if (Settings.totalKilled + Settings.totalMissed > 0){
-			accuracy = ((double)Settings.totalKilled / (double)(Settings.totalKilled + Settings.totalMissed)) * 100;
-		}
-		else{
-			accuracy = 0;
-		}
+
+		// Calculates the accuracy.
+		accuracy = ((double)Settings.totalKilled / (double)(Settings.totalKilled + Settings.totalMissed)) * 100;
+		// Rounds to two decimal places.
+		accuracy = accuracy * 100;
+		accuracy = Math.round(accuracy);
+		accuracy = accuracy / 100;
+
+		// Calculates words per minute.
+		wpm = (double)Settings.totalKilled/((double)Play.secondsPlayed / 60.0);
+		// Rounds to two decimal places.
+		wpm = wpm * 100;
+		wpm = Math.round(wpm);
+		wpm = wpm / 100;
 		
 		dead = "You killed " + Settings.totalKilled + " enemies.\n" + 
 				"You missed " + Settings.totalMissed + " enemies.\n" +
+				"Words per minute: " + wpm + "\n" +
 				"Accuracy: " + accuracy + " %\n" + 
 				"Would you like to try again?\n" +
 				"(Y)es\n" +

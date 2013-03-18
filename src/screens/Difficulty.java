@@ -273,11 +273,16 @@ public class Difficulty extends BasicGameState{
 				sbg.enterState(Game.MAIN_MENU_STATE);
 			}
 		}
-		
+
 		// If the user clicks on the play button, then go to the play state.
 		if ((mouseX >= 20 && mouseX <= 170) && (mouseY >= 315 && mouseY < 415)){
 			if(Mouse.isButtonDown(0)){
-				sbg.enterState(Game.PLAY_STATE);
+				if(Settings.difficulty != 0 && Settings.wordSize != 0){
+					sbg.enterState(Game.PLAY_STATE);
+				}
+				else{
+					
+				}
 			}
 		}
 	}

@@ -24,52 +24,64 @@ public class EnemySpawner {
 		time = Play.secondsPlayed;
 		
 		// From 1-10 seconds in, spawn an enemy every 4 seconds.
-		if (!spawned && (Play.secondsPlayed > 0 && Play.secondsPlayed <= 10) && ((time % 4) == 0)){
+		if (!spawned && (Play.secondsPlayed > 0 && Play.secondsPlayed <= 10) && ((Play.secondsPlayed % 4) == 0)){
 			addNewEnemy();
 			spawned = true;
 		}
-		else if (spawned && (Play.secondsPlayed > 0 && Play.secondsPlayed <= 10) && ((time % 4) == 1)){
+		else if (spawned && (Play.secondsPlayed > 0 && Play.secondsPlayed <= 10) && ((Play.secondsPlayed % 4) == 1)){
 			spawned = false;
 		}
 
 		// From 11 - 20 seconds in, spawn an enemy every 3 seconds.
-		if (!spawned && (Play.secondsPlayed > 10 && Play.secondsPlayed <= 20) && ((time % 3) == 0)){
+		if (!spawned && (Play.secondsPlayed > 10 && Play.secondsPlayed <= 20) && ((Play.secondsPlayed % 3) == 0)){
 			addNewEnemy();
 			spawned = true;
 		}
-		else if (spawned && (Play.secondsPlayed > 10 && Play.secondsPlayed <= 20) && ((time % 3) == 1)){
+		else if (spawned && (Play.secondsPlayed > 10 && Play.secondsPlayed <= 20) && ((Play.secondsPlayed % 3) == 1)){
 			spawned = false;
 		}
 
 		// From 21 - 40 seconds in, spawn an enemy every 2 seconds.
-		if (!spawned && (Play.secondsPlayed > 20 && Play.secondsPlayed <= 40) && ((time % 2) == 0)){
+		if (!spawned && (Play.secondsPlayed > 20 && Play.secondsPlayed <= 40) && ((Play.secondsPlayed % 2) == 0)){
 			addNewEnemy();
 			spawned = true;
 		}
-		else if (spawned && (Play.secondsPlayed > 20 && Play.secondsPlayed <= 40) && ((time % 2) == 1)){
+		else if (spawned && (Play.secondsPlayed > 20 && Play.secondsPlayed <= 40) && ((Play.secondsPlayed % 2) == 1)){
 			spawned = false;
 		}
 		
 		// From 41 - 60 seconds in, spawn two enemies every two seconds.
-		if (!spawned && (Play.secondsPlayed > 40 && Play.secondsPlayed <= 60) && ((time % 2) == 0)){
+		if (!spawned && (Play.secondsPlayed > 40 && Play.secondsPlayed <= 60) && ((Play.secondsPlayed % 2) == 0)){
 			addNewEnemy();
 			addNewEnemy();
 			spawned = true;
 		}
-		else if (spawned && (Play.secondsPlayed > 40 && Play.secondsPlayed <= 60) && ((time % 2) == 1)){
+		else if (spawned && (Play.secondsPlayed > 40 && Play.secondsPlayed <= 60) && ((Play.secondsPlayed % 2) == 1)){
 			spawned = false;
 		}
 		
 		// From 61 - 90 seconds in, spawn three enemies every two seconds.
-		if (!spawned && (Play.secondsPlayed > 60 && Play.secondsPlayed <= 90) && ((time % 2) == 0)){
+		if (!spawned && (Play.secondsPlayed > 60 && Play.secondsPlayed <= 90) && ((Play.secondsPlayed % 2) == 0)){
 			addNewEnemy();
 			addNewEnemy();
 			addNewEnemy();
 			spawned = true;
 		}
-		else if (spawned && (Play.secondsPlayed > 60 && Play.secondsPlayed <= 90) && ((time % 2) == 1)){
+		else if (spawned && (Play.secondsPlayed > 60 && Play.secondsPlayed <= 90) && ((Play.secondsPlayed % 2) == 1)){
 			spawned = false;
 		}
+		
+		// From 91 - 150 seconds in, spawn four enemies every two seconds.
+		if (!spawned && (Play.secondsPlayed > 90 && Play.secondsPlayed <= 150) && ((Play.secondsPlayed % 2) == 0)){
+			addNewEnemy();
+			addNewEnemy();
+			addNewEnemy();
+			addNewEnemy();
+			spawned = true;
+		}
+		else if (spawned && (Play.secondsPlayed > 90 && Play.secondsPlayed <= 150) && ((Play.secondsPlayed % 2) == 1)){
+			spawned = false;
+		} 
 	}
 
 	public void addNewEnemy() throws SlickException{

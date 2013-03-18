@@ -259,10 +259,13 @@ public class Play extends BasicGameState{
 			
 			enemy.move();
 			
-			// Removes enemies that go off screen and decrements the player's health by 10.
+			// Removes enemies that go off screen. 
+			// Decrements the player's health by 10.
+			// Lets score know that one has been missed.
 			if (enemy.returnY() > 369 ){
 				enemiesOnScreen.remove(i);
 				Settings.health -= 10;
+				score.missedEnemy();
 				
 				if(Settings.health == 0){
 					sbg.addState(new Death(Game.DEATH_STATE));
