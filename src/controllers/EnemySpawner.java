@@ -11,17 +11,14 @@ public class EnemySpawner {
 
 	private boolean wordAlreadyExists;
 	private RandomLocation xLoc;
-	private int time;
 	private boolean spawned;
 
 	public EnemySpawner() throws SlickException {
 		xLoc = new RandomLocation();
 		spawned = false;
-		time = 0;
 	}
 
 	public void timedSpawn() throws SlickException{
-		time = Play.secondsPlayed;
 		
 		// From 1-10 seconds in, spawn an enemy every 4 seconds.
 		if (!spawned && (Play.secondsPlayed > 0 && Play.secondsPlayed <= 10) && ((Play.secondsPlayed % 4) == 0)){
@@ -80,6 +77,20 @@ public class EnemySpawner {
 			spawned = true;
 		}
 		else if (spawned && (Play.secondsPlayed > 90 && Play.secondsPlayed <= 150) && ((Play.secondsPlayed % 2) == 1)){
+			spawned = false;
+		} 
+		
+		// From 150 seconds onwards, spawn six enemies every two seconds.
+		if (!spawned && (Play.secondsPlayed > 150) && ((Play.secondsPlayed % 2) == 0)){
+			addNewEnemy();
+			addNewEnemy();
+			addNewEnemy();
+			addNewEnemy();
+			addNewEnemy();
+			addNewEnemy();
+			spawned = true;
+		}
+		else if (spawned && (Play.secondsPlayed > 150) && ((Play.secondsPlayed % 2) == 1)){
 			spawned = false;
 		} 
 	}

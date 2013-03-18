@@ -42,7 +42,8 @@ public class Death extends BasicGameState{
 				"Accuracy: " + accuracy + " %\n" + 
 				"Would you like to try again?\n" +
 				"(Y)es\n" +
-				"(N)o";
+				"(N)o\n" +
+				"(C)hange settings";
 		
 	}
 	
@@ -67,6 +68,16 @@ public class Death extends BasicGameState{
 		
 		if (input.isKeyDown(Input.KEY_N)){
 			System.exit(0);
+		}
+		
+		// If they want to change the settings
+		if (input.isKeyDown(Input.KEY_C)){
+			// Refresh the main menu, difficulty, and play states.
+			sbg.getState(Game.MAIN_MENU_STATE).init(gc, sbg);
+			sbg.getState(Game.DIFFICULTY_STATE).init(gc, sbg);
+			sbg.getState(Game.PLAY_STATE).init(gc, sbg);
+			// Enter the play state.
+			sbg.enterState(Game.MAIN_MENU_STATE);
 		}
 		
 	}

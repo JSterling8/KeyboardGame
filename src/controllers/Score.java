@@ -11,6 +11,7 @@ public class Score {
 		numberConsecutive = 0;
 		numConsecMult = 1;
 		letterBonus = 0;
+		multiplier =  Settings.difficulty;
 		Settings.score = 0;
 		Settings.totalKilled = 0;
 		Settings.totalMissed = 0;
@@ -49,6 +50,16 @@ public class Score {
 		
 		numberConsecutive = 0;
 		numConsecMult = 1;
-		
+		multiplier = Settings.difficulty;
+	}
+	
+	public int getMultiplier(){
+		return multiplier;
+	}
+	
+	public void setDefaultMultiplier(){
+		numberConsecutive = 0;
+		numConsecMult = 1;
+		multiplier = Settings.difficulty;
 	}
 }

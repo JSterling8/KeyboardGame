@@ -47,13 +47,10 @@ public class Play extends BasicGameState{
 	private TextField scoreTF;					// Score text field.
 	private Score score;						// Score variable.
 	private TextField healthTF;					// Health text field.
+	private TextField multiplierTF;				// Multiplier text field.
 	private Color black;						// The colour black.
 	private boolean clear;						// A boolean variable to keep track of when to clear the user input text field.
-	private int randX;							// A variable to store random x location numbers for enemy spawning.
 	private int time;							// The time that the level has been running.
-	private boolean wordAlreadyExists;			// A boolean variable to see if a Word List has already been made or not
-
-	private RandomLocation xLoc;				// Will be used to create a random x-coordinate.
 	
 	private EnemySpawner spawner;
 	private boolean missed;
@@ -82,13 +79,13 @@ public class Play extends BasicGameState{
 		score = new Score();
 		
 		// Initializes the health text field.
-		healthTF = new TextField((GUIContext)gc, gc.getDefaultFont(), 350, 380, 110, 20);
+		healthTF = new TextField((GUIContext)gc, gc.getDefaultFont(), 485, 380, 110, 20);
 		
 		// Initializes the player's health to 100.
 		Settings.health = 100;
 		
-		// Initializes the random location generator xLoc.
-		xLoc = new RandomLocation();
+		// Initializes the multiplier text field.
+		multiplierTF = new TextField((GUIContext)gc, gc.getDefaultFont(), 350, 380, 135, 20);
 		
 		// Initializes the enemies on screen ArrayList.
 		enemiesOnScreen = new ArrayList<Enemy>();
@@ -134,6 +131,11 @@ public class Play extends BasicGameState{
 		healthTF.render(gc, g);
 		healthTF.setBackgroundColor(black);
 		healthTF.setText("Health: " + Settings.health);
+		
+		// Draws the multiplier text field.
+		multiplierTF.render(gc, g);
+		multiplierTF.setBackgroundColor(black);
+		multiplierTF.setText("Multiplier: " + score.getMultiplier() + "x");
 
 		// Draw the mouse coordinates.
 		g.drawString("" + mouseX, 0, 70);
@@ -261,11 +263,11 @@ public class Play extends BasicGameState{
 			
 			// Removes enemies that go off screen. 
 			// Decrements the player's health by 10.
-			// Lets score know that one has been missed.
+			// Sets the multiplier back down.
 			if (enemy.returnY() > 369 ){
 				enemiesOnScreen.remove(i);
 				Settings.health -= 10;
-				score.missedEnemy();
+				score.setDefaultMultiplier();
 				
 				if(Settings.health == 0){
 					sbg.addState(new Death(Game.DEATH_STATE));
