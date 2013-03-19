@@ -6,7 +6,7 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Scanner;
 
-import maths.RandomLocation;
+import controllers.RandomLocation;
 import controllers.Settings;
 
 public class WordList {

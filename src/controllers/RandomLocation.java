@@ -1,8 +1,7 @@
-package maths;
+package controllers;
 
 import java.util.Random;
 
-import controllers.Settings;
 
 public class RandomLocation {
 	

@@ -1,6 +1,5 @@
 package controllers;
 
-import maths.RandomLocation;
 
 import org.newdawn.slick.SlickException;
 

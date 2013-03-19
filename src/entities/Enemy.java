@@ -1,15 +1,12 @@
 package entities;
 
 import java.awt.geom.Ellipse2D;
-import java.io.IOException;
-
-import maths.RandomLocation;
 
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
 import screens.Play;
-
+import controllers.RandomLocation;
 import controllers.Settings;
 
 public class Enemy extends Ellipse2D.Float{

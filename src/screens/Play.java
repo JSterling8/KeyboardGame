@@ -3,8 +3,6 @@ package screens;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import maths.RandomLocation;
-
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -18,6 +16,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import controllers.EnemySpawner;
 import controllers.Game;
+import controllers.RandomLocation;
 import controllers.Score;
 import controllers.Settings;
 import entities.Bullet;
@@ -33,7 +32,16 @@ public class Play extends BasicGameState{
 	
 	private boolean wordListGenerated;
 	private Image gameBackground;						// This is the games background
-	// private Image turret90;								// This is the turret at the bottom of the screen that fires
+	// private Image turret90;							// This is the turret at the bottom of the screen that fires
+	private Image bomb;
+	private Image fullhealth;
+	
+	private int randX;
+	private int randY;
+	
+	private boolean bombOnScreen; 
+	private boolean fullhealthOnScreen;
+	
 	
 	private ArrayList<Bullet> bulletList;  				// An ArrayList of bullets on the screen.
 	
@@ -41,8 +49,6 @@ public class Play extends BasicGameState{
 	double mouseX;
 	double mouseY;
 	
-
-
 	private TextField wordEnteredTF;			// User input text field.
 	private TextField scoreTF;					// Score text field.
 	private Score score;						// Score variable.
@@ -55,6 +61,7 @@ public class Play extends BasicGameState{
 	private EnemySpawner spawner;
 	private boolean missed;
 	
+	public RandomLocation randLoc;
 	
 	public Play(int state){}
 	
@@ -65,8 +72,20 @@ public class Play extends BasicGameState{
 		// Initializes the background image
 		gameBackground = new Image("res/gamebg.png");
 		// turret90 = new Image ("/res/turrets/standard/turret90.png");
+		
+		// Initializes the bomb image.
+		bomb = new Image("res/bomb.png");
+		
+		// Initializes the fullhealth image.
+		fullhealth = new Image("res/fullhealth.png");
+		
+		// Initializes bomb on screen to false.
+		bombOnScreen = false;
+		
+		// Initializes fullhealth on screen to false.
+		fullhealthOnScreen = false;
 	
-		// Initializes the color black.
+		// Initializes the colour black.
 		black = new Color(0,0,0);
 		
 		// Initializes the keyboard input text field.
@@ -101,6 +120,9 @@ public class Play extends BasicGameState{
 		
 		// Initializes the missed target variable to false.
 		missed = false;
+		
+		// Initializes the Random Location variable
+		randLoc = new RandomLocation();
 	}
 	
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException{
@@ -155,8 +177,12 @@ public class Play extends BasicGameState{
 			g.drawImage(enemy.getImage(), (float)enemy.returnX(), (float)enemy.returnY());
 			
 			// Draws a black rectangle above the enemy, varying in size by the size of the word associated to the enemy.
-			g.setColor(Color.black);
+			// Has a red trim
 			float rectXSize = (enemy.getWord().length() * 10) + 2;
+			g.setColor(Color.red);
+			g.fillRect((float)enemy.returnX() + 13, (float)enemy.returnY() - 7, rectXSize + 4, 24);
+			
+			g.setColor(Color.black);
 			g.fillRect((float)enemy.returnX() + 15, (float)enemy.returnY() - 5, rectXSize, 20);
 			
 			// Draws a red word in that black rectangle.
@@ -167,6 +193,44 @@ public class Play extends BasicGameState{
 		// Draws the time on the screen.
 		g.drawString("Time: " + secondsPlayed, 500, 50);
 		
+		// Randomly spawn either a fullhealth or a bomb.
+		if (secondsPlayed > 0 && secondsPlayed % 10 == 0 && !bombOnScreen && !fullhealthOnScreen){
+			// Gets random X,Y coordinates that will be on the bottom of the screen and make sure the word doesn't spawn off of it.
+			randX = randLoc.getRand(530);
+			randY = randLoc.getRand(150) + 200;
+			
+			// Gets a random number between 1 and 240.
+			int randCheck = randLoc.getRand(240);
+			
+			// Checks if the number is divisible by 240.  
+			// The random number will be 240 one in 240 times.
+			// A new number is made 60 times per second due to the frame rate.
+			// Therefore, there is a 60 out of 240 (25%) chance that this if statement will be true.
+			// Simply put, every ten seconds, the player has a 1 in 4 chance of getting either a fullhealth or a bomb.
+			if (randCheck % 240 == 0){
+				// If the users health is greater than 60, don't waste their time by giving them a fullhealth.
+				if (Settings.health > 60){
+					bombOnScreen = true;
+				}
+				// Else, 50%(approx.) chance they get a bomb and 50% chance(approx.) that they get a fullhealth.
+				else if (randCheck <= 120){
+					bombOnScreen = true;
+				}
+				else if (randCheck > 120){
+					fullhealthOnScreen = true;
+				}
+
+			}
+		}
+		
+		if (bombOnScreen){
+			g.drawImage(bomb, randX, randY);
+			g.drawString("detonate", randX + 25, randY + 25);
+		}
+		if (fullhealthOnScreen){
+			g.drawImage(fullhealth, randX, randY);
+			g.drawString("fullhealth", randX + 25, randY + 25);
+		}
 		
 	}
 		
@@ -201,25 +265,42 @@ public class Play extends BasicGameState{
 		
 		// Update the score when a target is hit. and set the clear variable to true.
 		if (input.isKeyPressed(Input.KEY_ENTER)){
-		    for(int i = 0; i < enemiesOnScreen.size(); i++){
-		    	Enemy enemy = enemiesOnScreen.get(i);
-		    	if(wordEnteredTF.getText().equals(enemy.getWord())){
-		    		addNewBullet((float)enemy.returnX(), (float) enemy.returnY());
-		    		
-		    		score.enemyKilled(enemy.getWord().length());
-	
+			for(int i = 0; i < enemiesOnScreen.size(); i++){
+				Enemy enemy = enemiesOnScreen.get(i);
+				if(wordEnteredTF.getText().equals(enemy.getWord())){
+					addNewBullet((float)enemy.returnX(), (float) enemy.returnY());
+
+					score.enemyKilled(enemy.getWord().length());
+
 					// Remove the enemy from the screen.
-		    		enemiesOnScreen.remove(i);
-		    		missed = false;
-		    		break;
-				    // input.clearKeyPressedRecord();
-		    	}
-		    	
-		    	// If the user hit enter but the word was incorrect.
-		    	else {
-		    		missed = true;
-		    		}
-		    	}
+					enemiesOnScreen.remove(i);
+					missed = false;
+					break;
+					// input.clearKeyPressedRecord();
+				}
+
+				// If the user hit enter but the word was incorrect and a bomb or fullhealth isn't on the screen.
+				else{
+					missed = true;
+				}
+			}
+			
+			if (bombOnScreen && wordEnteredTF.getText().equals("detonate")){
+				for(int i = 0; i < enemiesOnScreen.size(); i++){
+					Enemy enemy = enemiesOnScreen.get(i);
+					score.enemyKilled(enemy.getWord().length());
+				}
+				
+				enemiesOnScreen = new ArrayList<Enemy>();
+				missed = false;
+				bombOnScreen = false;
+			}
+			
+			if (fullhealthOnScreen && wordEnteredTF.getText().equals("fullhealth")){
+				Settings.health = 100;
+				missed = false;
+				fullhealthOnScreen = false;
+			}
 		    
 		    if (missed){
 		    	score.missedEnemy();
