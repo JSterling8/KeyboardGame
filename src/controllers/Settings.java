@@ -4,7 +4,6 @@ public class Settings {
 
 	public static int difficulty;
 	public static int wordSize;
-	public static int level;
 	public static int score;
 	public static int totalMissed;
 	public static int totalKilled;

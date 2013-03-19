@@ -60,6 +60,7 @@ public class Play extends BasicGameState{
 	
 	private EnemySpawner spawner;
 	private boolean missed;
+	private boolean paused;
 	
 	public RandomLocation randLoc;
 	
@@ -123,6 +124,12 @@ public class Play extends BasicGameState{
 		
 		// Initializes the Random Location variable
 		randLoc = new RandomLocation();
+		
+		// Initializes the paused variable to false.
+		paused = false;
+		
+		// Sets the multiplier to its default for the difficulty.
+		score.setDefaultMultiplier();
 	}
 	
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException{
@@ -137,7 +144,7 @@ public class Play extends BasicGameState{
 		wordEnteredTF.render(gc, g);
 		wordEnteredTF.setBackgroundColor(black);
 		wordEnteredTF.setFocus(true);
-		
+
 		// Clears the text field when enter is pressed.
 		if(clear){
 			wordEnteredTF.setText("");
@@ -148,12 +155,12 @@ public class Play extends BasicGameState{
 		scoreTF.render(gc, g);
 		scoreTF.setBackgroundColor(black);
 		scoreTF.setText("Score: " + Settings.score);
-		
+
 		// Draws the health text field.
 		healthTF.render(gc, g);
 		healthTF.setBackgroundColor(black);
 		healthTF.setText("Health: " + Settings.health);
-		
+
 		// Draws the multiplier text field.
 		multiplierTF.render(gc, g);
 		multiplierTF.setBackgroundColor(black);
@@ -175,33 +182,33 @@ public class Play extends BasicGameState{
 		for(int i = 0; i < enemiesOnScreen.size(); i++){
 			Enemy enemy = enemiesOnScreen.get(i);
 			g.drawImage(enemy.getImage(), (float)enemy.returnX(), (float)enemy.returnY());
-			
+
 			// Draws a black rectangle above the enemy, varying in size by the size of the word associated to the enemy.
 			// Has a red trim
 			float rectXSize = (enemy.getWord().length() * 10) + 2;
 			g.setColor(Color.red);
 			g.fillRect((float)enemy.returnX() + 13, (float)enemy.returnY() - 7, rectXSize + 4, 24);
-			
+
 			g.setColor(Color.black);
 			g.fillRect((float)enemy.returnX() + 15, (float)enemy.returnY() - 5, rectXSize, 20);
-			
+
 			// Draws a red word in that black rectangle.
 			g.setColor(Color.red);
 			g.drawString(enemy.getWord(), (float)enemy.returnX() + 15, (float)enemy.returnY() - 5);	
 		}
-		
+
 		// Draws the time on the screen.
 		g.drawString("Time: " + secondsPlayed, 500, 50);
-		
+
 		// Randomly spawn either a fullhealth or a bomb.
 		if (secondsPlayed > 0 && secondsPlayed % 10 == 0 && !bombOnScreen && !fullhealthOnScreen){
 			// Gets random X,Y coordinates that will be on the bottom of the screen and make sure the word doesn't spawn off of it.
 			randX = randLoc.getRand(530);
 			randY = randLoc.getRand(150) + 200;
-			
+
 			// Gets a random number between 1 and 240.
 			int randCheck = randLoc.getRand(240);
-			
+
 			// Checks if the number is divisible by 240.  
 			// The random number will be 240 one in 240 times.
 			// A new number is made 60 times per second due to the frame rate.
@@ -222,7 +229,7 @@ public class Play extends BasicGameState{
 
 			}
 		}
-		
+
 		if (bombOnScreen){
 			g.drawImage(bomb, randX, randY);
 			g.drawString("detonate", randX + 25, randY + 25);
@@ -232,6 +239,20 @@ public class Play extends BasicGameState{
 			g.drawString("fullhealth", randX + 25, randY + 25);
 		}
 		
+		if (paused){
+			g.setColor(Color.red);
+			g.fillRect(40, 150, 560, 75);
+
+			g.setColor(Color.black);
+			g.fillRect(42, 152, 556, 71);
+
+			// Draws a red word in that black rectangle.
+			g.setColor(Color.red);
+			g.drawString("Type 'resume' and press enter to continue playing.\n" +
+					"Type 'save' and press enter to save the game.\n" +
+					"Type 'quit' and press enter to quit the game without saving.", 53, 158);	
+		}
+
 	}
 		
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException{
@@ -251,11 +272,13 @@ public class Play extends BasicGameState{
 			}
 		}
 		
-		// Increments the time based on delta.
-		time += delta;
-		secondsPlayed = time/1000;
-		spawner.timedSpawn();
-		
+		if (!paused){
+			// Increments the time based on delta.
+			time += delta;
+			secondsPlayed = time/1000;
+			spawner.timedSpawn();
+		}
+
 		// A generic input collector.
 		Input input = gc.getInput();
 		
@@ -267,7 +290,7 @@ public class Play extends BasicGameState{
 		if (input.isKeyPressed(Input.KEY_ENTER)){
 			for(int i = 0; i < enemiesOnScreen.size(); i++){
 				Enemy enemy = enemiesOnScreen.get(i);
-				if(wordEnteredTF.getText().equals(enemy.getWord())){
+				if(!paused && wordEnteredTF.getText().equals(enemy.getWord())){
 					addNewBullet((float)enemy.returnX(), (float) enemy.returnY());
 
 					score.enemyKilled(enemy.getWord().length());
@@ -285,7 +308,7 @@ public class Play extends BasicGameState{
 				}
 			}
 			
-			if (bombOnScreen && wordEnteredTF.getText().equals("detonate")){
+			if (!paused && bombOnScreen && wordEnteredTF.getText().equals("detonate")){
 				for(int i = 0; i < enemiesOnScreen.size(); i++){
 					Enemy enemy = enemiesOnScreen.get(i);
 					score.enemyKilled(enemy.getWord().length());
@@ -296,16 +319,28 @@ public class Play extends BasicGameState{
 				bombOnScreen = false;
 			}
 			
-			if (fullhealthOnScreen && wordEnteredTF.getText().equals("fullhealth")){
+			else if (!paused && fullhealthOnScreen && wordEnteredTF.getText().equals("fullhealth")){
 				Settings.health = 100;
 				missed = false;
 				fullhealthOnScreen = false;
 			}
+			
+			// If the game is not paused and the user types pause, then pause the game.
+			else if (!paused && wordEnteredTF.getText().equals("pause")){
+		    	paused = true;
+		    	missed = false;
+		    }
+			
+			// If the game is paused and the user types resume, then resume the game.
+			else if (paused && wordEnteredTF.getText().equals("resume")){
+		    	paused = false;
+		    	missed = false;
+		    }
 		    
-		    if (missed){
+		    if (!paused && missed){
 		    	score.missedEnemy();
 		    }
-
+		    
 		    // Clears the input text field.
 		    clear = true;													
 
@@ -313,52 +348,52 @@ public class Play extends BasicGameState{
 		    // spawner.addNewEnemy();										
 		}
 
+
 		// If input box is clicked, then set the clear variable to true.
 		if (mouseX <= 200 && mouseY >= 380 && input.isMouseButtonDown(0)){
 			// Clears the input text field.
 			clear = true;
 		}
-		
+
 		// If the text field isn't currently in focus, make it in focus.
 		if (!wordEnteredTF.hasFocus()){
 			wordEnteredTF.setFocus(true);
 		}
-		
-		//Update the bullet's position.
-		for(int i = 0;i<bulletList.size();i++){
-			Bullet bullet = bulletList.get(i);
-			bullet.move();
-	  	  
-			// Removes bullets that go off screen.
-			if ((bullet.returnX() > 639 || bullet.returnX() <= 1) || (bullet.returnY() < 1 || bullet.returnY() > 399)){
-	  		  	bulletList.remove(i);     
-			}
-	      
-		}
-		
-		// Update the enemies' positions.
-		for(int i = 0; i < enemiesOnScreen.size(); i++){
-			Enemy enemy = enemiesOnScreen.get(i);
-			
-			enemy.move();
-			
-			// Removes enemies that go off screen. 
-			// Decrements the player's health by 10.
-			// Sets the multiplier back down.
-			if (enemy.returnY() > 369 ){
-				enemiesOnScreen.remove(i);
-				Settings.health -= 10;
-				score.setDefaultMultiplier();
-				
-				if(Settings.health == 0){
-					sbg.addState(new Death(Game.DEATH_STATE));
-					sbg.getState(Game.DEATH_STATE).init(gc, sbg);
-					sbg.enterState(Game.DEATH_STATE);
+
+		if (!paused){
+			//Update the bullet's position.
+			for(int i = 0;i<bulletList.size();i++){
+				Bullet bullet = bulletList.get(i);
+				bullet.move();
+
+				// Removes bullets that go off screen.
+				if ((bullet.returnX() > 639 || bullet.returnX() <= 1) || (bullet.returnY() < 1 || bullet.returnY() > 399)){
+					bulletList.remove(i);     
 				}
-				
 			}
-	      
-		}		
+
+			// Update the enemies' positions.
+			for(int i = 0; i < enemiesOnScreen.size(); i++){
+				Enemy enemy = enemiesOnScreen.get(i);
+
+				enemy.move();
+
+				// Removes enemies that go off screen. 
+				// Decrements the player's health by 10.
+				// Sets the multiplier back down.
+				if (enemy.returnY() > 369 ){
+					enemiesOnScreen.remove(i);
+					Settings.health -= 10;
+					score.setDefaultMultiplier();
+
+					if(Settings.health == 0){
+						sbg.addState(new Death(Game.DEATH_STATE));
+						sbg.getState(Game.DEATH_STATE).init(gc, sbg);
+						sbg.enterState(Game.DEATH_STATE);
+					}
+				}
+			}
+		}
 		
 	}
 	
