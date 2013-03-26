@@ -453,7 +453,7 @@ public class Play extends BasicGameState{
 	    * @param targetY The y coordinate that the bullet will head towards.
 	    */
 	   private void addNewBullet(float targetX, float targetY){
-	      bulletList.add(new Bullet(330, 380, targetX, targetY));
+	      bulletList.add(new Bullet(320, 400, targetX, targetY));
 	   }
 	   
 	   // If the mouse is pressed, then do this: 
