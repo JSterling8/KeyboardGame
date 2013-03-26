@@ -171,16 +171,12 @@ public class Difficulty extends BasicGameState{
 
 		// If the user presses enter.
 		if (input.isKeyDown(Input.KEY_ENTER)){
-			if (input.isMouseButtonDown(0) || input.isKeyDown(Input.KEY_ENTER)){
+			// If the difficulty and wordSize have been selected.
+			if(Settings.difficulty != 0 && Settings.wordSize != 0){
 				// Transitions to Play state
 				sbg.enterState(Game.PLAY_STATE, new FadeOutTransition(), new FadeInTransition()); 
 			}
 		}
-
-
-
-
-
 	}
 
 	// If the mouse is pressed, then do this: 
