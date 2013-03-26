@@ -28,6 +28,7 @@ public class Play extends BasicGameState{
 	
 	public static WordList words;
 	public static ArrayList<Enemy> enemiesOnScreen;			// An ArrayList of the current enemies on the screen.
+	public static ArrayList<Bullet> bulletList;  			// An ArrayList of bullets on the screen.
 	public static int secondsPlayed;
 	
 	private boolean wordListGenerated;
@@ -43,7 +44,6 @@ public class Play extends BasicGameState{
 	private boolean fullhealthOnScreen;
 	
 	
-	private ArrayList<Bullet> bulletList;  				// An ArrayList of bullets on the screen.
 	
 	// These variables store the mouses x and y coordinates.
 	double mouseX;
