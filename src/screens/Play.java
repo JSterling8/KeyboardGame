@@ -267,6 +267,11 @@ public class Play extends BasicGameState{
 			g.setLineWidth(3);
 			g.drawLine(100, 380, 100, 360);
 			
+			// Draws a blue arrowhead on the line.
+			g.drawLine(100, 380, 90, 375);
+			g.drawLine(100, 380, 110, 375);
+			g.drawLine(90, 375, 110, 375);
+			
 			// Draw the frame of the rectangle
 			g.fillRect(0, 335, 200, 25);
 			
