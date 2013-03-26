@@ -10,6 +10,7 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import controllers.Game;
+import controllers.Settings;
 
 public class MainMenu extends BasicGameState{
 	
@@ -62,7 +63,8 @@ public class MainMenu extends BasicGameState{
 		// If load game is clicked.
 		if((mouseX >= 320 && mouseX < 640) && (mouseY >= 80 && mouseY <= 280)){
 			if(input.isMousePressed(0)){
-				
+				Settings.fromSave = true;
+				sbg.enterState(Game.PLAY_STATE);
 			}
 		}
 		

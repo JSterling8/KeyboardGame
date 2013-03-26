@@ -8,6 +8,7 @@ public class Settings {
 	public static int totalMissed;
 	public static int totalKilled;
 	public static int health;
+	public static boolean fromSave;
 	
 	// Makes it so an object of this class will never exist.
 	private Settings() {

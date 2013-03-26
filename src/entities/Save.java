@@ -2,9 +2,9 @@ package entities;
 
 import java.util.ArrayList;
 
-import controllers.Settings;
-
 import screens.Play;
+import controllers.ScoreCon;
+import controllers.Settings;
 
 public class Save {
 
@@ -18,24 +18,26 @@ public class Save {
 	private WordList words;
 	private ArrayList<Enemy> enemiesOnScreen;
 	private ArrayList<Bullet> bulletList;
-	private boolean wordListGenerated;
+	private ScoreCon scoreCon;
 	private boolean bombOnScreen;
 	private boolean fullhealthOnScreen;
 	
 	
 	
-	public Save() {
+	public Save(Play parent) {
 		setDifficulty(Settings.difficulty);
 		setWordSize(Settings.wordSize);
 		setScore(Settings.score);
 		setTotalMissed(Settings.totalMissed);
 		setTotalKilled(Settings.totalKilled);
 		setHealth(Settings.health);
-		setWordListGenerated(true);
 		setWords(Play.words);
 		setEnemiesOnScreen(Play.enemiesOnScreen);
 		setSecondsPlayed(Play.secondsPlayed);
 		setBulletList(Play.bulletList);
+		setScoreCon(parent.getScoreCon());
+		setBombOnScreen(parent.getBombOnScreen());
+		setFullhealthOnScreen(parent.getFullhealthOnScreen());
 	}
 
 
@@ -107,18 +109,7 @@ public class Save {
 		this.secondsPlayed = secondsPlayed;
 	}
 
-
-	public boolean isWordListGenerated() {
-		return wordListGenerated;
-	}
-
-
-	public void setWordListGenerated(boolean wordListGenerated) {
-		this.wordListGenerated = wordListGenerated;
-	}
-
-
-	public boolean isBombOnScreen() {
+	public boolean getBombOnScreen() {
 		return bombOnScreen;
 	}
 
@@ -128,7 +119,7 @@ public class Save {
 	}
 
 
-	public boolean isFullhealthOnScreen() {
+	public boolean getFullhealthOnScreen() {
 		return fullhealthOnScreen;
 	}
 
@@ -165,6 +156,16 @@ public class Save {
 
 	public void setBulletList(ArrayList<Bullet> bulletList) {
 		this.bulletList = bulletList;
+	}
+
+
+	public ScoreCon getScoreCon() {
+		return scoreCon;
+	}
+
+
+	public void setScoreCon(ScoreCon scoreCon) {
+		this.scoreCon = scoreCon;
 	}
 
 }

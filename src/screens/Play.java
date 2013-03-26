@@ -21,6 +21,7 @@ import controllers.ScoreCon;
 import controllers.Settings;
 import entities.Bullet;
 import entities.Enemy;
+import entities.Save;
 import entities.WordList;
 
 
@@ -59,77 +60,110 @@ public class Play extends BasicGameState{
 	private boolean paused;
 	private boolean started;
 	
+	private Save save;
+	
 	public RandomLocation randLoc;
 
 	public Play(int state){}
 	
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException{
+		
+
 		// Initializes the enemy spawner.
 		spawner = new EnemySpawner();
-		
+
 		// Initializes the background image
 		gameBackground = new Image("res/gamebg.png");
 		// turret90 = new Image ("/res/turrets/standard/turret90.png");
-		
+
 		// Initializes the bomb image.
 		bomb = new Image("res/bomb.png");
-		
+
 		// Initializes the fullhealth image.
 		fullhealth = new Image("res/fullhealth.png");
-		
+
 		// Initializes bomb on screen to false.
 		bombOnScreen = false;
-		
+
 		// Initializes fullhealth on screen to false.
 		fullhealthOnScreen = false;
-	
-		// Initializes the colour black.
-		black = new Color(0,0,0);
-		
+
 		// Initializes the keyboard input text field.
 		wordEnteredTF = new TextField((GUIContext)gc, gc.getDefaultFont(), 0, 380, 200, 20);
-	
+
 		// Initializes the score text field.
 		scoreTF = new TextField((GUIContext)gc, gc.getDefaultFont(), 200, 380, 150, 20);
-		
-		// Initializes the score.
-		score = new ScoreCon();
-		
+
+
 		// Initializes the health text field.
 		healthTF = new TextField((GUIContext)gc, gc.getDefaultFont(), 485, 380, 110, 20);
-		
-		// Initializes the player's health to 100.
-		Settings.health = 100;
-		
+
 		// Initializes the multiplier text field.
 		multiplierTF = new TextField((GUIContext)gc, gc.getDefaultFont(), 350, 380, 135, 20);
-		
-		// Initializes the enemies on screen ArrayList.
-		enemiesOnScreen = new ArrayList<Enemy>();
-		
-		// Initializes the bullets on the screen ArrayList.
-		bulletList = new ArrayList<Bullet>();
-		
-		// Initializes the boolean variable to whether or not a Word List has been generated to false.
-		wordListGenerated = false;
-		
-		// Initializes the level time to 0 seconds.
-		time = 0;
-		
+
 		// Initializes the missed target variable to false.
 		missed = false;
-		
+
 		// Initializes the Random Location variable
 		randLoc = new RandomLocation();
-		
-		// Initializes the paused variable to false.
+
+		// Initializes the paused variable to true.
 		paused = true;
+
 		
-		// Initializes the started variable to false.
-		started = false;
+		// If a saved game is being loaded.
+		if (Settings.fromSave){
+			// TODO Make it load a save file.
+			save = null;
+			
+			Settings.difficulty = save.getDifficulty();
+			Settings.wordSize = save.getWordSize();
+			Settings.score = save.getScore();
+			Settings.totalKilled = save.getTotalKilled();
+			Settings.totalMissed = save.getTotalMissed();
+			Settings.health = save.getHealth();
+			
+			words = save.getWords();
+			enemiesOnScreen = save.getEnemiesOnScreen();
+			bulletList = save.getBulletList();
+			
+			bombOnScreen = save.getBombOnScreen();
+			fullhealthOnScreen = save.getFullhealthOnScreen();
+			
+			started = true;
+			wordListGenerated = true;
+			time = save.getSecondsPlayed();
+		}
+
+		// If a saved game is not being loaded.
+		else{
+			// Initializes the started variable to false.
+			started = false;
+
+			// Initializes the boolean variable to whether or not a Word List has been generated to false.
+			wordListGenerated = false;
+
+			// Initializes the level time to 0 seconds.
+			time = 0;
+
+			// Initializes the score.
+			score = new ScoreCon();
+
+			// Initializes the player's health to 100.
+			Settings.health = 100;
+
+			// Initializes the enemies on screen ArrayList.
+			enemiesOnScreen = new ArrayList<Enemy>();
+
+			// Initializes the bullets on the screen ArrayList.
+			bulletList = new ArrayList<Bullet>();
+
+			// Sets the multiplier to its default for the difficulty.
+			score.setDefaultMultiplier();
+		}
+
+
 		
-		// Sets the multiplier to its default for the difficulty.
-		score.setDefaultMultiplier();
 	}
 	
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException{
@@ -142,7 +176,7 @@ public class Play extends BasicGameState{
 
 		// Draws the input text field.
 		wordEnteredTF.render(gc, g);
-		wordEnteredTF.setBackgroundColor(black);
+		wordEnteredTF.setBackgroundColor(Color.black);
 		wordEnteredTF.setFocus(true);
 
 		// Clears the text field when enter is pressed.
@@ -153,17 +187,17 @@ public class Play extends BasicGameState{
 
 		// Draws the score text field.
 		scoreTF.render(gc, g);
-		scoreTF.setBackgroundColor(black);
+		scoreTF.setBackgroundColor(Color.black);
 		scoreTF.setText("Score: " + Settings.score);
 
 		// Draws the health text field.
 		healthTF.render(gc, g);
-		healthTF.setBackgroundColor(black);
+		healthTF.setBackgroundColor(Color.black);
 		healthTF.setText("Health: " + Settings.health);
 
 		// Draws the multiplier text field.
 		multiplierTF.render(gc, g);
-		multiplierTF.setBackgroundColor(black);
+		multiplierTF.setBackgroundColor(Color.black);
 		multiplierTF.setText("Multiplier: " + score.getMultiplier() + "x");
 
 
@@ -435,10 +469,22 @@ public class Play extends BasicGameState{
 				try {
 					spawner.addNewEnemy();
 				} catch (SlickException e) {
-					// TODO Auto-generated catch block
+					System.out.println("Unable to add a new enemy");
 					e.printStackTrace();
 				}
 			}
+	   }
+	   
+	   public ScoreCon getScoreCon(){
+		   return score;
+	   }
+	   
+	   public boolean getBombOnScreen(){
+		   return bombOnScreen;
+	   }
+	   
+	   public boolean getFullhealthOnScreen(){
+		   return fullhealthOnScreen;
 	   }
 	   
 	public int getID(){
