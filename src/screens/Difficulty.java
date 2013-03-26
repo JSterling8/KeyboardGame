@@ -10,6 +10,8 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.state.transition.FadeInTransition;
+import org.newdawn.slick.state.transition.FadeOutTransition;
 
 import controllers.Game;
 import controllers.Settings;
@@ -57,15 +59,16 @@ public class Difficulty extends BasicGameState{
 	private Image backButton;
 	private Image optionsButton;
 	
-	// These variables store the mouses x and y coordinates.
-	private double mouseX;
-	private double mouseY;
+	private StateBasedGame sbg;
 	
 	public Difficulty(int state){
 		
 	}
 	
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException{
+		// Initializes the local pointer to sbg for use in other methods.
+		this.sbg = sbg;
+		
 		// Initialises the difficulty and amount of characters selected to 0 to indicate no selection.
 		Settings.difficulty = 0;
 		Settings.wordSize = 0;
@@ -158,11 +161,6 @@ public class Difficulty extends BasicGameState{
 		g.drawImage(playButton, 20, 315);
 		g.drawImage(backButton, 195, 315);
 		g.drawImage(optionsButton, 370, 315);
-
-		// Draw the mouse coordinates.
-		g.setColor(Color.white);
-		g.drawString("" + mouseX, 0, 70);
-		g.drawString("" + mouseY, 0, 100);
 	}
 	
 	/* Moves the GFX around
@@ -172,120 +170,125 @@ public class Difficulty extends BasicGameState{
 		
 		
 		// If the user presses enter.
-//		if (input.isKeyDown(Input.KEY_ENTER)){
-//			if (input.isMouseButtonDown(0) || input.isKeyDown(Input.KEY_ENTER)){
-//				sbg.enterState(Game.PLAY_STATE, new FadeOutTransition(), new FadeInTransition()); // Transitions to Play state
-//			}
-//		}
-		
-		// Get the mouses x and y coordinates.
-		mouseX = input.getMouseX();
-		mouseY = input.getMouseY();
-		
-		
-		// If the user clicks options, then go to the options state.
-		if((mouseX >= 370 && mouseX <= 620) && (mouseY >= 315 && mouseY <= 415)){
-			if(Mouse.isButtonDown(0)){
-				sbg.enterState(Game.OPTIONS_STATE);
+		if (input.isKeyDown(Input.KEY_ENTER)){
+			if (input.isMouseButtonDown(0) || input.isKeyDown(Input.KEY_ENTER)){
+				// Transitions to Play state
+				sbg.enterState(Game.PLAY_STATE, new FadeOutTransition(), new FadeInTransition()); 
 			}
 		}
 		
-		// If the user clicks easy, highlight it and set Settings.difficulty to the corresponding value.
-		if ((mouseX >= 50 && mouseX <= 250) && (mouseY >= 100 && mouseY <= 150)){
-			if(Mouse.isButtonDown(0)){
-				Settings.difficulty = 1;
-			}
-		}
 		
-		// If the user clicks medium, highlight it and set Settings.difficulty to the corresponding value.
-		if ((mouseX >= 50 && mouseX <= 250) && (mouseY >= 150 && mouseY <= 200)){
-			if(Mouse.isButtonDown(0)){
-				Settings.difficulty = 2;
-			}
-		}
 		
-		// If the user clicks hard, highlight it and set Settings.difficulty to the corresponding value.
-		if ((mouseX >= 50 && mouseX <= 250) && (mouseY >= 200 && mouseY <= 250)){
-			if(Mouse.isButtonDown(0)){
-				Settings.difficulty = 3;
-			}
-		}
 		
-		// If the user clicks insane, highlight it and set Settings.difficulty to the corresponding value.
-		if ((mouseX >= 50 && mouseX <= 250) && (mouseY >= 250 && mouseY <= 300)){
-			if(Mouse.isButtonDown(0)){
-				Settings.difficulty = 4;
-			}
-		}
-		
-		// If the user clicks 1 char, highlight it and set Settings.wordSize to the corresponding value.
-		if ((mouseX >= 345 && mouseX <= 595) && (mouseY >= 75 && mouseY < 110)){
-			if(Mouse.isButtonDown(0)){
-				Settings.wordSize = 1;
-			}
-		}
-		
-		// If the user clicks 2 chars, highlight it and set Settings.wordSize to the corresponding value.
-		if ((mouseX >= 345 && mouseX <= 595) && (mouseY >= 110 && mouseY < 145)){
-			if(Mouse.isButtonDown(0)){
-				Settings.wordSize = 2;
-			}
-		}
-		
-		// If the user clicks 3 chars, highlight it and set Settings.wordSize to the corresponding value.
-		if ((mouseX >= 345 && mouseX <= 595) && (mouseY >= 145 && mouseY < 180)){
-			if(Mouse.isButtonDown(0)){
-				Settings.wordSize = 3;
-			}
-		}
-		
-		// If the user clicks 4 chars, highlight it and set Settings.wordSize to the corresponding value.
-		if ((mouseX >= 345 && mouseX <= 595) && (mouseY >= 180 && mouseY < 215)){
-			if(Mouse.isButtonDown(0)){
-				Settings.wordSize = 4;
-			}
-		}
-		
-		// If the user clicks 5 chars, highlight it and set Settings.wordSize to the corresponding value.
-		if ((mouseX >= 345 && mouseX <= 595) && (mouseY >= 215 && mouseY < 250)){
-			if(Mouse.isButtonDown(0)){
-				Settings.wordSize = 5;
-			}
-		}
-		
-		// If the user clicks 6 chars, highlight it and set Settings.wordSize to the corresponding value.
-		if ((mouseX >= 345 && mouseX <= 595) && (mouseY >= 250 && mouseY < 285)){
-			if(Mouse.isButtonDown(0)){
-				Settings.wordSize = 6;
-			}
-		}
-		
-		// If the user clicks no char limit, highlight it and set Settings.wordSize to the corresponding value.
-		if ((mouseX >= 345 && mouseX <= 595) && (mouseY >= 285 && mouseY < 320)){
-			if(Mouse.isButtonDown(0)){
-				Settings.wordSize = 7;
-			}
-		}
-		
-		// If the user clicks on the back button, then go back to the main menu.
-		if ((mouseX >= 195 && mouseX <= 345) && (mouseY >= 315 && mouseY < 415)){
-			if(Mouse.isButtonDown(0)){
-				sbg.enterState(Game.MAIN_MENU_STATE);
-			}
-		}
 
-		// If the user clicks on the play button, then go to the play state.
-		if ((mouseX >= 20 && mouseX <= 170) && (mouseY >= 315 && mouseY < 415)){
-			if(Mouse.isButtonDown(0)){
-				if(Settings.difficulty != 0 && Settings.wordSize != 0){
-					sbg.enterState(Game.PLAY_STATE);
-				}
-				else{
-					
+	}
+	
+	   // If the mouse is pressed, then do this: 
+	   @Override
+	   public void mousePressed(int button, int x, int y) {
+			// If the user clicks options, then go to the options state.
+			if((x >= 370 && x <= 620) && (y >= 315 && y <= 415)){
+				if(Mouse.isButtonDown(0)){
+					sbg.enterState(Game.OPTIONS_STATE);
 				}
 			}
-		}
-	}
+			
+			// If the user clicks easy, highlight it and set Settings.difficulty to the corresponding value.
+			if ((x >= 50 && x <= 250) && (y >= 100 && y <= 150)){
+				if(Mouse.isButtonDown(0)){
+					Settings.difficulty = 1;
+				}
+			}
+			
+			// If the user clicks medium, highlight it and set Settings.difficulty to the corresponding value.
+			if ((x >= 50 && x <= 250) && (y >= 150 && y <= 200)){
+				if(Mouse.isButtonDown(0)){
+					Settings.difficulty = 2;
+				}
+			}
+			
+			// If the user clicks hard, highlight it and set Settings.difficulty to the corresponding value.
+			if ((x >= 50 && x <= 250) && (y >= 200 && y <= 250)){
+				if(Mouse.isButtonDown(0)){
+					Settings.difficulty = 3;
+				}
+			}
+			
+			// If the user clicks insane, highlight it and set Settings.difficulty to the corresponding value.
+			if ((x >= 50 && x <= 250) && (y >= 250 && y <= 300)){
+				if(Mouse.isButtonDown(0)){
+					Settings.difficulty = 4;
+				}
+			}
+			
+			// If the user clicks 1 char, highlight it and set Settings.wordSize to the corresponding value.
+			if ((x >= 345 && x <= 595) && (y >= 75 && y < 110)){
+				if(Mouse.isButtonDown(0)){
+					Settings.wordSize = 1;
+				}
+			}
+			
+			// If the user clicks 2 chars, highlight it and set Settings.wordSize to the corresponding value.
+			if ((x >= 345 && x <= 595) && (y >= 110 && y < 145)){
+				if(Mouse.isButtonDown(0)){
+					Settings.wordSize = 2;
+				}
+			}
+			
+			// If the user clicks 3 chars, highlight it and set Settings.wordSize to the corresponding value.
+			if ((x >= 345 && x <= 595) && (y >= 145 && y < 180)){
+				if(Mouse.isButtonDown(0)){
+					Settings.wordSize = 3;
+				}
+			}
+			
+			// If the user clicks 4 chars, highlight it and set Settings.wordSize to the corresponding value.
+			if ((x >= 345 && x <= 595) && (y >= 180 && y < 215)){
+				if(Mouse.isButtonDown(0)){
+					Settings.wordSize = 4;
+				}
+			}
+			
+			// If the user clicks 5 chars, highlight it and set Settings.wordSize to the corresponding value.
+			if ((x >= 345 && x <= 595) && (y >= 215 && y < 250)){
+				if(Mouse.isButtonDown(0)){
+					Settings.wordSize = 5;
+				}
+			}
+			
+			// If the user clicks 6 chars, highlight it and set Settings.wordSize to the corresponding value.
+			if ((x >= 345 && x <= 595) && (y >= 250 && y < 285)){
+				if(Mouse.isButtonDown(0)){
+					Settings.wordSize = 6;
+				}
+			}
+			
+			// If the user clicks no char limit, highlight it and set Settings.wordSize to the corresponding value.
+			if ((x >= 345 && x <= 595) && (y >= 285 && y < 320)){
+				if(Mouse.isButtonDown(0)){
+					Settings.wordSize = 7;
+				}
+			}
+			
+			// If the user clicks on the back button, then go back to the main menu.
+			if ((x >= 195 && x <= 345) && (y >= 315 && y < 415)){
+				if(Mouse.isButtonDown(0)){
+					sbg.enterState(Game.MAIN_MENU_STATE);
+				}
+			}
+
+			// If the user clicks on the play button, then go to the play state.
+			if ((x >= 20 && x <= 170) && (y >= 315 && y < 415)){
+				if(Mouse.isButtonDown(0)){
+					if(Settings.difficulty != 0 && Settings.wordSize != 0){
+						sbg.enterState(Game.PLAY_STATE);
+					}
+					else{
+						
+					}
+				}
+			}
+	   }
 	
 	public int getID(){
 		return Game.DIFFICULTY_STATE;

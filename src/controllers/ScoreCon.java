@@ -1,13 +1,13 @@
 package controllers;
 
-public class Score {
+public class ScoreCon {
 
 	private int multiplier;
 	private int letterBonus;
 	private int numberConsecutive;
 	private int numConsecMult;
 	
-	public Score() {
+	public ScoreCon() {
 		numberConsecutive = 0;
 		numConsecMult = 1;
 		letterBonus = 0;
@@ -22,10 +22,12 @@ public class Score {
 		Settings.totalKilled++;
 		numberConsecutive++;
 		
-		if (numberConsecutive == 5){numConsecMult = 2;}
-		if (numberConsecutive == 10){numConsecMult = 3;}
-		if (numberConsecutive == 15){numConsecMult = 4;}
-		if (numberConsecutive == 20){numConsecMult = 5;}
+		if (numberConsecutive <  5){numConsecMult = 0;}
+		else if (numberConsecutive < 10){numConsecMult = 1;}
+		else if (numberConsecutive < 15){numConsecMult = 2;}
+		else if (numberConsecutive < 20){numConsecMult = 3;}
+		else if (numberConsecutive < 25){numConsecMult = 4;}
+		else if (numberConsecutive >= 40){numConsecMult = 6;}
 		
 		multiplier = numConsecMult + Settings.difficulty;
 		Settings.score = Settings.score + (multiplier * letterBonus(wordLength)); 

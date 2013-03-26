@@ -17,7 +17,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import controllers.EnemySpawner;
 import controllers.Game;
 import controllers.RandomLocation;
-import controllers.Score;
+import controllers.ScoreCon;
 import controllers.Settings;
 import entities.Bullet;
 import entities.Enemy;
@@ -30,6 +30,8 @@ public class Play extends BasicGameState{
 	public static ArrayList<Enemy> enemiesOnScreen;			// An ArrayList of the current enemies on the screen.
 	public static ArrayList<Bullet> bulletList;  			// An ArrayList of bullets on the screen.
 	public static int secondsPlayed;
+	private Input input;
+	
 	
 	private boolean wordListGenerated;
 	private Image gameBackground;						// This is the games background
@@ -43,15 +45,9 @@ public class Play extends BasicGameState{
 	private boolean bombOnScreen; 
 	private boolean fullhealthOnScreen;
 	
-	
-	
-	// These variables store the mouses x and y coordinates.
-	double mouseX;
-	double mouseY;
-	
 	private TextField wordEnteredTF;			// User input text field.
 	private TextField scoreTF;					// Score text field.
-	private Score score;						// Score variable.
+	private ScoreCon score;						// Score variable.
 	private TextField healthTF;					// Health text field.
 	private TextField multiplierTF;				// Multiplier text field.
 	private Color black;						// The colour black.
@@ -97,7 +93,7 @@ public class Play extends BasicGameState{
 		scoreTF = new TextField((GUIContext)gc, gc.getDefaultFont(), 200, 380, 150, 20);
 		
 		// Initializes the score.
-		score = new Score();
+		score = new ScoreCon();
 		
 		// Initializes the health text field.
 		healthTF = new TextField((GUIContext)gc, gc.getDefaultFont(), 485, 380, 110, 20);
@@ -169,10 +165,6 @@ public class Play extends BasicGameState{
 		multiplierTF.render(gc, g);
 		multiplierTF.setBackgroundColor(black);
 		multiplierTF.setText("Multiplier: " + score.getMultiplier() + "x");
-
-		// Draw the mouse coordinates.
-		g.drawString("" + mouseX, 0, 70);
-		g.drawString("" + mouseY, 0, 100);
 
 
 		// Draw the bullets
@@ -287,6 +279,7 @@ public class Play extends BasicGameState{
 	}
 		
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException{
+		input = gc.getInput();
 		
 		// If there's not a Word List already.
 		if (!wordListGenerated){
@@ -310,12 +303,7 @@ public class Play extends BasicGameState{
 			spawner.timedSpawn();
 		}
 
-		// A generic input collector.
-		Input input = gc.getInput();
-		
-		// Get the mouses x and y coordinates.
-		mouseX = input.getMouseX();
-		mouseY = input.getMouseY();
+
 		
 		// Update the score when a target is hit. and set the clear variable to true.
 		if (input.isKeyPressed(Input.KEY_ENTER)){
@@ -383,17 +371,6 @@ public class Play extends BasicGameState{
 		    // spawner.addNewEnemy();										
 		}
 
-		
-		// If input box is clicked, clear the box, unpause the game, and start the game.
-		if (!started && mouseX <= 200 && mouseY >= 380 && input.isMouseButtonDown(0)){
-			// Clears the input text field.
-			clear = true;
-			started = true;
-			paused = false;
-			
-			spawner.addNewEnemy();
-		}
-
 		// If the text field isn't currently in focus, make it in focus.
 		if (!wordEnteredTF.hasFocus()){
 			wordEnteredTF.setFocus(true);
@@ -443,6 +420,25 @@ public class Play extends BasicGameState{
 	    */
 	   private void addNewBullet(float targetX, float targetY){
 	      bulletList.add(new Bullet(330, 380, targetX, targetY));
+	   }
+	   
+	   // If the mouse is pressed, then do this: 
+	   @Override
+	   public void mousePressed(int button, int x, int y) {
+			// If input box is clicked, clear the box, unpause the game, and start the game.
+			if (!started && x <= 200 && y >= 380){
+				// Clears the input text field.
+				clear = true;
+				started = true;
+				paused = false;
+				
+				try {
+					spawner.addNewEnemy();
+				} catch (SlickException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 	   }
 	   
 	public int getID(){
