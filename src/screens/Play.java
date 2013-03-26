@@ -61,9 +61,10 @@ public class Play extends BasicGameState{
 	private EnemySpawner spawner;
 	private boolean missed;
 	private boolean paused;
+	private boolean started;
 	
 	public RandomLocation randLoc;
-	
+
 	public Play(int state){}
 	
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException{
@@ -126,7 +127,10 @@ public class Play extends BasicGameState{
 		randLoc = new RandomLocation();
 		
 		// Initializes the paused variable to false.
-		paused = false;
+		paused = true;
+		
+		// Initializes the started variable to false.
+		started = false;
 		
 		// Sets the multiplier to its default for the difficulty.
 		score.setDefaultMultiplier();
@@ -241,16 +245,38 @@ public class Play extends BasicGameState{
 		
 		if (paused){
 			g.setColor(Color.red);
-			g.fillRect(40, 150, 560, 75);
+			g.fillRect(40, 50, 560, 215);
 
 			g.setColor(Color.black);
-			g.fillRect(42, 152, 556, 71);
+			g.fillRect(42, 52, 556, 211);
 
 			// Draws a red word in that black rectangle.
 			g.setColor(Color.red);
-			g.drawString("Type 'resume' and press enter to continue playing.\n" +
+			g.drawString("While playing:\n\n" +
+					"Type 'pause' and press enter to pause.\n\n\n" +
+					"While paused:\n\n" +
+					"Type 'resume' and press enter to continue playing.\n" +
 					"Type 'save' and press enter to save the game.\n" +
-					"Type 'quit' and press enter to quit the game without saving.", 53, 158);	
+					"Type 'quit' and press enter to quit the game without saving.", 53, 58);	
+		}
+		
+		// If the game hasn't been started.
+		if (!started){
+			// Draw a blue line from the score text field to the box with a string in it.
+			g.setColor(Color.cyan);
+			g.setLineWidth(3);
+			g.drawLine(100, 380, 100, 360);
+			
+			// Draw the frame of the rectangle
+			g.fillRect(0, 335, 200, 25);
+			
+			// Draw the inside of the rectangle
+			g.setColor(Color.black);
+			g.fillRect(2, 337, 196, 21);
+			
+			// Draw the text of the rectangle
+			g.setColor(Color.red);
+			g.drawString("Click in box to start.", 3, 338);
 		}
 
 	}
@@ -336,6 +362,10 @@ public class Play extends BasicGameState{
 		    	paused = false;
 		    	missed = false;
 		    }
+			
+			else if (paused && wordEnteredTF.getText().equals("quit")){
+				System.exit(0);
+			}
 		    
 		    if (!paused && missed){
 		    	score.missedEnemy();
@@ -348,11 +378,15 @@ public class Play extends BasicGameState{
 		    // spawner.addNewEnemy();										
 		}
 
-
-		// If input box is clicked, then set the clear variable to true.
-		if (mouseX <= 200 && mouseY >= 380 && input.isMouseButtonDown(0)){
+		
+		// If input box is clicked, clear the box, unpause the game, and start the game.
+		if (!started && mouseX <= 200 && mouseY >= 380 && input.isMouseButtonDown(0)){
 			// Clears the input text field.
 			clear = true;
+			started = true;
+			paused = false;
+			
+			spawner.addNewEnemy();
 		}
 
 		// If the text field isn't currently in focus, make it in focus.
@@ -396,18 +430,6 @@ public class Play extends BasicGameState{
 		}
 		
 	}
-	
-	
-	   /* (non-Javadoc)
-	    * @see org.newdawn.slick.BasicGame#mousePressed(int, int, int)
-	    */
-	   @Override
-	   public void mousePressed ( int button, int x, int y ){
-		   try {spawner.addNewEnemy();
-		   } catch (SlickException e) {
-				   e.printStackTrace();
-		   }
-	   }
 	   
 	   /**
 	    * Shoots a bullet at the current target.
@@ -415,7 +437,7 @@ public class Play extends BasicGameState{
 	    * @param targetY The y coordinate that the bullet will head towards.
 	    */
 	   private void addNewBullet(float targetX, float targetY){
-	      bulletList.add(new Bullet(330, 340, targetX, targetY));
+	      bulletList.add(new Bullet(330, 380, targetX, targetY));
 	   }
 	   
 	public int getID(){
