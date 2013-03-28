@@ -12,11 +12,14 @@ import controllers.Settings;
 
 public class WordList implements Serializable {
 
-	public static HashMap<Integer, String> dic;
-	private Path path;
+	public static HashMap<Integer, String> dic;			// A HashMap of all of the words in the generated dictionary.
+	private Path path;									// A Path to use to locate files.
 	
 	public WordList() throws IOException {}
 
+	/**
+	 * Generates a new dictionary HashMap based on the current level.
+	 */
 	public void populateList() { 
 		dic = new HashMap<>();
 		
@@ -28,15 +31,12 @@ public class WordList implements Serializable {
 		}
 		else if(Settings.level == 3){
 			path = Paths.get("G:/UniversityWork/Software Design and Development/Modelling/Eclipse files/KMD/res/dic/threeLetterWords.txt");
-
 		}
 		else if(Settings.level == 4){
 			path = Paths.get("G:/UniversityWork/Software Design and Development/Modelling/Eclipse files/KMD/res/dic/fourLetterWords.txt");
-
 		}
 		else if(Settings.level == 5){
 			path = Paths.get("G:/UniversityWork/Software Design and Development/Modelling/Eclipse files/KMD/res/dic/fiveLetterWords.txt");
-
 		}
 		else if(Settings.level == 6){
 			path = Paths.get("G:/UniversityWork/Software Design and Development/Modelling/Eclipse files/KMD/res/dic/sixLetterWords.txt");
@@ -45,6 +45,7 @@ public class WordList implements Serializable {
 			path = Paths.get("G:/UniversityWork/Software Design and Development/Modelling/Eclipse files/KMD/res/dic/noLimitWords.txt");
 		}
 		
+		// If there is a path.
 		if (path != null){
 			// This scans through the word file and for each line it adds a new entry to the HashMap and gives it a sequential number.
 		    try (Scanner scanner =  new Scanner(path)){
@@ -62,7 +63,9 @@ public class WordList implements Serializable {
 	}
 
 
-	// Prints the contents of the dictionary.  This was initially for testing purposes.
+	/**
+	 *  Prints the contents of the dictionary.  This was for testing purposes.
+	 */
 	public void dumpDic(){
 		Integer i = 0;
 		while (dic.containsKey(i)){
@@ -71,7 +74,11 @@ public class WordList implements Serializable {
 		}
 	}
 	
-	// Pulls a random word from the current dictionary.
+	/**
+	 * Pulls a random word from the current dictionary.
+	 * 
+	 * @return A random word from the dictionary.
+	 */
 	public String getWord(){
 		RandomLocation rand = new RandomLocation();
 		Integer i = rand.getRand(dic.size()-1);
@@ -80,6 +87,11 @@ public class WordList implements Serializable {
 		return randWord;
 	}
 	
+	/**
+	 * The dictionaries size.
+	 * 
+	 * @return The number of words in the dictionary.
+	 */
 	public int size(){
 		return dic.size();
 	}
