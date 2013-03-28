@@ -51,9 +51,9 @@ public class Play extends BasicGameState{
 	private ScoreCon score;						// Score variable.
 	private TextField healthTF;					// Health text field.
 	private TextField multiplierTF;				// Multiplier text field.
-	private Color black;						// The colour black.
 	private boolean clear;						// A boolean variable to keep track of when to clear the user input text field.
 	private int time;							// The time that the level has been running.
+	private int timeLeft;						// The time until the level is over.
 	
 	private EnemySpawner spawner;
 	private boolean missed;
@@ -67,7 +67,14 @@ public class Play extends BasicGameState{
 	public Play(int state){}
 	
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException{
-		
+		// Initializes the time left to play.
+		if(Settings.level == 1){timeLeft = 10;}
+		if(Settings.level == 2){timeLeft = 80;}
+		if(Settings.level == 3){timeLeft = 100;}
+		if(Settings.level == 4){timeLeft = 120;}
+		if(Settings.level == 5){timeLeft = 140;}
+		if(Settings.level == 6){timeLeft = 160;}
+		if(Settings.level == 7){timeLeft = 180;}
 
 		// Initializes the enemy spawner.
 		spawner = new EnemySpawner();
@@ -110,6 +117,9 @@ public class Play extends BasicGameState{
 		// Initializes the paused variable to true.
 		paused = true;
 
+		// Initializes word list generated to false.
+		wordListGenerated = false;
+
 		
 		// If a saved game is being loaded.
 		if (Settings.fromSave){
@@ -117,7 +127,7 @@ public class Play extends BasicGameState{
 			save = null;
 			
 			Settings.difficulty = save.getDifficulty();
-			Settings.wordSize = save.getWordSize();
+			Settings.level = save.getLevel();
 			Settings.score = save.getScore();
 			Settings.totalKilled = save.getTotalKilled();
 			Settings.totalMissed = save.getTotalMissed();
@@ -131,8 +141,7 @@ public class Play extends BasicGameState{
 			fullhealthOnScreen = save.getFullhealthOnScreen();
 			
 			started = true;
-			wordListGenerated = true;
-			time = save.getSecondsPlayed();
+			secondsPlayed = save.getSecondsPlayed();
 		}
 
 		// If a saved game is not being loaded.
@@ -158,7 +167,7 @@ public class Play extends BasicGameState{
 			// Initializes the bullets on the screen ArrayList.
 			bulletList = new ArrayList<Bullet>();
 
-			// Sets the multiplier to its default for the difficulty.
+			// Sets the multiplier to its default for the level.
 			score.setDefaultMultiplier();
 		}
 
@@ -227,11 +236,14 @@ public class Play extends BasicGameState{
 			g.drawString(enemy.getWord(), (float)enemy.returnX() + 15, (float)enemy.returnY() - 5);	
 		}
 
+		// Draws the level number on the screen
+		g.drawString("Level: " + Settings.level, 500, 35);
+		
 		// Draws the time on the screen.
-		g.drawString("Time: " + secondsPlayed, 500, 50);
+		g.drawString("Time left: " + timeLeft, 500, 50);
 
 		// Randomly spawn either a fullhealth or a bomb.
-		if (secondsPlayed > 0 && secondsPlayed % 10 == 0 && !bombOnScreen && !fullhealthOnScreen){
+		if (!paused && started && secondsPlayed > 0 && secondsPlayed % 10 == 0 && !bombOnScreen && !fullhealthOnScreen){
 			// Gets random X,Y coordinates that will be on the bottom of the screen and make sure the word doesn't spawn off of it.
 			randX = randLoc.getRand(530);
 			randY = randLoc.getRand(150) + 200;
@@ -330,10 +342,24 @@ public class Play extends BasicGameState{
 			}
 		}
 		
-		if (!paused){
+		if (!paused && started){
+			// Stores the current time.
+			int secondsPlayedOld = secondsPlayed;
+			
 			// Increments the time based on delta.
 			time += delta;
 			secondsPlayed = time/1000;
+			
+			// If it's been one second.
+			if (secondsPlayed - secondsPlayedOld != 0){
+				timeLeft--;
+				if(timeLeft == 0){
+					// Refresh and enter the level cleared state.
+					sbg.getState(Game.LEVEL_CLEARED_STATE).init(gc, sbg);
+					sbg.enterState(Game.LEVEL_CLEARED_STATE);
+				}
+			}
+			
 			spawner.timedSpawn();
 		}
 
@@ -352,7 +378,6 @@ public class Play extends BasicGameState{
 					enemiesOnScreen.remove(i);
 					missed = false;
 					break;
-					// input.clearKeyPressedRecord();
 				}
 
 				// If the user hit enter but the word was incorrect and a bomb or fullhealth isn't on the screen.
@@ -444,7 +469,6 @@ public class Play extends BasicGameState{
 				}
 			}
 		}
-		
 	}
 	   
 	   /**

@@ -19,28 +19,28 @@ public class WordList {
 	public void populateList() { 
 		dic = new HashMap<>();
 		
-		if (Settings.wordSize == 1){
+		if (Settings.level == 1){
 			path = Paths.get("G:/UniversityWork/Software Design and Development/Modelling/Eclipse files/KMD/res/dic/oneLetterWords.txt");
 		}
-		if(Settings.wordSize == 2){
+		if(Settings.level == 2){
 			path = Paths.get("G:/UniversityWork/Software Design and Development/Modelling/Eclipse files/KMD/res/dic/twoLetterWords.txt");
 		}
-		else if(Settings.wordSize == 3){
+		else if(Settings.level == 3){
 			path = Paths.get("G:/UniversityWork/Software Design and Development/Modelling/Eclipse files/KMD/res/dic/threeLetterWords.txt");
 
 		}
-		else if(Settings.wordSize == 4){
+		else if(Settings.level == 4){
 			path = Paths.get("G:/UniversityWork/Software Design and Development/Modelling/Eclipse files/KMD/res/dic/fourLetterWords.txt");
 
 		}
-		else if(Settings.wordSize == 5){
+		else if(Settings.level == 5){
 			path = Paths.get("G:/UniversityWork/Software Design and Development/Modelling/Eclipse files/KMD/res/dic/fiveLetterWords.txt");
 
 		}
-		else if(Settings.wordSize == 6){
+		else if(Settings.level == 6){
 			path = Paths.get("G:/UniversityWork/Software Design and Development/Modelling/Eclipse files/KMD/res/dic/sixLetterWords.txt");
 		}
-		else if(Settings.wordSize == 7){
+		else if(Settings.level == 7){
 			path = Paths.get("G:/UniversityWork/Software Design and Development/Modelling/Eclipse files/KMD/res/dic/noLimitWords.txt");
 		}
 		

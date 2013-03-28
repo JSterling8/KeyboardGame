@@ -19,31 +19,31 @@ public class RandomLocation {
 	 */
 	public int getX(){
 		// Generates a number in range of 0 - 600
-		if (Settings.wordSize == 1){
+		if (Settings.level == 1){
 			randX = randGen.nextInt((600 - 0 + 1) + 0); 
 		}
 		// Generates a number in range of 0 - 590
-		else if(Settings.wordSize == 2){
+		else if(Settings.level == 2){
 			randX = randGen.nextInt((590-0+1) + 0);
 		}
 		// Generates a number in range of 0 - 570
-		else if(Settings.wordSize == 3){
+		else if(Settings.level == 3){
 			randX = randGen.nextInt((570-0+1) + 0);
 		}
 		// Generates a number in range of 0 - 550
-		else if(Settings.wordSize == 4){
+		else if(Settings.level == 4){
 			randX = randGen.nextInt((550-0+1) + 0);
 		}
 		// Generates a number in range of 0 - 530
-		else if(Settings.wordSize == 5){
+		else if(Settings.level == 5){
 			randX = randGen.nextInt((530-0+1) + 0);
 		}
 		// Generates a number in range of 0 - 510
-		else if(Settings.wordSize == 6){
+		else if(Settings.level == 6){
 			randX = randGen.nextInt((510-0+1) + 0);
 		}
 		// Generates a number in range of 0 - 490
-		else if(Settings.wordSize == 7){
+		else if(Settings.level == 7){
 			randX = randGen.nextInt((490-0+1) + 0);
 		}
 		return randX;

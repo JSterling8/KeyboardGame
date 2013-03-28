@@ -12,10 +12,8 @@ public class ScoreCon {
 		numConsecMult = 1;
 		letterBonus = 0;
 		multiplier =  Settings.difficulty;
-		Settings.score = 0;
 		Settings.totalKilled = 0;
 		Settings.totalMissed = 0;
-		
 	}
 
 	public void enemyKilled(int wordLength) {

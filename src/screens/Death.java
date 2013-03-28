@@ -7,6 +7,8 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.state.transition.FadeInTransition;
+import org.newdawn.slick.state.transition.FadeOutTransition;
 
 import controllers.Game;
 import controllers.Settings;
@@ -63,7 +65,7 @@ public class Death extends BasicGameState{
 			// Refresh the play state.
 			sbg.getState(Game.PLAY_STATE).init(gc, sbg);
 			// Enter the play state.
-			sbg.enterState(Game.PLAY_STATE);
+			sbg.enterState(Game.PLAY_STATE, new FadeOutTransition(), new FadeInTransition()); 
 		}
 		
 		if (input.isKeyDown(Input.KEY_N)){
@@ -76,8 +78,8 @@ public class Death extends BasicGameState{
 			sbg.getState(Game.MAIN_MENU_STATE).init(gc, sbg);
 			sbg.getState(Game.DIFFICULTY_STATE).init(gc, sbg);
 			sbg.getState(Game.PLAY_STATE).init(gc, sbg);
-			// Enter the play state.
-			sbg.enterState(Game.MAIN_MENU_STATE);
+			// Enter the main menu state.
+			sbg.enterState(Game.MAIN_MENU_STATE, new FadeOutTransition(), new FadeInTransition()); 
 		}
 		
 	}

@@ -3,12 +3,12 @@ package controllers;
 public class Settings {
 
 	public static int difficulty;
-	public static int wordSize;
 	public static int score;
 	public static int totalMissed;
 	public static int totalKilled;
 	public static int health;
 	public static boolean fromSave;
+	public static int level;
 	
 	// Makes it so an object of this class will never exist.
 	private Settings() {

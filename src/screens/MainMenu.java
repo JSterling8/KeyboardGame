@@ -8,6 +8,8 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.state.transition.FadeInTransition;
+import org.newdawn.slick.state.transition.FadeOutTransition;
 
 import controllers.Game;
 import controllers.Settings;
@@ -50,13 +52,13 @@ public class MainMenu extends BasicGameState{
 		mouseY = input.getMouseY();
 
 		if(input.isKeyPressed(Input.KEY_ENTER)){
-			sbg.enterState(Game.DIFFICULTY_STATE);
+			sbg.enterState(Game.DIFFICULTY_STATE, new FadeOutTransition(), new FadeInTransition()); 
 		}
 		
 		// If new game is clicked.
 		if((mouseX >= 20 && mouseX < 320) && (mouseY >= 80 && mouseY <= 280)){
 			if(input.isMousePressed(0)){
-				sbg.enterState(Game.DIFFICULTY_STATE);
+				sbg.enterState(Game.DIFFICULTY_STATE, new FadeOutTransition(), new FadeInTransition()); 
 			}
 		}
 		
@@ -64,7 +66,7 @@ public class MainMenu extends BasicGameState{
 		if((mouseX >= 320 && mouseX < 640) && (mouseY >= 80 && mouseY <= 280)){
 			if(input.isMousePressed(0)){
 				Settings.fromSave = true;
-				sbg.enterState(Game.PLAY_STATE);
+				sbg.enterState(Game.DIFFICULTY_STATE, new FadeOutTransition(), new FadeInTransition()); 
 			}
 		}
 		

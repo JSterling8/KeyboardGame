@@ -9,7 +9,7 @@ import controllers.Settings;
 public class Save {
 
 	private int difficulty;
-	private int wordSize;
+	private int level;
 	private int score;
 	private int totalMissed;
 	private int totalKilled;
@@ -26,7 +26,7 @@ public class Save {
 	
 	public Save(Play parent) {
 		setDifficulty(Settings.difficulty);
-		setWordSize(Settings.wordSize);
+		setLevel(Settings.level);
 		setScore(Settings.score);
 		setTotalMissed(Settings.totalMissed);
 		setTotalKilled(Settings.totalKilled);
@@ -38,6 +38,7 @@ public class Save {
 		setScoreCon(parent.getScoreCon());
 		setBombOnScreen(parent.getBombOnScreen());
 		setFullhealthOnScreen(parent.getFullhealthOnScreen());
+		
 	}
 
 
@@ -48,16 +49,6 @@ public class Save {
 
 	public void setDifficulty(int difficulty) {
 		this.difficulty = difficulty;
-	}
-
-
-	public int getWordSize() {
-		return wordSize;
-	}
-
-
-	public void setWordSize(int wordSize) {
-		this.wordSize = wordSize;
 	}
 	
 	public int getScore() {
@@ -166,6 +157,16 @@ public class Save {
 
 	public void setScoreCon(ScoreCon scoreCon) {
 		this.scoreCon = scoreCon;
+	}
+
+
+	public int getLevel() {
+		return level;
+	}
+
+
+	public void setLevel(int level) {
+		this.level = level;
 	}
 
 }
