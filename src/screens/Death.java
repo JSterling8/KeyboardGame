@@ -22,6 +22,11 @@ public class Death extends BasicGameState{
 	
 	public Death(int state){}
 	
+	/**
+	 * This is where everything is initialized.
+	 * @param gc The container for the game.
+	 * @param sbg The game itself.
+	 */
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException{
 
 		// Calculates the accuracy.
@@ -50,13 +55,21 @@ public class Death extends BasicGameState{
 		
 	}
 	
-	/* Draws GFX
+	/** This class renders things on the screen.
+	 * @param gc The container for the game.
+	 * @param sbg The game itself.
+	 * @param g The graphics context to render to.
 	 */ 
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException{
 		g.drawString(dead, 50, 50);
 	}
 	
-	/* Moves the GFX around
+	/**
+	 * This method is called every frame to check if events have occurred and updates render() accordingly.
+	 * 
+	 * @param gc The games container.
+	 * @param sbg The game that holds the state.
+	 * @param delta The time in milliseconds between frames.
 	 */
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException{
 		Input input = gc.getInput();
@@ -88,6 +101,11 @@ public class Death extends BasicGameState{
 		
 	}
 	
+	/**
+	 * Gets this state's ID.
+	 * 
+	 * @return This state's ID.
+	 */
 	public int getID(){
 		return Game.DEATH_STATE;
 	}

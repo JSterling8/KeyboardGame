@@ -11,18 +11,15 @@ import java.io.Serializable;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import entities.Score;
 
 public class ScoreBoardCon implements Serializable {
 	
 	private static ArrayList<Score> scores;
-	private static ArrayList<Score> sortedScores;
 	
 	public ScoreBoardCon() {
 		scores = new ArrayList<Score>();
-		sortedScores = new ArrayList<Score>();
 
 		Path path = Paths.get("C:/tmp/highscores.save");
 		File file = new File(path.toString());
@@ -31,13 +28,10 @@ public class ScoreBoardCon implements Serializable {
 			try {
 				load();
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -49,20 +43,13 @@ public class ScoreBoardCon implements Serializable {
 		try {
 			save();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
 	public String toString(){
-		for (int j = 0; j < scores.size(); j ++){
-			Score temp = scores.get(j);
-			int score = temp.getScore();
-		}
-		
 		String s = "";
 		for (int i = 0; i < scores.size(); i++){
 			s = s + scores.get(i);

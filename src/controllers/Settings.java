@@ -5,6 +5,7 @@ public class Settings {
 	public static int difficulty;
 	
 	public static int score;
+	public static int[] scoreByPlayer;
 	
 	public static int totalMissed;
 	
@@ -13,7 +14,7 @@ public class Settings {
 	public static int health;
 	public static boolean fromSave;
 	public static int level;
-	public static int players;
+	public static int players;					// The number of players.
 	
 	// Makes it so an object of this class will never exist.
 	private Settings() {

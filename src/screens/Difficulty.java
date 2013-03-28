@@ -31,19 +31,23 @@ public class Difficulty extends BasicGameState{
 	private Image hardButtonSel;
 	private Image insaneButtonSel;
 
-	// These are the play, back, and options buttons.
+	// These are the play and back buttons.
 	private Image playButton;
 	private Image backButton;
-	private Image optionsButton;
 
+	// The GameContainer and StateBasedGame for passing between methods.
 	private GameContainer gc;
-	
 	private StateBasedGame sbg;
 
-	public Difficulty(int state){
 
-	}
-
+	public Difficulty(int state){}
+	
+	/**
+	 * This is where everything is initialised.
+	 * 
+	 * @param gc The container for the game.
+	 * @param sbg The game itself.
+	 */
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException{
 		// Initializes the local pointer to sbg  and gc for use in other methods.
 		this.sbg = sbg;
@@ -67,36 +71,44 @@ public class Difficulty extends BasicGameState{
 		hardButtonSel = new Image("/res/buttons/hardSel.png");
 		insaneButtonSel = new Image("/res/buttons/insaneSel.png");
 
-		// Initialises the Options, Play, and Back buttons.
-		optionsButton = new Image("/res/buttons/options.png");
+		// Initialises the Play and Back buttons.
 		playButton = new Image("/res/buttons/play.png");
 		backButton = new Image("/res/buttons/back.png");
 	}
 
-	/* Draws GFX
+	/** 
+	 * This class renders things on the screen.
+	 * 
+	 * @param gc The container for the game.
+	 * @param sbg The game itself.
+	 * @param g The graphics context to render to.
 	 */ 
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException{
 		// Draw the "Difficulty" text.
-		g.drawImage(difficultyText, 10, 0);
+		g.drawImage(difficultyText, 170, 0);
 
 		// Draw the difficulties, and highlight the selected one.
-		if(Settings.difficulty != 1){g.drawImage(easyButton, 50, 100);}
-		else{g.drawImage(easyButtonSel, 50, 100);}
-		if(Settings.difficulty != 2){g.drawImage(mediumButton, 50, 150);}
-		else{g.drawImage(mediumButtonSel, 50, 150);}
-		if(Settings.difficulty != 3){g.drawImage(hardButton, 50, 200);}
-		else{g.drawImage(hardButtonSel, 50, 200);}
-		if(Settings.difficulty != 4){g.drawImage(insaneButton, 50, 250);}
-		else{g.drawImage(insaneButtonSel, 50, 250);}
+		if(Settings.difficulty != 1){g.drawImage(easyButton, 210, 100);}
+		else{g.drawImage(easyButtonSel, 210, 100);}
+		if(Settings.difficulty != 2){g.drawImage(mediumButton, 210, 150);}
+		else{g.drawImage(mediumButtonSel, 210, 150);}
+		if(Settings.difficulty != 3){g.drawImage(hardButton, 210, 200);}
+		else{g.drawImage(hardButtonSel, 210, 200);}
+		if(Settings.difficulty != 4){g.drawImage(insaneButton, 210, 250);}
+		else{g.drawImage(insaneButtonSel, 210, 250);}
 
 
-		// Draw the Play, Back, and Options buttons.
-		g.drawImage(playButton, 20, 315);
-		g.drawImage(backButton, 195, 315);
-		g.drawImage(optionsButton, 370, 315);
+		// Draw the Play and Back buttons.
+		g.drawImage(playButton, 0, 315);
+		g.drawImage(backButton, 490, 315);
 	}
 
-	/* Moves the GFX around
+	/**
+	 * This method is called every frame to check if events have occurred and updates render() accordingly.
+	 * 
+	 * @param gc The games container.
+	 * @param sbg The game that holds the state.
+	 * @param delta The time in milliseconds between frames.
 	 */
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException{
 		Input input = gc.getInput();
@@ -117,45 +129,39 @@ public class Difficulty extends BasicGameState{
 	// If the mouse is pressed, then do this: 
 	@Override
 	public void mousePressed(int button, int x, int y) {
-		// If the user clicks options, then go to the options state.
-		if((x >= 370 && x <= 620) && (y >= 315 && y <= 415)){
-			sbg.enterState(Game.OPTIONS_STATE, new FadeOutTransition(), new FadeInTransition()); 
-		}
-
 		// If the user clicks easy, highlight it and set Settings.difficulty to the corresponding value.
-		if ((x >= 50 && x <= 250) && (y >= 100 && y <= 150)){				 
+		if ((x >= 210 && x <= 410) && (y >= 100 && y <= 150)){				 
 			Settings.difficulty = 1;
 		}
 
 		// If the user clicks medium, highlight it and set Settings.difficulty to the corresponding value.
-		if ((x >= 50 && x <= 250) && (y >= 150 && y <= 200)){		 
+		if ((x >= 210 && x <= 410) && (y >= 150 && y <= 200)){		 
 			Settings.difficulty = 2;
 		}
 
 		// If the user clicks hard, highlight it and set Settings.difficulty to the corresponding value.
-		if ((x >= 50 && x <= 250) && (y >= 200 && y <= 250)){	 
+		if ((x >= 210 && x <= 410) && (y >= 200 && y <= 250)){	 
 			Settings.difficulty = 3;
 		}
 
 		// If the user clicks insane, highlight it and set Settings.difficulty to the corresponding value.
-		if ((x >= 50 && x <= 250) && (y >= 250 && y <= 300)){				 
+		if ((x >= 210 && x <= 410) && (y >= 250 && y <= 300)){				 
 			Settings.difficulty = 4;
 		}
 
 		// If the user clicks on the back button, then go back to the main menu.
-		if ((x >= 195 && x <= 345) && (y >= 315 && y < 415)){			 
+		if ((x >= 490 && x <= 640) && (y >= 315 && y < 415)){			 
 			sbg.enterState(Game.MAIN_MENU_STATE, new FadeOutTransition(), new FadeInTransition()); 
 		}
 
 		// If the user clicks on the play button, then go to the play state.
-		if ((x >= 20 && x <= 170) && (y >= 315 && y < 415)){	
+		if ((x >= 0 && x <= 150) && (y >= 315 && y < 415)){	
 			Settings.level = 1;
 			if(Settings.difficulty != 0){
 				// Refresh the play state.
 				try {
 					sbg.getState(Game.PLAY_STATE).init(gc, sbg);
 				} catch (SlickException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				sbg.enterState(Game.PLAY_STATE, new FadeOutTransition(), new FadeInTransition()); 
@@ -164,9 +170,13 @@ public class Difficulty extends BasicGameState{
 
 			}
 		}
-
 	}
 
+	/**
+	 * Gets this state's ID.
+	 * 
+	 * @return This state's ID.
+	 */
 	public int getID(){
 		return Game.DIFFICULTY_STATE;
 	}

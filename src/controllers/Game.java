@@ -32,7 +32,7 @@ public class Game extends StateBasedGame{
 		super(gameName);
 		this.addState(new MainMenu(MAIN_MENU_STATE));
 		this.addState(new Difficulty(DIFFICULTY_STATE));
-		this.addState(new Play(PLAY_STATE));
+		this.addState(new Play(PLAY_STATE, 1));
 		this.addState(new Options(OPTIONS_STATE));
 		// this.addState(new Death(DEATH_STATE));
 		this.addState(new LevelCleared(LEVEL_CLEARED_STATE));
@@ -47,8 +47,8 @@ public class Game extends StateBasedGame{
 		this.getState(OPTIONS_STATE).init(gc, this);
 		this.getState(LEVEL_CLEARED_STATE).init(gc, this);
 		this.getState(END_OF_GAME_STATE).init(gc, this);
-		this.getState(HIGHSCORE_STATE);
-		this.enterState(END_OF_GAME_STATE);
+		this.getState(HIGHSCORE_STATE).init(gc, this);
+		this.enterState(MAIN_MENU_STATE);
 		gc.setShowFPS(false);
 	}
 

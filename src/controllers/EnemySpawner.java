@@ -79,9 +79,8 @@ public class EnemySpawner {
 			spawned = false;
 		} 
 		
-		// From 150 seconds onwards, spawn six enemies every two seconds.
+		// From 150 seconds onwards, spawn five enemies every two seconds.
 		if (!spawned && (Play.secondsPlayed > 150) && ((Play.secondsPlayed % 2) == 0)){
-			addNewEnemy();
 			addNewEnemy();
 			addNewEnemy();
 			addNewEnemy();
