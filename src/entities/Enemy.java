@@ -89,18 +89,4 @@ public class Enemy extends Ellipse2D.Float{
     public String getWord(){
     	return word;
     }
-    
-    /**
-     * Pauses enemy's movement.
-     */
-    public void pause(){
-    	paused = true;
-    }
-    
-    /**
-     * Unpauses enemy's movement.
-     */
-    public void unpause(){
-    	paused = false;
-    }
  }	 

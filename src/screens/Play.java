@@ -75,7 +75,7 @@ public class Play extends BasicGameState{
 	}
 
 	/**
-	 * This is where everything is initialized.
+	 * This is where everything is initialised.
 	 * @param gc The container for the game.
 	 * @param sbg The game itself.
 	 */
@@ -529,11 +529,6 @@ public class Play extends BasicGameState{
 		// If the user types quite when the game is paused, exit the game.
 		else if (paused && wordEnteredTF.getText().equals("quit")){
 			System.exit(0);
-		}
-
-		// This is here for testing purposes to quickly get to the highscore screen.
-		else if (paused && wordEnteredTF.getText().equals("highs")){
-			sbg.enterState(Game.HIGHSCORE_STATE);
 		}
 
 		// If the user missed an enemy, let score know.

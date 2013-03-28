@@ -3,7 +3,7 @@ package entities;
 import java.awt.Point;
 
 /**
- * This class creates the blueprint for all Bullet objects.
+ * This class creates bullet objects and calculates their movement.
  * Bullets are fired at Enemies.
  * 
  * @author Jonathan Sterling
