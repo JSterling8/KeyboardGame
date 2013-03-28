@@ -1,11 +1,14 @@
 package screens;
 
 // import org.lwjgl.input.Mouse;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.gui.GUIContext;
+import org.newdawn.slick.gui.TextField;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
@@ -21,26 +24,57 @@ public class MainMenu extends BasicGameState{
 	private double mouseX;
 	private double mouseY;
 	
-	private Image newGameButton;
-	private Image loadGameButton;
+	private Image singlePlayerButton;
+	private Image multiplayerButton;
 	private Image exitButton;
 	
+	private TextField playNumTF;
+	private boolean multiplayer;				// Whether or not multiplayer is clicked.  Used to display playNumTF.
+	private boolean validPlayerNum;				// Whether or not the user entered a valid player number.
+	private boolean clear;						// Whether or not to clear playNumTF
 	
 	public MainMenu(int state){}
 	
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException{
-		newGameButton = new Image("/res/buttons/newGame.png");
-		loadGameButton = new Image("/res/buttons/loadGame.png");
+		singlePlayerButton = new Image("/res/buttons/singlePlayer.png");
+		multiplayerButton = new Image("/res/buttons/multiplayer.png");
 		exitButton = new Image("/res/buttons/exit.png");
+		
+		// Initializes multiplayer to false;
+		multiplayer = false;
+		
+		// Initializes the player number text field.
+		playNumTF = new TextField((GUIContext)gc, gc.getDefaultFont(), 30, 380, 500, 20);
+		
+		// Entry for number of players is considered true until proven false.
+		validPlayerNum = true;
+		clear = false;
 	}
 	
 	/* Draws GFX
-	 */ // 211 51, 
+	 */
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException{
-		g.drawImage(newGameButton, 20, 80);
-		g.drawImage(loadGameButton, 320, 80);
+		g.drawImage(singlePlayerButton, 20, 80);
+		g.drawImage(multiplayerButton, 320, 80);
 		g.drawImage(exitButton, 535, 320);
 
+		if (multiplayer){
+			g.drawString("Enter the number of players and hit enter", 50, 360);
+			
+			
+			// Draws the name text field.
+			playNumTF.render(gc, g);
+			playNumTF.setBackgroundColor(Color.black);
+			playNumTF.setFocus(true);
+		}
+		
+		if (multiplayer && !validPlayerNum){
+			g.drawString("You must enter a number.  Try again.", 50, 340);
+			if (clear){
+				playNumTF.setText("");
+				clear = false;
+			}
+		}
 	}
 	
 	/* Moves the GFX around
@@ -51,13 +85,14 @@ public class MainMenu extends BasicGameState{
 		mouseX = input.getMouseX();
 		mouseY = input.getMouseY();
 
-		if(input.isKeyPressed(Input.KEY_ENTER)){
+		if(!multiplayer && input.isKeyPressed(Input.KEY_ENTER)){
 			sbg.enterState(Game.DIFFICULTY_STATE, new FadeOutTransition(), new FadeInTransition()); 
 		}
 		
-		// If new game is clicked.
+		// If single player is clicked.
 		if((mouseX >= 20 && mouseX < 320) && (mouseY >= 80 && mouseY <= 280)){
 			if(input.isMousePressed(0)){
+				Settings.players = 1;
 				sbg.enterState(Game.DIFFICULTY_STATE, new FadeOutTransition(), new FadeInTransition()); 
 			}
 		}
@@ -65,9 +100,23 @@ public class MainMenu extends BasicGameState{
 		// If load game is clicked.
 		if((mouseX >= 320 && mouseX < 640) && (mouseY >= 80 && mouseY <= 280)){
 			if(input.isMousePressed(0)){
-				Settings.fromSave = true;
-				// TODO Add save functionality.
-				sbg.enterState(Game.PLAY_STATE, new FadeOutTransition(), new FadeInTransition()); 
+				multiplayer = true;
+			}
+		}
+		
+		// If multiplayer has been clicked and the click enter.
+		if (multiplayer && input.isKeyPressed(Input.KEY_ENTER)){
+			try{
+				Settings.players = Integer.parseInt(playNumTF.getText());
+				validPlayerNum = true;
+			}catch(Exception e){
+				System.out.println("Must enter a number");
+				validPlayerNum = false;
+				clear = true;
+			}
+			System.out.println(Settings.players);
+			if (validPlayerNum){
+				sbg.enterState(Game.DIFFICULTY_STATE, new FadeOutTransition(), new FadeInTransition()); 
 			}
 		}
 		

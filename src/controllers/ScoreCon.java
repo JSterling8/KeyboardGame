@@ -2,7 +2,15 @@ package controllers;
 
 import java.io.Serializable;
 
-public class ScoreCon implements Serializable {
+/**
+ * This class should not be confused with ScoreBoardCon.
+ * ScoreBoardCon controls the Score entities.
+ * ScoreCon controls the Settings.score variable,
+ * amongst other things.
+ * @author Jonathan Sterling
+ *
+ */
+public class ScoreCon {
 
 	private int multiplier;
 	private int letterBonus;
