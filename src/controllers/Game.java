@@ -12,10 +12,17 @@ import screens.LevelCleared;
 import screens.MainMenu;
 import screens.Play;
 
-
+/**
+ * This is the control hub for the game.  It holds the state ID's and initialises most of them.
+ * 
+ * @author Jonathan Sterling
+ *
+ */
 public class Game extends StateBasedGame{
 	
-	public static final String gameName = "Keyboard Warrior!";
+	public static final String gameName = "Keyboard Missile Defense!";				// This is the game's title.
+	
+	// The game's state ID's:
 	public static final int MAIN_MENU_STATE = 0;
 	public static final int DIFFICULTY_STATE = 1;
 	public static final int PLAY_STATE = 2;
@@ -25,18 +32,18 @@ public class Game extends StateBasedGame{
 	public static final int HIGHSCORE_STATE = 6;
 	
 
-
+	// Adds the states to the game.
 	public Game(String gameName) {
 		super(gameName);
 		this.addState(new MainMenu(MAIN_MENU_STATE));
 		this.addState(new Difficulty(DIFFICULTY_STATE));
 		this.addState(new Play(PLAY_STATE, 1));
-		// this.addState(new Death(DEATH_STATE));
 		this.addState(new LevelCleared(LEVEL_CLEARED_STATE));
 		this.addState(new EndOfGame(END_OF_GAME_STATE));
 		this.addState(new Highscores(HIGHSCORE_STATE));
 	}
 	
+	// Initialises the states.
 	public void initStatesList(GameContainer gc) throws SlickException{
 		this.getState(MAIN_MENU_STATE).init(gc, this);
 		this.getState(DIFFICULTY_STATE).init(gc, this);
@@ -49,19 +56,19 @@ public class Game extends StateBasedGame{
 	}
 
 	public static void main(String[] args) throws Exception {
+		// The following commented out lines of code are necessary to run the game outside of Eclipse.
+		
 		// System.setProperty("org.lwjgl.librarypath", new File(new File(System.getProperty("user.dir"), "native"), LWJGLUtil.getPlatformName()).getAbsolutePath());
 		// System.setProperty("net.java.games.input.librarypath", System.getProperty("org.lwjgl.librarypath"));
 		
 		AppGameContainer appgc;
 		try{
-			appgc = new AppGameContainer(new Game(gameName));
-			appgc.setDisplayMode(640, 400, false);
-		    appgc.setTargetFrameRate(60);
-		    appgc.setMaximumLogicUpdateInterval(1000/60);
-		    appgc.setMinimumLogicUpdateInterval(1000/60);
-			appgc.start();
+			appgc = new AppGameContainer(new Game(gameName));			// Makes a new game container with the specified title.
+			appgc.setDisplayMode(640, 400, false);						// Sets the screen size to 640x400.
+		    appgc.setTargetFrameRate(60);								// Sets the frame rate to 60.
+			appgc.start();												// Starts the game.
 		}catch(SlickException e){
-			e.printStackTrace();
+			e.printStackTrace();										// Prints an error if it doesn't work.
 		}
 	}
 }

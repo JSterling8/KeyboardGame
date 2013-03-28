@@ -6,13 +6,20 @@ import org.newdawn.slick.SlickException;
 import screens.Play;
 import entities.Enemy;
 
+/**
+ * Spawns enemies based on the time into the level.
+ * 
+ * @author Jonathan Sterling
+ *
+ */
 public class EnemySpawner {
 
-	private boolean wordAlreadyExists;
-	private RandomLocation xLoc;
-	private boolean spawned;
+	private boolean wordAlreadyExists;				// Is the word already on the screen?
+	private RandomLocation xLoc;					// A random x-coordinate.
+	private boolean spawned;						// Has the correct amount of enemies been spawned for this time?
 
 	public EnemySpawner() throws SlickException {
+		// Some simple initialisations.
 		xLoc = new RandomLocation();
 		spawned = false;
 	}
@@ -93,6 +100,11 @@ public class EnemySpawner {
 		} 
 	}
 
+	/**
+	 * Adds a new enemy to the screen.
+	 * 
+	 * @throws SlickException Indicates that an enemy could not be created.
+	 */
 	public void addNewEnemy() throws SlickException{
 		// Gets a new random X location.
 		int randX = xLoc.getX();
@@ -115,7 +127,7 @@ public class EnemySpawner {
 						wordAlreadyExists = true;
 						// Set a new word for the enemy.
 						enemy.setWord();
-						// Break out of the for loop because it only needs to match against one other so going further is pointless.
+						// Break out of the for loop because it only needs to match against one other - going further is pointless.
 						break;
 					}
 				}
@@ -133,10 +145,10 @@ public class EnemySpawner {
 			}
 		} while(wordAlreadyExists);
 
+		// If the new word isn't already on the screen.
 		if (!wordAlreadyExists){
 			// Add the enemy to the screen.
 			Play.enemiesOnScreen.add(enemy);
 		}
 	}
-
 }

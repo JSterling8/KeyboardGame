@@ -70,6 +70,7 @@ public class LevelCleared extends BasicGameState{
 				"You missed " + Settings.totalMissed + " enemies.\n" +
 				"Words per minute: " + wpm + "     Bonus: " + wpmBonus + "\n" +
 				"Accuracy: " + accuracy + " %     Bonus: " + accuracyBonus + "\n" + 
+				"Total score: " + Settings.score + "\n\n" +
 				"(N)ext level\n" + 
 				"(Q)uit";
 	}
