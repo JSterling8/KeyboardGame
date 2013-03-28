@@ -21,31 +21,33 @@ import controllers.ScoreCon;
 import controllers.Settings;
 import entities.Bullet;
 import entities.Enemy;
-import entities.Save;
 import entities.WordList;
 
 
 public class Play extends BasicGameState{
-	
+
 	public static WordList words;
 	public static ArrayList<Enemy> enemiesOnScreen;			// An ArrayList of the current enemies on the screen.
 	public static ArrayList<Bullet> bulletList;  			// An ArrayList of bullets on the screen.
 	public static int secondsPlayed;
+	public static RandomLocation randLoc;
+
 	private Input input;
-	
-	
+
+
 	private boolean wordListGenerated;
 	private Image gameBackground;						// This is the games background
+	private Image enemyImage;
 	// private Image turret90;							// This is the turret at the bottom of the screen that fires
 	private Image bomb;
 	private Image fullhealth;
-	
+
 	private int randX;
 	private int randY;
-	
+
 	private boolean bombOnScreen; 
 	private boolean fullhealthOnScreen;
-	
+
 	private TextField wordEnteredTF;			// User input text field.
 	private TextField scoreTF;					// Score text field.
 	private ScoreCon score;						// Score variable.
@@ -54,21 +56,19 @@ public class Play extends BasicGameState{
 	private boolean clear;						// A boolean variable to keep track of when to clear the user input text field.
 	private int time;							// The time that the level has been running.
 	private int timeLeft;						// The time until the level is over.
-	
+	private int playerNumber;					// The players number.
+
 	private EnemySpawner spawner;
 	private boolean missed;
 	private boolean paused;
 	private boolean started;
-	
-	private Save save;
-	
-	public RandomLocation randLoc;
+	private boolean saving;
 
 	public Play(int state){}
-	
+
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException{
 		// Initializes the time left to play.
-		if(Settings.level == 1){timeLeft = 10;}
+		if(Settings.level == 1){timeLeft = 60;}
 		if(Settings.level == 2){timeLeft = 80;}
 		if(Settings.level == 3){timeLeft = 100;}
 		if(Settings.level == 4){timeLeft = 120;}
@@ -76,12 +76,18 @@ public class Play extends BasicGameState{
 		if(Settings.level == 6){timeLeft = 160;}
 		if(Settings.level == 7){timeLeft = 180;}
 
+		// Initializes the player number.
+		playerNumber = 1;
+
 		// Initializes the enemy spawner.
 		spawner = new EnemySpawner();
 
 		// Initializes the background image
 		gameBackground = new Image("res/gamebg.png");
 		// turret90 = new Image ("/res/turrets/standard/turret90.png");
+
+		//Initializes the enemy's image.
+		enemyImage = new Image("res/enemies/blue.png");
 
 		// Initializes the bomb image.
 		bomb = new Image("res/bomb.png");
@@ -117,64 +123,38 @@ public class Play extends BasicGameState{
 		// Initializes the paused variable to true.
 		paused = true;
 
-		// Initializes word list generated to false.
+		// Initializes the started variable to false.
+		started = false;
+
+		// Initializes the boolean variable to whether or not a Word List has been generated to false.
 		wordListGenerated = false;
 
-		
-		// If a saved game is being loaded.
-		if (Settings.fromSave){
-			// TODO Make it load a save file.
-			save = null;
-			
-			Settings.difficulty = save.getDifficulty();
-			Settings.level = save.getLevel();
-			Settings.score = save.getScore();
-			Settings.totalKilled = save.getTotalKilled();
-			Settings.totalMissed = save.getTotalMissed();
-			Settings.health = save.getHealth();
-			
-			words = save.getWords();
-			enemiesOnScreen = save.getEnemiesOnScreen();
-			bulletList = save.getBulletList();
-			
-			bombOnScreen = save.getBombOnScreen();
-			fullhealthOnScreen = save.getFullhealthOnScreen();
-			
-			started = true;
-			secondsPlayed = save.getSecondsPlayed();
-		}
+		// Initializes the level time to 0 seconds.
+		time = 0;
 
-		// If a saved game is not being loaded.
-		else{
-			// Initializes the started variable to false.
-			started = false;
+		// Initializes the score.
+		score = new ScoreCon();
 
-			// Initializes the boolean variable to whether or not a Word List has been generated to false.
-			wordListGenerated = false;
-
-			// Initializes the level time to 0 seconds.
-			time = 0;
-
-			// Initializes the score.
-			score = new ScoreCon();
-
-			// Initializes the player's health to 100.
+		// Initializes the player's health to 100 and score to 0 if they're just starting the first level.
+		if (Settings.level == 1){
 			Settings.health = 100;
-
-			// Initializes the enemies on screen ArrayList.
-			enemiesOnScreen = new ArrayList<Enemy>();
-
-			// Initializes the bullets on the screen ArrayList.
-			bulletList = new ArrayList<Bullet>();
-
-			// Sets the multiplier to its default for the level.
-			score.setDefaultMultiplier();
+			Settings.score = 0;
 		}
 
+		// Initializes the enemies on screen ArrayList.
+		enemiesOnScreen = new ArrayList<Enemy>();
 
-		
+		// Initializes the bullets on the screen ArrayList.
+		bulletList = new ArrayList<Bullet>();
+
+		// Sets the multiplier to its default for the level.
+		score.setDefaultMultiplier();
+
+
+
+
 	}
-	
+
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException{
 
 		// Draws the lvel's background image.
@@ -220,7 +200,7 @@ public class Play extends BasicGameState{
 		// Draw the enemies.
 		for(int i = 0; i < enemiesOnScreen.size(); i++){
 			Enemy enemy = enemiesOnScreen.get(i);
-			g.drawImage(enemy.getImage(), (float)enemy.returnX(), (float)enemy.returnY());
+			g.drawImage(enemyImage, (float)enemy.returnX(), (float)enemy.returnY());
 
 			// Draws a black rectangle above the enemy, varying in size by the size of the word associated to the enemy.
 			// Has a red trim
@@ -236,14 +216,17 @@ public class Play extends BasicGameState{
 			g.drawString(enemy.getWord(), (float)enemy.returnX() + 15, (float)enemy.returnY() - 5);	
 		}
 
+		// Draws the player number on the screen
+		g.drawString("Player: " + playerNumber, 500, 20);
+
 		// Draws the level number on the screen
 		g.drawString("Level: " + Settings.level, 500, 35);
-		
+
 		// Draws the time on the screen.
 		g.drawString("Time left: " + timeLeft, 500, 50);
 
 		// Randomly spawn either a fullhealth or a bomb.
-		if (!paused && started && secondsPlayed > 0 && secondsPlayed % 10 == 0 && !bombOnScreen && !fullhealthOnScreen){
+		if (!saving && !paused && started && secondsPlayed > 0 && secondsPlayed % 10 == 0 && !bombOnScreen && !fullhealthOnScreen){
 			// Gets random X,Y coordinates that will be on the bottom of the screen and make sure the word doesn't spawn off of it.
 			randX = randLoc.getRand(530);
 			randY = randLoc.getRand(150) + 200;
@@ -280,7 +263,7 @@ public class Play extends BasicGameState{
 			g.drawImage(fullhealth, randX, randY);
 			g.drawString("fullhealth", randX + 25, randY + 25);
 		}
-		
+
 		if (paused){
 			g.setColor(Color.red);
 			g.fillRect(40, 50, 560, 215);
@@ -294,39 +277,39 @@ public class Play extends BasicGameState{
 					"Type 'pause' and press enter to pause.\n\n\n" +
 					"While paused:\n\n" +
 					"Type 'resume' and press enter to continue playing.\n" +
-					"Type 'save' and press enter to save the game.\n" +
 					"Type 'quit' and press enter to quit the game without saving.", 53, 58);	
 		}
-		
+
 		// If the game hasn't been started.
 		if (!started){
 			// Draw a blue line from the score text field to the box with a string in it.
 			g.setColor(Color.cyan);
 			g.setLineWidth(3);
 			g.drawLine(100, 380, 100, 360);
-			
+
 			// Draws a blue arrowhead on the line.
 			g.drawLine(100, 380, 90, 375);
 			g.drawLine(100, 380, 110, 375);
 			g.drawLine(90, 375, 110, 375);
-			
+
 			// Draw the frame of the rectangle
 			g.fillRect(0, 335, 200, 25);
-			
+
 			// Draw the inside of the rectangle
 			g.setColor(Color.black);
 			g.fillRect(2, 337, 196, 21);
-			
+
 			// Draw the text of the rectangle
 			g.setColor(Color.red);
 			g.drawString("Click in box to start.", 3, 338);
 		}
+		
 
 	}
-		
+
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException{
 		input = gc.getInput();
-		
+
 		// If there's not a Word List already.
 		if (!wordListGenerated){
 			try {
@@ -341,15 +324,15 @@ public class Play extends BasicGameState{
 				System.out.println("An exception occurred while making a Word List.");
 			}
 		}
-		
-		if (!paused && started){
+
+		if (!saving && !paused && started){
 			// Stores the current time.
 			int secondsPlayedOld = secondsPlayed;
-			
+
 			// Increments the time based on delta.
 			time += delta;
 			secondsPlayed = time/1000;
-			
+
 			// If it's been one second.
 			if (secondsPlayed - secondsPlayedOld != 0){
 				timeLeft--;
@@ -359,14 +342,14 @@ public class Play extends BasicGameState{
 					sbg.enterState(Game.LEVEL_CLEARED_STATE);
 				}
 			}
-			
+
 			spawner.timedSpawn();
 		}
 
 
-		
+
 		// Update the score when a target is hit. and set the clear variable to true.
-		if (input.isKeyPressed(Input.KEY_ENTER)){
+		if (!saving && input.isKeyPressed(Input.KEY_ENTER)){
 			for(int i = 0; i < enemiesOnScreen.size(); i++){
 				Enemy enemy = enemiesOnScreen.get(i);
 				if(!paused && wordEnteredTF.getText().equals(enemy.getWord())){
@@ -385,55 +368,60 @@ public class Play extends BasicGameState{
 					missed = true;
 				}
 			}
-			
+
 			if (!paused && bombOnScreen && wordEnteredTF.getText().equals("detonate")){
 				for(int i = 0; i < enemiesOnScreen.size(); i++){
 					Enemy enemy = enemiesOnScreen.get(i);
 					score.enemyKilled(enemy.getWord().length());
 				}
-				
+
 				enemiesOnScreen = new ArrayList<Enemy>();
 				missed = false;
 				bombOnScreen = false;
 			}
-			
+
 			else if (!paused && fullhealthOnScreen && wordEnteredTF.getText().equals("fullhealth")){
 				Settings.health = 100;
 				missed = false;
 				fullhealthOnScreen = false;
 			}
-			
+
 			// If the game is not paused and the user types pause, then pause the game.
 			else if (!paused && wordEnteredTF.getText().equals("pause")){
-		    	paused = true;
-		    	missed = false;
-		    }
-			
+				paused = true;
+				missed = false;
+			}
+
 			// If the game is paused and the user types resume, then resume the game.
 			else if (paused && wordEnteredTF.getText().equals("resume")){
-		    	paused = false;
-		    	missed = false;
-		    }
-			
+				paused = false;
+				missed = false;
+			}
+
 			else if (paused && wordEnteredTF.getText().equals("quit")){
 				System.exit(0);
 			}
-		    
-		    if (!paused && missed){
-		    	score.missedEnemy();
-		    }
-		    
-		    // Clears the input text field.
-		    clear = true;													
+			
+			else if (paused && wordEnteredTF.getText().equals("highscores")){
+				sbg.enterState(Game.HIGHSCORE_STATE);
+			}
 
-		    
-		    // spawner.addNewEnemy();										
+			if (!paused && missed){
+				score.missedEnemy();
+			}
+
+			// Clears the input text field.
+			clear = true;													
+
+
+			// spawner.addNewEnemy();										
 		}
 
 		// If the text field isn't currently in focus, make it in focus.
 		if (!wordEnteredTF.hasFocus()){
 			wordEnteredTF.setFocus(true);
 		}
+
 
 		if (!paused){
 			//Update the bullet's position.
@@ -470,50 +458,50 @@ public class Play extends BasicGameState{
 			}
 		}
 	}
-	   
-	   /**
-	    * Shoots a bullet at the current target.
-	    * @param targetX The x coordinate that the bullet will head towards.
-	    * @param targetY The y coordinate that the bullet will head towards.
-	    */
-	   private void addNewBullet(float targetX, float targetY){
-	      bulletList.add(new Bullet(320, 400, targetX, targetY));
-	   }
-	   
-	   // If the mouse is pressed, then do this: 
-	   @Override
-	   public void mousePressed(int button, int x, int y) {
-			// If input box is clicked, clear the box, unpause the game, and start the game.
-			if (!started && x <= 200 && y >= 380){
-				// Clears the input text field.
-				clear = true;
-				started = true;
-				paused = false;
-				
-				try {
-					spawner.addNewEnemy();
-				} catch (SlickException e) {
-					System.out.println("Unable to add a new enemy");
-					e.printStackTrace();
-				}
+
+	/**
+	 * Shoots a bullet at the current target.
+	 * @param targetX The x coordinate that the bullet will head towards.
+	 * @param targetY The y coordinate that the bullet will head towards.
+	 */
+	private void addNewBullet(float targetX, float targetY){
+		bulletList.add(new Bullet(320, 400, targetX, targetY));
+	}
+
+	// If the mouse is pressed, then do this: 
+	@Override
+	public void mousePressed(int button, int x, int y) {
+		// If input box is clicked, clear the box, unpause the game, and start the game.
+		if (!saving && !started && x <= 200 && y >= 380){
+			// Clears the input text field.
+			clear = true;
+			started = true;
+			paused = false;
+
+			try {
+				spawner.addNewEnemy();
+			} catch (SlickException e) {
+				System.out.println("Unable to add a new enemy");
+				e.printStackTrace();
 			}
-	   }
-	   
-	   public ScoreCon getScoreCon(){
-		   return score;
-	   }
-	   
-	   public boolean getBombOnScreen(){
-		   return bombOnScreen;
-	   }
-	   
-	   public boolean getFullhealthOnScreen(){
-		   return fullhealthOnScreen;
-	   }
-	   
+		}
+	}
+
+	public ScoreCon getScoreCon(){
+		return score;
+	}
+
+	public boolean getBombOnScreen(){
+		return bombOnScreen;
+	}
+
+	public boolean getFullhealthOnScreen(){
+		return fullhealthOnScreen;
+	}
+
 	public int getID(){
 		return Game.PLAY_STATE;
 	}
 }
 
-	
+

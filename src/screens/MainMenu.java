@@ -66,7 +66,8 @@ public class MainMenu extends BasicGameState{
 		if((mouseX >= 320 && mouseX < 640) && (mouseY >= 80 && mouseY <= 280)){
 			if(input.isMousePressed(0)){
 				Settings.fromSave = true;
-				sbg.enterState(Game.DIFFICULTY_STATE, new FadeOutTransition(), new FadeInTransition()); 
+				// TODO Add save functionality.
+				sbg.enterState(Game.PLAY_STATE, new FadeOutTransition(), new FadeInTransition()); 
 			}
 		}
 		

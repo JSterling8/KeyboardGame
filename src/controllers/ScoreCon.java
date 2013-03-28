@@ -1,6 +1,8 @@
 package controllers;
 
-public class ScoreCon {
+import java.io.Serializable;
+
+public class ScoreCon implements Serializable {
 
 	private int multiplier;
 	private int letterBonus;

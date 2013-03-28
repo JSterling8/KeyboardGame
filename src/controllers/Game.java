@@ -6,6 +6,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 import screens.Difficulty;
+import screens.Highscores;
 import screens.LevelCleared;
 import screens.MainMenu;
 import screens.Options;
@@ -21,6 +22,7 @@ public class Game extends StateBasedGame{
 	public static final int OPTIONS_STATE = 3;
 	public static final int DEATH_STATE = 4;
 	public static final int LEVEL_CLEARED_STATE = 5;
+	public static final int HIGHSCORE_STATE = 6;
 
 
 	public Game(String gameName) {
@@ -31,6 +33,7 @@ public class Game extends StateBasedGame{
 		this.addState(new Options(OPTIONS_STATE));
 		// this.addState(new Death(DEATH_STATE));
 		this.addState(new LevelCleared(LEVEL_CLEARED_STATE));
+		this.addState(new Highscores(HIGHSCORE_STATE));
 	}
 	
 	public void initStatesList(GameContainer gc) throws SlickException{
@@ -39,6 +42,7 @@ public class Game extends StateBasedGame{
 		this.getState(PLAY_STATE).init(gc, this);
 		this.getState(OPTIONS_STATE).init(gc, this);
 		this.getState(LEVEL_CLEARED_STATE).init(gc, this);
+		this.getState(HIGHSCORE_STATE);
 		this.enterState(MAIN_MENU_STATE);
 		gc.setShowFPS(false);
 	}

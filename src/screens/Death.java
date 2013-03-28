@@ -38,7 +38,8 @@ public class Death extends BasicGameState{
 		wpm = Math.round(wpm);
 		wpm = wpm / 100;
 		
-		dead = "You killed " + Settings.totalKilled + " enemies.\n" + 
+		dead = "YOU DIED!\n\n" +
+				"You killed " + Settings.totalKilled + " enemies.\n" + 
 				"You missed " + Settings.totalMissed + " enemies.\n" +
 				"Words per minute: " + wpm + "\n" +
 				"Accuracy: " + accuracy + " %\n" + 
@@ -64,6 +65,9 @@ public class Death extends BasicGameState{
 		if (input.isKeyDown(Input.KEY_Y)){
 			// Refresh the play state.
 			sbg.getState(Game.PLAY_STATE).init(gc, sbg);
+			// Restart them on level 1.
+			Settings.score = 0;
+			Settings.level = 1;
 			// Enter the play state.
 			sbg.enterState(Game.PLAY_STATE, new FadeOutTransition(), new FadeInTransition()); 
 		}

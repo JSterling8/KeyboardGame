@@ -14,7 +14,6 @@ public class Enemy extends Ellipse2D.Float{
 	private static final long serialVersionUID = -3945376987588701682L;
 	private int startX;
 	private Ellipse2D.Float location;
-	private Image imageReturned;
 	private String word;
 	private int i;
     private boolean paused;						
@@ -23,16 +22,15 @@ public class Enemy extends Ellipse2D.Float{
     
     public Enemy(int startX) throws SlickException{
     	this.startX = startX;
-       	location = new Ellipse2D.Float((float)startX, (float)0,10,10);
-       	location.setFrame((float)startX, 0, 10, 10);
+    	location = new Ellipse2D.Float((float)startX, (float)0,10,10);
+    	location.setFrame((float)startX, 0, 10, 10);
 
-       	if(Settings.difficulty == 4){speed = 5;}
-       	else if(Settings.difficulty == 3){speed = 10;}
-       	else if(Settings.difficulty == 2){speed = 15;}
-       	else if(Settings.difficulty == 1){speed = 20;}
-       
-       setImage();
-       setWord();
+    	if(Settings.difficulty == 4){speed = 5;}
+    	else if(Settings.difficulty == 3){speed = 10;}
+    	else if(Settings.difficulty == 2){speed = 15;}
+    	else if(Settings.difficulty == 1){speed = 20;}
+
+    	setWord();
     }
     
     
@@ -65,25 +63,6 @@ public class Enemy extends Ellipse2D.Float{
     
     public double returnY(){
     	return location.getCenterY();
-    }
-
-    
-    public void setImage() throws SlickException{
-		// Initializes the enemies ArrayList and fills it with the enemies based on difficulty.
-		imageReturned = null;
-		RandomLocation i = new RandomLocation();
-		int randNum = 0;
-		randNum = i.getRand(1000) % 5;
-		
-		if(randNum == 0){imageReturned = new Image("/res/enemies/blue.png");}
-		if(randNum == 1){imageReturned = new Image("/res/enemies/green.png");}
-		if(randNum == 2){imageReturned = new Image("/res/enemies/purple.png");}
-		if(randNum == 3){imageReturned = new Image("/res/enemies/red.png");}
-		if(randNum == 4){imageReturned = new Image("/res/enemies/yellow.png");}
-    }
-  
-    public Image getImage(){
-		return imageReturned;
     }
     
     public void setWord(){

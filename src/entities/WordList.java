@@ -1,6 +1,7 @@
 package entities;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -9,7 +10,7 @@ import java.util.Scanner;
 import controllers.RandomLocation;
 import controllers.Settings;
 
-public class WordList {
+public class WordList implements Serializable {
 
 	public static HashMap<Integer, String> dic;
 	private Path path;
