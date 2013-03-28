@@ -336,10 +336,16 @@ public class Play extends BasicGameState{
 			// If it's been one second.
 			if (secondsPlayed - secondsPlayedOld != 0){
 				timeLeft--;
-				if(timeLeft == 0){
+				if(timeLeft == 0 && Settings.level < 7){
 					// Refresh and enter the level cleared state.
 					sbg.getState(Game.LEVEL_CLEARED_STATE).init(gc, sbg);
 					sbg.enterState(Game.LEVEL_CLEARED_STATE);
+				}
+				
+				else if (timeLeft == 0 && Settings.level == 7){
+					sbg.addState(new EndOfGame(Game.END_OF_GAME_STATE));
+					sbg.getState(Game.END_OF_GAME_STATE).init(gc, sbg);
+					sbg.enterState(Game.END_OF_GAME_STATE);
 				}
 			}
 

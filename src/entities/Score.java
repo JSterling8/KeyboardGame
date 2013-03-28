@@ -1,6 +1,8 @@
 package entities;
 
-public class Score {
+import java.io.Serializable;
+
+public class Score implements Serializable {
 
 	private int score;
 	private String playerName;
@@ -11,8 +13,18 @@ public class Score {
 	}
 	
 	public String toString(){
-		return "Player: " + playerName + "\n" +
+		return "Name: " + playerName + "\n" +
 				"Score: " + score + "\n";
 	}
 
+	public int getScore() {
+		return score;
+	}
+
+	public String getPlayerName() {
+		return playerName;
+	}
+
+	
+	
 }
