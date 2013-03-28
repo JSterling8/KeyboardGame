@@ -86,5 +86,4 @@ public class Bullet{
 	public float returnY(){
 		return (float)location.getY();
 	}
-
 }
