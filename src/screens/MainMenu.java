@@ -17,6 +17,13 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 import controllers.Game;
 import controllers.Settings;
 
+/**
+ * This is the main menu screen.
+ * The user can select single or multiplayer.
+ * The user can also either exit the game or view the highscores.
+ * 
+ * @author Jonathan Sterling
+ */
 public class MainMenu extends BasicGameState{
 
 
@@ -38,7 +45,7 @@ public class MainMenu extends BasicGameState{
 	public MainMenu(int state){}
 
 	/**
-	 * This is where everything is initialized.
+	 * This is where everything is initialised.
 	 * @param gc The container for the game.
 	 * @param sbg The game itself.
 	 */
@@ -51,7 +58,7 @@ public class MainMenu extends BasicGameState{
 		multiplayer = false;
 
 		// Initializes the player number text field.
-		playNumTF = new TextField((GUIContext)gc, gc.getDefaultFont(), 30, 380, 500, 20);
+		playNumTF = new TextField((GUIContext)gc, gc.getDefaultFont(), 200, 380, 290, 20);
 
 		// Entry for number of players is considered true until proven false.
 		validPlayerNum = true;
@@ -71,7 +78,7 @@ public class MainMenu extends BasicGameState{
 		g.drawImage(exitButton, 535, 320);
 
 		if (multiplayer){
-			g.drawString("Enter the number of players and hit enter", 50, 360);
+			g.drawString("Enter the number of players:", 200, 360);
 
 
 			// Draws the name text field.
@@ -81,7 +88,7 @@ public class MainMenu extends BasicGameState{
 		}
 
 		if (multiplayer && !validPlayerNum){
-			g.drawString("You must enter a number.  Try again.", 50, 340);
+			g.drawString("You must enter a number.  Try again.", 200, 340);
 			if (clear){
 				playNumTF.setText("");
 				clear = false;

@@ -14,6 +14,13 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 import controllers.Game;
 import controllers.Settings;
 
+/**
+ * This is the difficulty screen. 
+ * It's where the user selects the difficulty of the game.
+ * 
+ * @author Jonathan Sterling
+ *
+ */
 public class Difficulty extends BasicGameState{
 
 	// This is the difficulty text.
@@ -126,7 +133,9 @@ public class Difficulty extends BasicGameState{
 		}
 	}
 
-	// If the mouse is pressed, then do this: 
+	/**
+	 *  If the mouse is pressed, this is called.
+	 */
 	@Override
 	public void mousePressed(int button, int x, int y) {
 		// If the user clicks easy, highlight it and set Settings.difficulty to the corresponding value.

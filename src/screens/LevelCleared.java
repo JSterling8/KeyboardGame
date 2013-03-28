@@ -18,20 +18,21 @@ import controllers.ScoreBoardCon;
 import controllers.Settings;
 import entities.Score;
 
+/**
+ * This screen is shown after every level is completed, except for the last one.
+ * 
+ * @author Jonathan Sterling
+ *
+ */
 public class LevelCleared extends BasicGameState{
 
-	private double accuracy;
-	private double wpm;
-	private int accuracyBonus;
-	private int wpmBonus;
-	private int totalBonus;
+	private double accuracy;				// The player's accuracy for the level they just completed.
+	private double wpm;						// The player's average words per minute for the level they just completed.
+	private int accuracyBonus;				// An accuracy score bonus.
+	private int wpmBonus;					// A words per minute score bonus.
+	private int totalBonus;					// The user's total bonus for this level.
 	
-	private String cleared;
-	private String win;
-	
-
-	
-
+	private String cleared;					// The level cleared message.
 	
 	public LevelCleared(int state){}
 	
@@ -62,6 +63,7 @@ public class LevelCleared extends BasicGameState{
 		totalBonus = accuracyBonus + wpmBonus;
 		Settings.score += totalBonus;
 		
+		// Initialises the level cleared message and stats.
 		cleared = "You've cleared level " + Settings.level + "\n\n" +
 				"Stats:\n" +
 				"You killed " + Settings.totalKilled + " enemies.\n" + 
@@ -70,21 +72,6 @@ public class LevelCleared extends BasicGameState{
 				"Accuracy: " + accuracy + " %     Bonus: " + accuracyBonus + "\n" + 
 				"(N)ext level\n" + 
 				"(Q)uit";
-		
-		if(Settings.level == 7){
-
-			cleared = "You've cleared level " + Settings.level + "\n\n" +
-					"Stats:\n" +
-					"You killed " + Settings.totalKilled + " enemies.\n" + 
-					"You missed " + Settings.totalMissed + " enemies.\n" +
-					"Words per minute: " + wpm + "\n" +
-					"Accuracy: " + accuracy + " %\n";
-
-			win = "Congratulations, you've won the game!\n" +
-					"Would you like to add your score to the high score table?\n" +
-					"(Y)es\n" +
-					"No, I'd like to (Q)uit.";
-		}
 	}
 	
 	/** This class renders things on the screen.
@@ -93,10 +80,8 @@ public class LevelCleared extends BasicGameState{
 	 * @param g The graphics context to render to.
 	 */ 
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException{
+		// Draws the level cleared message.
 		g.drawString(cleared, 50, 50);
-		if(Settings.level == 7){
-			g.drawString(win, 50, 250);
-		}
 	}
 	
 	/**
@@ -109,22 +94,17 @@ public class LevelCleared extends BasicGameState{
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException{
 		Input input = gc.getInput();
 
-		if(Settings.level != 7){
-			// If they want to go to the next level.
-			if (input.isKeyDown(Input.KEY_N)){
-				// Puts totalKilled and totalMissed back to zero.
-				Settings.totalKilled = 0;
-				Settings.totalMissed = 0;
-				// Increases the level.
-				Settings.level++;
-				// Refresh the play state.
-				sbg.getState(Game.PLAY_STATE).init(gc, sbg);
-				// Enter the play state.
-				sbg.enterState(Game.PLAY_STATE, new FadeOutTransition(), new FadeInTransition()); 
-			}
-		}
-		
-		else{
+		// If they want to go to the next level.
+		if (input.isKeyDown(Input.KEY_N)){
+			// Puts totalKilled and totalMissed back to zero.
+			Settings.totalKilled = 0;
+			Settings.totalMissed = 0;
+			// Increases the level.
+			Settings.level++;
+			// Refresh the play state.
+			sbg.getState(Game.PLAY_STATE).init(gc, sbg);
+			// Enter the play state.
+			sbg.enterState(Game.PLAY_STATE, new FadeOutTransition(), new FadeInTransition()); 
 		}
 		
 		// If they want to quit.

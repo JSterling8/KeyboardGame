@@ -22,7 +22,6 @@ public class EnemySpawner {
 		// From 1-10 seconds in, spawn an enemy every 4 seconds.
 		if (!spawned && (Play.secondsPlayed > 0 && Play.secondsPlayed <= 10) && ((Play.secondsPlayed % 4) == 0)){
 			addNewEnemy();
-			addNewEnemy();addNewEnemy();addNewEnemy();addNewEnemy();addNewEnemy();addNewEnemy();addNewEnemy();addNewEnemy();addNewEnemy();addNewEnemy();
 			spawned = true;
 		}
 		else if (spawned && (Play.secondsPlayed > 0 && Play.secondsPlayed <= 10) && ((Play.secondsPlayed % 4) == 1)){

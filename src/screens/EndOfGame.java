@@ -17,26 +17,36 @@ import controllers.ScoreBoardCon;
 import controllers.Settings;
 import entities.Score;
 
+/**
+ * This is the screen at the end of the game.
+ * The user can enter their score to the high scores table,
+ * View the high scores table, play again, or exit.
+ * 
+ * @author Jonathan Sterling
+ *
+ */
 public class EndOfGame extends BasicGameState{
 
-	private String winner;
-	private String name;
-	private ScoreBoardCon sbc;
-	private TextField nameTF;
-	private boolean addScore;
-	private boolean added;
-	private Score score;
+	private String winner;				// The String that announces the game is won.
+	private String name;				// The user's name.
+	private ScoreBoardCon sbc;			// A scoreboard controller.
+	private TextField nameTF;			// The name TexField.
+	private boolean addScore;			// Does the user want to add their score?
+	private boolean added;				// Has the user added this score already?
+	private Score score;				// The user's score with their name attached.
 	
 	public EndOfGame(int state){}
 	
 	/**
-	 * This is where everything is initialized.
+	 * This is where everything is initialised.
 	 * @param gc The container for the game.
 	 * @param sbg The game itself.
 	 */
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException{
+		// Initialises the scoreboard controller
 		sbc = new ScoreBoardCon();
 		
+		// Initialises winner.
 		winner = "Congratulations, you've finished the game!\n\n" +
 				"Score: " + Settings.score + "\n\n" + 
 				"(A)dd score to highscores table.\n" +
@@ -49,6 +59,7 @@ public class EndOfGame extends BasicGameState{
 		// Initializes the name text field.
 		nameTF = new TextField((GUIContext)gc, gc.getDefaultFont(), 50, 380, 540, 20);
 		
+		// Sets the two boolean checks to false.
 		addScore = false;
 		added = false;
 	}
@@ -59,10 +70,12 @@ public class EndOfGame extends BasicGameState{
 	 * @param g The graphics context to render to.
 	 */ 
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException{
-		g.setColor(Color.red);
 		
+		// Draws the winner variable on the screen in red.
+		g.setColor(Color.red);
 		g.drawString(winner, 50, 50);
 		
+		// If the user wants to add their score, pop up a box that lets them enter their name.
 		if (addScore && !added){
 			g.drawString("Enter your name and hit enter", 50, 360);
 			
@@ -73,6 +86,7 @@ public class EndOfGame extends BasicGameState{
 			nameTF.setFocus(true);
 		}
 		
+		// Confirmation that their score has been entered.
 		if (added){
 			g.drawString("Your score has been added to the highscores table", 50, 360);
 		}
@@ -88,10 +102,12 @@ public class EndOfGame extends BasicGameState{
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException{
 		Input input = gc.getInput();
 
+		// If the user presses "a", allow them to add their score.
 		if (input.isKeyPressed(Input.KEY_A)){
 			addScore = true;
 		}
 
+		// If the user has typed in their name and clicked enter, add their score.
 		if (addScore && !added){
 			if (input.isKeyPressed(Input.KEY_ENTER)){
 				name = nameTF.getText();
@@ -101,14 +117,17 @@ public class EndOfGame extends BasicGameState{
 			}
 		}
 
+		// If the user presses "p", go to the main menu state.
 		if (input.isKeyPressed(Input.KEY_P)){
 			sbg.enterState(Game.MAIN_MENU_STATE, new FadeOutTransition(), new FadeInTransition());
 		}
 
+		// If the user presses "v", go to the high scores state.
 		if (input.isKeyPressed(Input.KEY_V)){
 			sbg.enterState(Game.HIGHSCORE_STATE, new FadeOutTransition(), new FadeInTransition());
 		}
 		
+		// If the user presses "q", close the game.
 		if (input.isKeyPressed(Input.KEY_Q)){
 			System.exit(0);
 		}

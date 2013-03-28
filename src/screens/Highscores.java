@@ -19,6 +19,13 @@ import controllers.Game;
 import controllers.ScoreBoardCon;
 import entities.Score;
 
+/**
+ * This is the highscores screen.
+ * The user can go back to the main menu, quit, or clear the scores.
+ * 
+ * @author Jonathan Sterling
+ *
+ */
 public class Highscores extends BasicGameState{
 
 	private static ScoreBoardCon sbc;
@@ -26,24 +33,30 @@ public class Highscores extends BasicGameState{
 	public Highscores(int state){}
 	
 	/**
-	 * This is where everything is initialized.
+	 * This is where everything is initialised.
+	 * 
 	 * @param gc The container for the game.
 	 * @param sbg The game itself.
 	 */
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException{
+		// Initialises a new score board controller.
 		sbc = new ScoreBoardCon();
 	}
 	
-	/** This class renders things on the screen.
+	/**
+	 * This class renders things on the screen.
+	 * 
 	 * @param gc The container for the game.
 	 * @param sbg The game itself.
 	 * @param g The graphics context to render to.
 	 */ 
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException{
+		// Draws the word "Highscores:" followed by a list of scores.
 		g.setColor(Color.red);
 		g.drawString("Highscores:\n", 150, 10);
 		g.drawString(sbc.toString(), 150, 35);
 		
+		// Draws the user's options.
 		g.drawString("To clear scores press f1", 350, 310);
 		g.drawString("(M)ain Menu", 350, 325);
 		g.drawString("(E)xit", 350, 340);
@@ -59,16 +72,19 @@ public class Highscores extends BasicGameState{
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException{
 		Input input = gc.getInput();
 		
+		// If the user presses f1, clear the highscores.
 		if (input.isKeyPressed(Input.KEY_F1)){
 			if(sbg.getCurrentStateID() == Game.HIGHSCORE_STATE){
 				sbc.clear();
 			}
 		}
 		
+		// If the user presses "m", go back to the main menu.
 		if (input.isKeyPressed(Input.KEY_M)){
 			sbg.enterState(Game.MAIN_MENU_STATE, new FadeOutTransition(), new FadeInTransition());
 		}
 		
+		// If the user presses "e", exit the game.
 		if (input.isKeyDown(Input.KEY_E)){
 			System.exit(0);
 		}

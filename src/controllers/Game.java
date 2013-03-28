@@ -10,7 +10,6 @@ import screens.EndOfGame;
 import screens.Highscores;
 import screens.LevelCleared;
 import screens.MainMenu;
-import screens.Options;
 import screens.Play;
 
 
@@ -20,11 +19,10 @@ public class Game extends StateBasedGame{
 	public static final int MAIN_MENU_STATE = 0;
 	public static final int DIFFICULTY_STATE = 1;
 	public static final int PLAY_STATE = 2;
-	public static final int OPTIONS_STATE = 3;
-	public static final int DEATH_STATE = 4;
-	public static final int LEVEL_CLEARED_STATE = 5;
-	public static final int END_OF_GAME_STATE = 6;
-	public static final int HIGHSCORE_STATE = 7;
+	public static final int DEATH_STATE = 3;
+	public static final int LEVEL_CLEARED_STATE = 4;
+	public static final int END_OF_GAME_STATE = 5;
+	public static final int HIGHSCORE_STATE = 6;
 	
 
 
@@ -33,7 +31,6 @@ public class Game extends StateBasedGame{
 		this.addState(new MainMenu(MAIN_MENU_STATE));
 		this.addState(new Difficulty(DIFFICULTY_STATE));
 		this.addState(new Play(PLAY_STATE, 1));
-		this.addState(new Options(OPTIONS_STATE));
 		// this.addState(new Death(DEATH_STATE));
 		this.addState(new LevelCleared(LEVEL_CLEARED_STATE));
 		this.addState(new EndOfGame(END_OF_GAME_STATE));
@@ -44,7 +41,6 @@ public class Game extends StateBasedGame{
 		this.getState(MAIN_MENU_STATE).init(gc, this);
 		this.getState(DIFFICULTY_STATE).init(gc, this);
 		this.getState(PLAY_STATE).init(gc, this);
-		this.getState(OPTIONS_STATE).init(gc, this);
 		this.getState(LEVEL_CLEARED_STATE).init(gc, this);
 		this.getState(END_OF_GAME_STATE).init(gc, this);
 		this.getState(HIGHSCORE_STATE).init(gc, this);

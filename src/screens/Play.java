@@ -23,7 +23,15 @@ import entities.Bullet;
 import entities.Enemy;
 import entities.WordList;
 
-
+/**
+ * This is the actual play screen.
+ * The user has to type in the words shown and
+ * press enter before they reach the bottom of the screen.
+ * If 10 words slip past the player, it's game over.
+ * 
+ * @author Jonathan Sterling
+ *
+ */
 public class Play extends BasicGameState{
 
 	public static WordList words;
