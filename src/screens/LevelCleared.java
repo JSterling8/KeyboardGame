@@ -29,13 +29,9 @@ public class LevelCleared extends BasicGameState{
 	private String cleared;
 	private String win;
 	
-	private boolean added;
-	private boolean addScore;
+
 	
-	private ScoreBoardCon sbc;
-	private TextField nameTF;
-	private String name;
-	private Score score;
+
 	
 	public LevelCleared(int state){}
 	
@@ -89,15 +85,6 @@ public class LevelCleared extends BasicGameState{
 					"(Y)es\n" +
 					"No, I'd like to (Q)uit.";
 		}
-		
-		sbc = new ScoreBoardCon();
-		name = "";
-		
-		// Initializes the name text field.
-		nameTF = new TextField((GUIContext)gc, gc.getDefaultFont(), 50, 380, 540, 20);
-		
-		addScore = false;
-		added = false;
 	}
 	
 	/** This class renders things on the screen.
@@ -109,20 +96,6 @@ public class LevelCleared extends BasicGameState{
 		g.drawString(cleared, 50, 50);
 		if(Settings.level == 7){
 			g.drawString(win, 50, 250);
-		}
-		
-		if (addScore && !added){
-			g.drawString("Enter your name and hit enter", 50, 360);
-			
-			
-			// Draws the name text field.
-			nameTF.render(gc, g);
-			nameTF.setBackgroundColor(Color.black);
-			nameTF.setFocus(true);
-		}
-		
-		if (added){
-			g.drawString("Your score has been added to the highscores table", 50, 360);
 		}
 	}
 	
@@ -152,19 +125,6 @@ public class LevelCleared extends BasicGameState{
 		}
 		
 		else{
-			if (input.isKeyPressed(Input.KEY_A)){
-				addScore = true;
-			}
-
-			if (addScore && !added){
-				if (input.isKeyPressed(Input.KEY_ENTER)){
-					name = nameTF.getText();
-					score = new Score(name, Settings.score);
-					sbc.addScore(score);
-					added = true;
-				}
-			}
-			
 		}
 		
 		// If they want to quit.

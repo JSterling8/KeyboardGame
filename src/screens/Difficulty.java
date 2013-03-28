@@ -150,12 +150,12 @@ public class Difficulty extends BasicGameState{
 		}
 
 		// If the user clicks on the back button, then go back to the main menu.
-		if ((x >= 490 && x <= 640) && (y >= 315 && y < 415)){			 
+		if ((x >= 490 && x <= 640) && (y >= 315 && y < 400)){			 
 			sbg.enterState(Game.MAIN_MENU_STATE, new FadeOutTransition(), new FadeInTransition()); 
 		}
 
 		// If the user clicks on the play button, then go to the play state.
-		if ((x >= 0 && x <= 150) && (y >= 315 && y < 415)){	
+		if ((x >= 0 && x <= 150) && (y >= 315 && y < 400)){	
 			Settings.level = 1;
 			if(Settings.difficulty != 0){
 				// Refresh the play state.
@@ -165,9 +165,6 @@ public class Difficulty extends BasicGameState{
 					e.printStackTrace();
 				}
 				sbg.enterState(Game.PLAY_STATE, new FadeOutTransition(), new FadeInTransition()); 
-			}
-			else{
-
 			}
 		}
 	}
