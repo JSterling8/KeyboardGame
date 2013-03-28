@@ -2,19 +2,28 @@ package controllers;
 
 import java.util.Random;
 
-
+/**
+ * This controller is used to generate random numbers, mainly for entity locations.
+ * 
+ * @author Jonathan Sterling
+ *
+ */
 public class RandomLocation {
 	
-	private Random randGen;
-	private int randX;
+	private Random randGen;							// A random number generator.
+	private int randX;								// A random number.
 	
 	public RandomLocation(){
+		// Initalises the generator.
 		randGen = new Random();
+		
+		// Seeds the generator with the systems current time in milliseconds.
 		randGen.setSeed(System.currentTimeMillis());
 	}
 	
 	/**
 	 * Generates a random int in a range changing with the size of the words being used.
+	 * 
 	 * @return A random X coordinate.
 	 */
 	public int getX(){
@@ -51,6 +60,7 @@ public class RandomLocation {
 	
 	/**
 	 * Generates a random int between 0 and a specified maximum.
+	 * 
 	 * @param max The largest number that will be returned.
 	 * @return A random int between 0 and a specified maximum.
 	 */
