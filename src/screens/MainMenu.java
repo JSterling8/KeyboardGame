@@ -88,7 +88,7 @@ public class MainMenu extends BasicGameState{
 		}
 
 		if (multiplayer && !validPlayerNum){
-			g.drawString("You must enter a number.  Try again.", 200, 340);
+			g.drawString("You must enter a number from 2-7.", 200, 340);
 			if (clear){
 				playNumTF.setText("");
 				clear = false;
@@ -124,7 +124,7 @@ public class MainMenu extends BasicGameState{
 			}
 		}
 
-		// If load game is clicked.
+		// If multiplayer is clicked.
 		if((mouseX >= 320 && mouseX < 640) && (mouseY >= 80 && mouseY <= 280)){
 			if(input.isMousePressed(0)){
 				multiplayer = true;
@@ -135,13 +135,17 @@ public class MainMenu extends BasicGameState{
 		if (multiplayer && input.isKeyPressed(Input.KEY_ENTER)){
 			try{
 				Settings.players = Integer.parseInt(playNumTF.getText());
-				validPlayerNum = true;
+				if(Settings.players <=7 && Settings.players >1){
+					validPlayerNum = true;
+				}
+				else{
+					validPlayerNum = false;
+				}
 			}catch(Exception e){
-				System.out.println("Must enter a number");
 				validPlayerNum = false;
 				clear = true;
 			}
-			System.out.println(Settings.players);
+
 			if (validPlayerNum){
 				sbg.enterState(Game.DIFFICULTY_STATE, new FadeOutTransition(), new FadeInTransition()); 
 			}
