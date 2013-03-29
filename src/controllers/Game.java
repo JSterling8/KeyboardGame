@@ -30,6 +30,7 @@ public class Game extends StateBasedGame{
 	public static final int LEVEL_CLEARED_STATE = 4;
 	public static final int END_OF_GAME_STATE = 5;
 	public static final int HIGHSCORE_STATE = 6;
+	public static final int TRANSIENT_STATE = 7;
 	
 
 	// Adds the states to the game.
@@ -37,7 +38,7 @@ public class Game extends StateBasedGame{
 		super(gameName);
 		this.addState(new MainMenu(MAIN_MENU_STATE));
 		this.addState(new Difficulty(DIFFICULTY_STATE));
-		this.addState(new Play(PLAY_STATE, 1));
+		this.addState(new Play(PLAY_STATE));
 		this.addState(new LevelCleared(LEVEL_CLEARED_STATE));
 		this.addState(new EndOfGame(END_OF_GAME_STATE));
 		this.addState(new Highscores(HIGHSCORE_STATE));

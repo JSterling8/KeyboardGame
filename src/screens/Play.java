@@ -63,15 +63,13 @@ public class Play extends BasicGameState{
 	private boolean clear;						// A boolean variable to keep track of when to clear the user input text field.
 	private int time;							// The time that the level has been running.
 	private int timeLeft;						// The time until the level is over.
-	private int currentPlayer;					// The current player's number.
 
 	private EnemySpawner spawner;				// This controls when the enemies spawn based on the round time.
 	private boolean missed;						// Was an enemy missed?
 	private boolean paused;						// Is the game paused?
 	private boolean started;					// Is the game started?
 
-	public Play(int state, int currentPlayer){
-		this.currentPlayer = currentPlayer;
+	public Play(int state){
 	}
 
 	/**
@@ -88,7 +86,7 @@ public class Play extends BasicGameState{
 		if(Settings.level == 5){timeLeft = 140;}
 		if(Settings.level == 6){timeLeft = 160;}
 		if(Settings.level == 7){timeLeft = 180;}
-
+		
 		// Initializes the enemy spawner.
 		spawner = new EnemySpawner();
 
@@ -254,7 +252,7 @@ public class Play extends BasicGameState{
 	 */
 	private void drawPlayerInfo(Graphics g) {
 		// Draws the player number on the screen
-		g.drawString("Player: " + currentPlayer, 500, 20);
+		g.drawString("Player: " + Settings.currentPlayer, 500, 20);
 
 		// Draws the level number on the screen
 		g.drawString("Level: " + Settings.level, 500, 35);
@@ -561,6 +559,16 @@ public class Play extends BasicGameState{
 		if (secondsPlayed - secondsPlayedOld != 0){
 			timeLeft--;
 			if(timeLeft == 0 && Settings.level < 7){
+				// Increments the player number for multiplayer.
+				if (Settings.currentPlayer < Settings.players){
+					Settings.currentPlayer++;
+				}
+				
+				// Sets the current player back to 1 after everyone has had a turn.
+				else if (Settings.currentPlayer == Settings.players){
+					Settings.currentPlayer = 1;
+				}
+				
 				// Refresh and enter the level cleared state.
 				sbg.getState(Game.LEVEL_CLEARED_STATE).init(gc, sbg);
 				sbg.enterState(Game.LEVEL_CLEARED_STATE);

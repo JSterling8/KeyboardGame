@@ -166,6 +166,7 @@ public class Difficulty extends BasicGameState{
 		// If the user clicks on the play button, then go to the play state.
 		if ((x >= 0 && x <= 150) && (y >= 315 && y < 400)){	
 			Settings.level = 1;
+			Settings.currentPlayer = 1;
 			if(Settings.difficulty != 0){
 				// Refresh the play state.
 				try {
