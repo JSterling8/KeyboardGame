@@ -453,7 +453,7 @@ public class Play extends BasicGameState{
 			// Removes enemies that go off screen. 
 			// Decrements the player's health by 10.
 			// Sets the multiplier back down.
-			if (enemy.returnY() > 369 ){
+			if (enemy.returnY() > 389 ){
 				enemiesOnScreen.remove(i);
 				Settings.health -= 10;
 				score.setDefaultMultiplier();
