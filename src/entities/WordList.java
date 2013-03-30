@@ -14,7 +14,7 @@ import controllers.Settings;
 public class WordList implements Serializable {
 
 	public static HashMap<Integer, String> dic;			// A HashMap of all of the words in the generated dictionary.
-	private Path path;									// A Path to use to locate files.
+	private InputStream input;
 	
 	public WordList() throws IOException {}
 
@@ -24,46 +24,25 @@ public class WordList implements Serializable {
 	public void populateList() { 
 		dic = new HashMap<>();
 		
-		// ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-		// InputStream input = classLoader.getResourceAsStream("image.jpg");
+		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+		if(Settings.level == 1){input = classLoader.getResourceAsStream("oneLetterWords.txt");}
+		else if(Settings.level == 2){input = classLoader.getResourceAsStream("twoLetterWords.txt");}
+		else if(Settings.level == 3){input = classLoader.getResourceAsStream("threeLetterWords.txt");}
+		else if(Settings.level == 4){input = classLoader.getResourceAsStream("fourLetterWords.txt");}
+		else if(Settings.level == 5){input = classLoader.getResourceAsStream("fiveLetterWords.txt");}
+		else if(Settings.level == 6){input = classLoader.getResourceAsStream("sixLetterWords.txt");}
+		else if(Settings.level == 7){input = classLoader.getResourceAsStream("twonoLimitWords.txt");}
 		
-		if (Settings.level == 1){
-			path = Paths.get("G:/UniversityWork/Software Design and Development/Modelling/Eclipse files/KMD/res/dic/oneLetterWords.txt");
-		}
-		if(Settings.level == 2){
-			path = Paths.get("G:/UniversityWork/Software Design and Development/Modelling/Eclipse files/KMD/res/dic/twoLetterWords.txt");
-		}
-		else if(Settings.level == 3){
-			path = Paths.get("G:/UniversityWork/Software Design and Development/Modelling/Eclipse files/KMD/res/dic/threeLetterWords.txt");
-		}
-		else if(Settings.level == 4){
-			path = Paths.get("G:/UniversityWork/Software Design and Development/Modelling/Eclipse files/KMD/res/dic/fourLetterWords.txt");
-		}
-		else if(Settings.level == 5){
-			path = Paths.get("G:/UniversityWork/Software Design and Development/Modelling/Eclipse files/KMD/res/dic/fiveLetterWords.txt");
-		}
-		else if(Settings.level == 6){
-			path = Paths.get("G:/UniversityWork/Software Design and Development/Modelling/Eclipse files/KMD/res/dic/sixLetterWords.txt");
-		}
-		else if(Settings.level == 7){
-			path = Paths.get("G:/UniversityWork/Software Design and Development/Modelling/Eclipse files/KMD/res/dic/noLimitWords.txt");
-		}
-		
-		// If there is a path.
-		if (path != null){
 			// This scans through the word file and for each line it adds a new entry to the HashMap and gives it a sequential number.
-		    try (Scanner scanner =  new Scanner(path)){
+		    try (Scanner scanner =  new Scanner(input)){
 		    	Integer i = 0; 
 		    	while (scanner.hasNextLine()){
 		    		dic.put(i, scanner.nextLine());
 		    		i++;
 		    	}      
-		    } catch (IOException e) {
+		    } catch (Exception e) {
 				e.printStackTrace();
 			}	
-	    }
-	    
-	   
 	}
 
 

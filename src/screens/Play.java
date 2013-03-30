@@ -79,9 +79,9 @@ public class Play extends BasicGameState{
 	 */
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException{
 		// Initializes the time left to play.
-		if(Settings.level == 1){timeLeft = 60;}
-		if(Settings.level == 2){timeLeft = 80;}
-		if(Settings.level == 3){timeLeft = 100;}
+		if(Settings.level == 1){timeLeft = 10;}
+		if(Settings.level == 2){timeLeft = 10;}
+		if(Settings.level == 3){timeLeft = 10;}
 		if(Settings.level == 4){timeLeft = 120;}
 		if(Settings.level == 5){timeLeft = 140;}
 		if(Settings.level == 6){timeLeft = 160;}
@@ -312,7 +312,7 @@ public class Play extends BasicGameState{
 			g.drawImage(enemyImage, (float)enemy.returnX(), (float)enemy.returnY());
 
 			// Draws a black rectangle above the enemy, varying in size by the size of the word associated to the enemy.
-			// Has a red trim
+			// The black rectangle has a red trim
 			float rectXSize = (enemy.getWord().length() * 10) + 2;
 			g.setColor(Color.red);
 			g.fillRect((float)enemy.returnX() + 13, (float)enemy.returnY() - 22, rectXSize + 4, 24);
@@ -482,7 +482,7 @@ public class Play extends BasicGameState{
 		for(int i = 0; i < enemiesOnScreen.size(); i++){
 			Enemy enemy = enemiesOnScreen.get(i);
 			if(!paused && wordEnteredTF.getText().equals(enemy.getWord())){
-				addNewBullet((float)enemy.returnX(), (float) enemy.returnY());
+				addNewBullet((float)enemy.returnX()+25, (float) enemy.returnY() + 25);
 
 				score.enemyKilled(enemy.getWord().length());
 
