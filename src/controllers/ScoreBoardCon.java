@@ -11,6 +11,9 @@ import java.io.Serializable;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 
 import entities.Score;
 
@@ -21,7 +24,7 @@ import entities.Score;
  * @author Jonathan Sterling
  *
  */
-public class ScoreBoardCon implements Serializable {
+public class ScoreBoardCon implements Serializable, Comparator<Score> {
 	
 	private static ArrayList<Score> scores;						// An ArrayList of all of the high scores.
 	
@@ -67,6 +70,8 @@ public class ScoreBoardCon implements Serializable {
 	}
 	
 	public String toString(){
+		sortList();
+		
 		String s = "";
 		for (int i = 0; i < scores.size(); i++){
 			s = s + scores.get(i);
@@ -114,5 +119,27 @@ public class ScoreBoardCon implements Serializable {
 			e.printStackTrace();
 		}
 	}
+	
+	public void sortList(){
+		Collections.sort(scores, this);
+	}
 
+	/**
+	 * This is a custom Comparator.
+	 * Used to sort scores.
+	 * 
+	 */
+	@Override
+	public int compare(Score inp1, Score inp2) {
+		int score1 = inp1.getScore();
+        int score2 = inp2.getScore();
+ 
+        if (score1 > score2){
+            return -1;
+        }else if (score1 < score2){
+            return +1;
+        }else{
+            return 0;
+        }
+	}
 }

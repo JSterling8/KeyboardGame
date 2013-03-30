@@ -16,12 +16,14 @@ public class ScoreBoardConTest {
 	private ScoreBoardCon sbc;
 	private Score score1;
 	private Score score2;
+	private Score score3;
 	
 	@Before
 	public void setUp() throws Exception {
 		sbc = new ScoreBoardCon();
-		score1 = new Score("Jonathan", 1000);
-		score2 = new Score ("Jonathan", 2000);
+		score1 = new Score("Jonathan1", 1000);
+		score2 = new Score ("Jonathan2", 2000);
+		score3 = new Score ("Jonathan3", 3000);
 	}
 
 	/**
@@ -38,7 +40,7 @@ public class ScoreBoardConTest {
 		
 		// Add score two and assert that .toString() returns both score1 and score2 correctly.
 		sbc.addScore(score2);
-		assertEquals(sbc.toString(), (score1.toString() + score2.toString()));
+		assertEquals(sbc.toString(), (score2.toString() + score1.toString()));
 		
 		// Clear the scores to clean up after this test.
 		sbc.clear();
@@ -80,6 +82,9 @@ public class ScoreBoardConTest {
 		// No need to test.  Tested in testSave().
 	}
 
+	/**
+	 * Tests the clear() clears the highscores.
+	 */
 	@Test
 	public void testClear() {
 		// Add a score.
@@ -90,6 +95,20 @@ public class ScoreBoardConTest {
 		
 		// Make sure that there are no scores.
 		assertEquals("", sbc.toString());
+	}
+	
+	/**
+	 * Makes sure the scores get sorted correctly.
+	 */
+	@Test
+	public void testSortList() {
+		sbc.clear();
+		sbc.addScore(score3);
+		sbc.addScore(score1);
+		sbc.addScore(score2);
+		
+		// the toString() method in ScoreBoardCon calls sortList(), so there's no need to do it twice.
+		assertEquals(sbc.toString(), score3.toString() + score2.toString() + score1.toString());
 	}
 
 }

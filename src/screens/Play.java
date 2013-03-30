@@ -79,9 +79,9 @@ public class Play extends BasicGameState{
 	 */
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException{
 		// Initializes the time left to play.
-		if(Settings.level == 1){timeLeft = 10;}
-		if(Settings.level == 2){timeLeft = 10;}
-		if(Settings.level == 3){timeLeft = 10;}
+		if(Settings.level == 1){timeLeft = 60;}
+		if(Settings.level == 2){timeLeft = 80;}
+		if(Settings.level == 3){timeLeft = 100;}
 		if(Settings.level == 4){timeLeft = 120;}
 		if(Settings.level == 5){timeLeft = 140;}
 		if(Settings.level == 6){timeLeft = 160;}
