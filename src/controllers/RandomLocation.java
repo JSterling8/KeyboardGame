@@ -14,7 +14,7 @@ public class RandomLocation {
 	private int randX;								// A random number.
 	
 	public RandomLocation(){
-		// Initalises the generator.
+		// Initialises the generator.
 		randGen = new Random();
 		
 		// Seeds the generator with the systems current time in milliseconds.
@@ -63,9 +63,17 @@ public class RandomLocation {
 	 * 
 	 * @param max The largest number that will be returned.
 	 * @return A random int between 0 and a specified maximum.
+	 * @throws Exception 
 	 */
-	public Integer getRand(int max){
-		Integer rand = randGen.nextInt((max - 0 + 1) + 0);
+	public Integer getRand(int max) throws Exception{
+		Integer rand;
+		
+		if (max >= 0){
+			rand = randGen.nextInt((max - 0 + 1) + 0);
+		}
+		else {
+			throw new Exception();
+		}
 		return rand;
 	}
 }

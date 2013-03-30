@@ -16,13 +16,6 @@ public class Score implements Serializable {
 		
 	}
 	
-/*	public void fillScoreList(){
-		Settings.scoreByPlayer = new ArrayList<Integer>();
-
-
-		}
-	}*/
-	
 	public String toString(){
 		return "Name: " + playerName + "\n" +
 				"Score: " + score + "\n";

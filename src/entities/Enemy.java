@@ -25,6 +25,7 @@ public class Enemy extends Ellipse2D.Float{
     	location = new Ellipse2D.Float((float)startX, (float)0,10,10);
     	location.setFrame((float)startX, 0, 10, 10);
 
+    	
     	// Sets the speed based on difficulty.
     	if(Settings.difficulty == 4){speed = 5;}
     	else if(Settings.difficulty == 3){speed = 10;}
@@ -79,7 +80,11 @@ public class Enemy extends Ellipse2D.Float{
      * Sets the word to be attached to the enemy.
      */
     public void setWord(){
-		word = Play.words.getWord();
+		try {
+			word = Play.words.getWord();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
     }
     

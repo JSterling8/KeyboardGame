@@ -36,23 +36,26 @@ public class ScoreCon {
 	 * @param wordLength The length of the word successfully entered.
 	 */
 	public void enemyKilled(int wordLength) {
-		// Increments the total number killed and number consecutively killed.
-		Settings.totalKilled++;
-		numberConsecutive++;
-		
-		// Sets the number consecutive bonuses.
-		if (numberConsecutive <  5){numConsecMult = 0;}
-		else if (numberConsecutive < 10){numConsecMult = 1;}
-		else if (numberConsecutive < 15){numConsecMult = 2;}
-		else if (numberConsecutive < 20){numConsecMult = 3;}
-		else if (numberConsecutive < 25){numConsecMult = 4;}
-		else if (numberConsecutive >= 40){numConsecMult = 6;}
-		
-		// Sets the total multiplier.
-		multiplier = numConsecMult + Settings.difficulty;
-		
-		// Adds to the score based on the multipliers and bonuses.
-		Settings.score = Settings.score + (multiplier * letterBonus(wordLength)); 
+		// Only do something if the word entered has characters.
+		if (wordLength > 0){
+			// Increments the total number killed and number consecutively killed.
+			Settings.totalKilled++;
+			numberConsecutive++;
+
+			// Sets the number consecutive bonuses.
+			if (numberConsecutive <  5){numConsecMult = 0;}
+			else if (numberConsecutive < 10){numConsecMult = 1;}
+			else if (numberConsecutive < 15){numConsecMult = 2;}
+			else if (numberConsecutive < 20){numConsecMult = 3;}
+			else if (numberConsecutive < 25){numConsecMult = 4;}
+			else if (numberConsecutive >= 40){numConsecMult = 6;}
+
+			// Sets the total multiplier.
+			multiplier = numConsecMult + Settings.difficulty;
+
+			// Adds to the score based on the multipliers and bonuses.
+			Settings.score = Settings.score + (multiplier * letterBonus(wordLength)); 
+		}
 	}
 	
 	/**
@@ -63,16 +66,21 @@ public class ScoreCon {
 	 */
 	public int letterBonus(int length){
 
-		// Base case: If the words length is 1.
-		if(length == 1){
-			letterBonus = 10;
-			return letterBonus;
+		if (length > 0){
+			// Base case: If the words length is 1.
+			if(length == 1){
+				letterBonus = 10;
+				return letterBonus;
+			}
+			// If not the base case, then the letter bonus = (length*10) + letterBonus(length-1)
+			else{
+				letterBonus = length * 10;
+				length--;
+				return letterBonus + letterBonus(length);
+			}
 		}
-		// If not the base case, then the letter bonus = (length*10) + letterBonus(length-1)
 		else{
-			letterBonus = length * 10;
-			length--;
-			return letterBonus + letterBonus(length);
+			return 0;
 		}
 	}
 
@@ -102,6 +110,13 @@ public class ScoreCon {
 	public void setDefaultMultiplier(){
 		numberConsecutive = 0;
 		numConsecMult = 1;
-		multiplier = Settings.difficulty;
+		
+		// If the difficulty isn't from 1-4
+		if (Settings.difficulty >= 1 && Settings.difficulty <= 5){
+			multiplier = Settings.difficulty;
+		}
+		else{
+			multiplier = 1;
+		}
 	}
 }

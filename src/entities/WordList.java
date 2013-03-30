@@ -1,6 +1,7 @@
 package entities;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -22,6 +23,9 @@ public class WordList implements Serializable {
 	 */
 	public void populateList() { 
 		dic = new HashMap<>();
+		
+		// ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+		// InputStream input = classLoader.getResourceAsStream("image.jpg");
 		
 		if (Settings.level == 1){
 			path = Paths.get("G:/UniversityWork/Software Design and Development/Modelling/Eclipse files/KMD/res/dic/oneLetterWords.txt");
@@ -78,10 +82,12 @@ public class WordList implements Serializable {
 	 * Pulls a random word from the current dictionary.
 	 * 
 	 * @return A random word from the dictionary.
+	 * @throws Exception If the random location requested is less than 0.
 	 */
-	public String getWord(){
+	public String getWord() throws Exception{
 		RandomLocation rand = new RandomLocation();
 		Integer i = rand.getRand(dic.size()-1);
+
 		
 		String randWord = dic.get(i);
 		return randWord;

@@ -184,7 +184,11 @@ public class Play extends BasicGameState{
 
 		// Randomly spawn either a fullhealth or a bomb.
 		if (!paused && started && secondsPlayed > 0 && secondsPlayed % 10 == 0 && !bombOnScreen && !fullhealthOnScreen){
-			specialItemSpawner();
+			try {
+				specialItemSpawner();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 
 		// Draws the bomb on the screen if it was spawned.
@@ -324,8 +328,9 @@ public class Play extends BasicGameState{
 
 	/**
 	 * Spawns either a bomb or fullhealth pack 25% of the time every 10 seconds.
+	 * @throws Exception Throws exception if the random number requested is less that 0.
 	 */
-	private void specialItemSpawner() {
+	private void specialItemSpawner() throws Exception {
 		// Gets random X,Y coordinates that will be on the bottom of the screen and make sure the word doesn't spawn off of it.
 		randX = randLoc.getRand(530);
 		randY = randLoc.getRand(150) + 150;
