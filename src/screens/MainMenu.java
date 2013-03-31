@@ -40,6 +40,7 @@ public class MainMenu extends BasicGameState{
 	private boolean validPlayerNum;				// Whether or not the user entered a valid player number.
 	private boolean clear;						// Whether or not to clear playNumTF
 
+	private Input input;
 	private Image highscores;
 
 	public MainMenu(int state){}
@@ -54,6 +55,10 @@ public class MainMenu extends BasicGameState{
 		multiplayerButton = new Image("/res/buttons/multiplayer.png");
 		exitButton = new Image("/res/buttons/exit.png");
 
+		// Clear the keypress record.
+		input = gc.getInput();
+		input.clearKeyPressedRecord();
+		
 		// Initializes multiplayer to false;
 		multiplayer = false;
 
@@ -107,10 +112,12 @@ public class MainMenu extends BasicGameState{
 	 * @param delta The time in milliseconds between frames.
 	 */
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException{
-		Input input = gc.getInput();
+		input = gc.getInput();
 
 		mouseX = input.getMouseX();
 		mouseY = input.getMouseY();
+		
+		input.clearKeyPressedRecord();
 
 		if(!multiplayer && input.isKeyPressed(Input.KEY_ENTER)){
 			sbg.enterState(Game.DIFFICULTY_STATE, new FadeOutTransition(), new FadeInTransition()); 

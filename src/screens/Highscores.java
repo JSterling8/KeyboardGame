@@ -23,8 +23,8 @@ import controllers.ScoreBoardCon;
  */
 public class Highscores extends BasicGameState{
 
-	private static ScoreBoardCon sbc;
-	private int dy;
+	private static ScoreBoardCon sbc;				// The scoreboard controller.
+	private int dy;									// Delta y.  (The change in position of y).
 	
 	public Highscores(int state){}
 	
@@ -37,6 +37,8 @@ public class Highscores extends BasicGameState{
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException{
 		// Initialises a new score board controller.
 		sbc = new ScoreBoardCon();
+		
+		// Set delta y to 0 because we don't want it to move yet.
 		dy = 0;
 	}
 	
@@ -71,6 +73,9 @@ public class Highscores extends BasicGameState{
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException{
 		Input input = gc.getInput();
 		
+		// Clear the keypressed record.
+		input.clearKeyPressedRecord();
+		
 		// If the user presses up or down, scroll through the high scores.
 		if (input.isKeyDown(Input.KEY_DOWN)){
 			dy++;
@@ -80,22 +85,21 @@ public class Highscores extends BasicGameState{
 		}
 		
 		// If the user presses f1, clear the highscores.
-		if (input.isKeyPressed(Input.KEY_F1)){
+		if (input.isKeyDown(Input.KEY_F1)){
 			if(sbg.getCurrentStateID() == Game.HIGHSCORE_STATE){
 				sbc.clear();
 			}
 		}
 		
 		// If the user presses "m", go back to the main menu.
-		if (input.isKeyPressed(Input.KEY_M)){
+		if (input.isKeyDown(Input.KEY_M)){
 			sbg.enterState(Game.MAIN_MENU_STATE, new FadeOutTransition(), new FadeInTransition());
 		}
 		
 		// If the user presses "e", exit the game.
 		if (input.isKeyDown(Input.KEY_E)){
 			System.exit(0);
-		}
-		
+		}	
 	}
 	
 	/**

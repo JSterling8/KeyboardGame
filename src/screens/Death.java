@@ -32,6 +32,7 @@ public class Death extends BasicGameState{
 	
 	private boolean added;						// Has the score been added to the table?
 	private boolean addScore;					// Does the user want to add their score to the table?
+	private boolean noNameSpecified;			// Did the user actually enter a name when prompted?
 	
 	public Death(int state){}
 	
@@ -78,7 +79,7 @@ public class Death extends BasicGameState{
 		// The user hasn't added their score yet and hasn't indicated that they want to.
 		addScore = false;
 		added = false;
-		
+		noNameSpecified = false;
 	}
 	
 	/** This class renders things on the screen.
@@ -98,6 +99,10 @@ public class Death extends BasicGameState{
 			nameTF.render(gc, g);
 			nameTF.setBackgroundColor(Color.black);
 			nameTF.setFocus(true);
+		}
+		
+		if (noNameSpecified){
+			g.drawString("You must enter a name.", 50, 345);
 		}
 		
 		// Confirms that the score has been added to the table.
@@ -156,10 +161,17 @@ public class Death extends BasicGameState{
 		if (addScore && !added){
 			if (input.isKeyDown(Input.KEY_ENTER)){
 				name = nameTF.getText();
-				score = new Score(name, Settings.score);
-				sbc.addScore(score);
-				addScore = false;
-				added = true;
+
+				if (!name.equals("")){
+					score = new Score(name, Settings.score);
+					sbc.addScore(score);
+					addScore = false;
+					added = true;
+					noNameSpecified = false;
+				}
+				else {
+					noNameSpecified = true;
+				}
 			}
 		}
 		
