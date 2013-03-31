@@ -1,10 +1,6 @@
 package screens;
 
 // import org.lwjgl.input.Mouse;
-import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -17,7 +13,6 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 
 import controllers.Game;
 import controllers.ScoreBoardCon;
-import entities.Score;
 
 /**
  * This is the highscores screen.

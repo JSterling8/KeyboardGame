@@ -73,8 +73,10 @@ public class ScoreBoardCon implements Serializable, Comparator<Score> {
 		sortList();
 		
 		String s = "";
+		int pos = 0;
 		for (int i = 0; i < scores.size(); i++){
-			s = s + scores.get(i);
+			pos = i+1;
+			s = s + pos + ". " + scores.get(i);
 		}
 		
 		return s;

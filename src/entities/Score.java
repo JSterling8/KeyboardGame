@@ -17,7 +17,7 @@ public class Score implements Serializable {
 	}
 	
 	public String toString(){
-		return "Name: " + playerName + "\n" +
+		return playerName + "\n" +
 				"Score: " + score + "\n";
 	}
 
