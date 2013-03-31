@@ -2,6 +2,7 @@ package controllers;
 
 
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 
 import screens.Play;
 import entities.Enemy;
@@ -17,11 +18,14 @@ public class EnemySpawner {
 	private boolean wordAlreadyExists;				// Is the word already on the screen?
 	private RandomLocation xLoc;					// A random x-coordinate.
 	private boolean spawned;						// Has the correct amount of enemies been spawned for this time?
-
+	private Sound launch;
+	
 	public EnemySpawner() throws SlickException {
 		// Some simple initialisations.
 		xLoc = new RandomLocation();
 		spawned = false;
+		
+		launch = new Sound("/res/sounds/launch.ogg");
 	}
 
 	public void timedSpawn() throws SlickException{
@@ -29,9 +33,6 @@ public class EnemySpawner {
 		// From 1-10 seconds in, spawn an enemy every 4 seconds.
 		if (!spawned && (Play.secondsPlayed > 0 && Play.secondsPlayed <= 10) && ((Play.secondsPlayed % 4) == 0)){
 			addNewEnemy();
-			for (int i = 0; i <100; i++){
-				addNewEnemy();
-			}
 			spawned = true;
 		}
 		else if (spawned && (Play.secondsPlayed > 0 && Play.secondsPlayed <= 10) && ((Play.secondsPlayed % 4) == 1)){
@@ -152,6 +153,7 @@ public class EnemySpawner {
 		if (!wordAlreadyExists){
 			// Add the enemy to the screen.
 			Play.enemiesOnScreen.add(enemy);
+			launch.play();
 		}
 	}
 }

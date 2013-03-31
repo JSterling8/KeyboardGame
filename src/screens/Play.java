@@ -8,7 +8,9 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.gui.GUIContext;
 import org.newdawn.slick.gui.TextField;
 import org.newdawn.slick.state.BasicGameState;
@@ -69,6 +71,10 @@ public class Play extends BasicGameState{
 	private boolean paused;						// Is the game paused?
 	private boolean started;					// Is the game started?
 
+	private Sound explode;
+	private Sound healthRestored;
+	private Sound detonate;
+	
 	public Play(int state){
 	}
 
@@ -155,6 +161,11 @@ public class Play extends BasicGameState{
 
 		// Sets the multiplier to its default for the level.
 		score.setDefaultMultiplier();
+		
+		// Initialises the sounds.
+		healthRestored = new Sound("/res/sounds/healthRestored.ogg");
+		explode = new Sound("/res/sounds/explode.ogg");
+		detonate = new Sound("/res/sounds/detonate.ogg");
 	}
 
 	/** This class renders things on the screen.
@@ -328,6 +339,7 @@ public class Play extends BasicGameState{
 
 	/**
 	 * Spawns either a bomb or fullhealth pack 25% of the time every 10 seconds.
+	 * 
 	 * @throws Exception Throws exception if the random number requested is less that 0.
 	 */
 	private void specialItemSpawner() throws Exception {
@@ -506,6 +518,7 @@ public class Play extends BasicGameState{
 			}
 
 			enemiesOnScreen = new ArrayList<Enemy>();
+			detonate.play();
 			missed = false;
 			bombOnScreen = false;
 		}
@@ -513,6 +526,7 @@ public class Play extends BasicGameState{
 		// If there's a fullhealth pack on the screen and the user types fullhealth, restore their health to 100.
 		else if (!paused && fullhealthOnScreen && wordEnteredTF.getText().equals("fullhealth")){
 			Settings.health = 100;
+			healthRestored.play();
 			missed = false;
 			fullhealthOnScreen = false;
 		}
@@ -597,6 +611,7 @@ public class Play extends BasicGameState{
 	 */
 	private void addNewBullet(float targetX, float targetY){
 		bulletList.add(new Bullet(320, 400, targetX, targetY));
+		explode.play();
 	}
 
 	/** 

@@ -6,6 +6,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
@@ -25,6 +26,8 @@ public class Highscores extends BasicGameState{
 
 	private static ScoreBoardCon sbc;				// The scoreboard controller.
 	private int dy;									// Delta y.  (The change in position of y).
+	private Sound clapping;							// Clapping sound.
+	private boolean justOpened;						// Was the screen just opened?
 	
 	public Highscores(int state){}
 	
@@ -40,6 +43,11 @@ public class Highscores extends BasicGameState{
 		
 		// Set delta y to 0 because we don't want it to move yet.
 		dy = 0;
+		
+		// Initialise the sound of clapping.
+		clapping = new Sound("/res/sounds/clapping.ogg");
+		
+		justOpened = true;
 	}
 	
 	/**
@@ -50,10 +58,23 @@ public class Highscores extends BasicGameState{
 	 * @param g The graphics context to render to.
 	 */ 
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException{
-		// Draws the word "High scores:" followed by a list of scores.
+		if (justOpened){
+			clapping.play();
+			justOpened = false;
+		}
+		
+		// Draws the high scores.
 		g.setColor(Color.white);
-		g.drawString("High Scores:\n", 50, 10 - dy);
 		g.drawString(sbc.toString(), 50, 35 - dy);
+		
+		// Draws a black box behind the high scores title.
+		g.setColor(Color.black);
+		g.fillRect(0, 0, 640, 30);
+		
+		// Draws the word "High scores:"
+		g.setColor(Color.white);
+		g.drawString("High Scores:\n", 50, 10);
+
 		
 		// Draws the user's options.
 		g.setColor(Color.red);
@@ -73,7 +94,7 @@ public class Highscores extends BasicGameState{
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException{
 		Input input = gc.getInput();
 		
-		// Clear the keypressed record.
+		// Clear the key-pressed record.
 		input.clearKeyPressedRecord();
 		
 		// If the user presses up or down, scroll through the high scores.
