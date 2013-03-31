@@ -31,6 +31,7 @@ public class MainMenu extends BasicGameState{
 	private double mouseX;
 	private double mouseY;
 
+	// Buttons
 	private Image singlePlayerButton;
 	private Image multiplayerButton;
 	private Image exitButton;
@@ -40,8 +41,8 @@ public class MainMenu extends BasicGameState{
 	private boolean validPlayerNum;				// Whether or not the user entered a valid player number.
 	private boolean clear;						// Whether or not to clear playNumTF
 
-	private Input input;
-	private Image highscores;
+	private Input input;						// The users input.
+	private Image highscores;					// The word "Highscores"
 
 	public MainMenu(int state){}
 

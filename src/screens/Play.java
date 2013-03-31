@@ -71,9 +71,9 @@ public class Play extends BasicGameState{
 	private boolean paused;						// Is the game paused?
 	private boolean started;					// Is the game started?
 
-	private Sound explode;
-	private Sound healthRestored;
-	private Sound detonate;
+	private Sound explode;						// The sound when an enemy is shot.
+	private Sound healthRestored;				// The sound when a health pack is used.
+	private Sound detonate;						// The sound when a bomb is detonated.
 	
 	public Play(int state){
 	}

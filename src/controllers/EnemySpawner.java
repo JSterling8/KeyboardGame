@@ -18,13 +18,14 @@ public class EnemySpawner {
 	private boolean wordAlreadyExists;				// Is the word already on the screen?
 	private RandomLocation xLoc;					// A random x-coordinate.
 	private boolean spawned;						// Has the correct amount of enemies been spawned for this time?
-	private Sound launch;
+	private Sound launch;							// The missile launch sound.
 	
 	public EnemySpawner() throws SlickException {
 		// Some simple initialisations.
 		xLoc = new RandomLocation();
 		spawned = false;
 		
+		// Initialises the launch sound.
 		launch = new Sound("/res/sounds/launch.ogg");
 	}
 
@@ -153,6 +154,7 @@ public class EnemySpawner {
 		if (!wordAlreadyExists){
 			// Add the enemy to the screen.
 			Play.enemiesOnScreen.add(enemy);
+			// Play the launch sound.
 			launch.play();
 		}
 	}

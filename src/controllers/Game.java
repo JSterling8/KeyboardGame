@@ -13,7 +13,20 @@ import screens.MainMenu;
 import screens.Play;
 
 /**
- * This is the control hub for the game.  It holds the state ID's and initialises most of them.
+ * This is the control hub for the game.  It holds the state ID's 
+ * and initialises most of them.  This class also contains the main method.
+ * 
+ * Some aspects of this game were adapted from
+ * Sean McGee's QWERTY Warrior game: http://diseasedproductions.net/qwerty.html
+ * 
+ * Specifics used:
+ * Click to start
+ * Detonate and fullhealth
+ * Bottom TextField layout
+ * Enemies with words associated to them
+ * Health system
+ * 
+ * All aspects were used with permission.
  * 
  * @author Jonathan Sterling
  *
