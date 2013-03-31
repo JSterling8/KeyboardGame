@@ -29,6 +29,7 @@ import entities.Score;
 public class Highscores extends BasicGameState{
 
 	private static ScoreBoardCon sbc;
+	private int dy;
 	
 	public Highscores(int state){}
 	
@@ -41,6 +42,7 @@ public class Highscores extends BasicGameState{
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException{
 		// Initialises a new score board controller.
 		sbc = new ScoreBoardCon();
+		dy = 0;
 	}
 	
 	/**
@@ -51,15 +53,17 @@ public class Highscores extends BasicGameState{
 	 * @param g The graphics context to render to.
 	 */ 
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException{
-		// Draws the word "Highscores:" followed by a list of scores.
-		g.setColor(Color.red);
-		g.drawString("Highscores:\n", 150, 10);
-		g.drawString(sbc.toString(), 150, 35);
+		// Draws the word "High scores:" followed by a list of scores.
+		g.setColor(Color.white);
+		g.drawString("High Scores:\n", 50, 10 - dy);
+		g.drawString(sbc.toString(), 50, 35 - dy);
 		
 		// Draws the user's options.
+		g.setColor(Color.red);
 		g.drawString("To clear scores press f1", 350, 310);
 		g.drawString("(M)ain Menu", 350, 325);
 		g.drawString("(E)xit", 350, 340);
+		g.drawString("Use the up/down arrows the navigate\nthrough the scores.", 250, 50);
 	}
 	
 	/**
@@ -71,6 +75,14 @@ public class Highscores extends BasicGameState{
 	 */
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException{
 		Input input = gc.getInput();
+		
+		// If the user presses up or down, scroll through the high scores.
+		if (input.isKeyDown(Input.KEY_DOWN)){
+			dy++;
+		}
+		if (input.isKeyDown(Input.KEY_UP)){
+			dy--;
+		}
 		
 		// If the user presses f1, clear the highscores.
 		if (input.isKeyPressed(Input.KEY_F1)){

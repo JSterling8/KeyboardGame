@@ -30,7 +30,7 @@ public class WordList implements Serializable {
 		else if(Settings.level == 4){input = classLoader.getResourceAsStream("fourLetterWords.txt");}
 		else if(Settings.level == 5){input = classLoader.getResourceAsStream("fiveLetterWords.txt");}
 		else if(Settings.level == 6){input = classLoader.getResourceAsStream("sixLetterWords.txt");}
-		else if(Settings.level == 7){input = classLoader.getResourceAsStream("twonoLimitWords.txt");}
+		else if(Settings.level == 7){input = classLoader.getResourceAsStream("noLimitWords.txt");}
 		
 			// This scans through the word file and for each line it adds a new entry to the HashMap and gives it a sequential number.
 		    try (Scanner scanner =  new Scanner(input)){
