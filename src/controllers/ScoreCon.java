@@ -1,6 +1,5 @@
 package controllers;
 
-import java.io.Serializable;
 
 /**
  * This class should not be confused with ScoreBoardCon.
@@ -59,7 +58,7 @@ public class ScoreCon {
 	}
 	
 	/**
-	 *  This is a recursive summative addition loop that takes the words length as it's parameter.
+	 *  This is a recursive summative-addition loop that takes the words length as it's parameter.
 	 *  
 	 * @param length The length of the word correctly entered.
 	 * @return The number of bonus points for that word length.

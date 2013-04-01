@@ -54,7 +54,7 @@ public class ScoreBoardConTest {
 		// Clear the scores in case a save file is already there.
 		sbc.clear();
 
-		// Add two scores to the highscores.
+		// Add two scores to the high scores.
 		sbc.addScore(score1);
 		sbc.addScore(score2);
 		
@@ -65,7 +65,7 @@ public class ScoreBoardConTest {
 			e.printStackTrace();
 		}
 		
-		// Make a new scoreboard controller (autoloads save file if it exists)
+		// Make a new scoreboard controller (auto-loads save file if it exists)
 		ScoreBoardCon sbc2 = new ScoreBoardCon();
 			
 		// Make sure that sbc and sbc2 have the same information.
@@ -81,7 +81,7 @@ public class ScoreBoardConTest {
 	}
 
 	/**
-	 * Tests the clear() clears the highscores.
+	 * Tests the clear() clears the high scores.
 	 */
 	@Test
 	public void testClear() {

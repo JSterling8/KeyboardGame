@@ -10,14 +10,14 @@ import java.awt.Point;
 *
 */
 public class Bullet{
-private int startX = 0;	// The starting x-coordinate of the bullet.
-private int startY = 0;	// The starting y-coordinate of the bullet.
-private float destX = 0;	// The destination x-coordinate of the bullet.
-private float destY = 0;	// The destination y-coordinate of the bullet.
+private int startX = 0;						// The starting x-coordinate of the bullet.
+private int startY = 0;						// The starting y-coordinate of the bullet.
+private float destX = 0;					// The destination x-coordinate of the bullet.
+private float destY = 0;					// The destination y-coordinate of the bullet.
 private Point location = new Point(0,0);	// The bullet's location.
-private float speed = 60;	// How fast the bullet moves.
-private float dx;	// The offset for the x-coordinate each frame.
-private float dy;	// The offset for the y-coordinate each frame.
+private float speed = 60;					// How fast the bullet moves.
+private float dx;							// Delta X.  The change in position X.
+private float dy;							// Delta Y.  The change in position Y.
 
 
 public Bullet(int startX, int startY, float destX, float destY)

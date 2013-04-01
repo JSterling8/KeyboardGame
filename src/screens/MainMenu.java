@@ -56,14 +56,14 @@ public class MainMenu extends BasicGameState{
 		multiplayerButton = new Image("/res/buttons/multiplayer.png");
 		exitButton = new Image("/res/buttons/exit.png");
 
-		// Clear the keypress record.
+		// Clear the key-press record.
 		input = gc.getInput();
 		input.clearKeyPressedRecord();
 		
-		// Initializes multiplayer to false;
+		// Initialises multiplayer to false;
 		multiplayer = false;
 
-		// Initializes the player number text field.
+		// Initialises the player number text field.
 		playNumTF = new TextField((GUIContext)gc, gc.getDefaultFont(), 200, 380, 290, 20);
 
 		// Entry for number of players is considered true until proven false.
@@ -101,7 +101,7 @@ public class MainMenu extends BasicGameState{
 			}
 		}
 
-		// Draws the highscores button.
+		// Draws the high scores button.
 		g.drawImage(highscores, 0, 315);
 	}
 
@@ -120,6 +120,7 @@ public class MainMenu extends BasicGameState{
 		
 		input.clearKeyPressedRecord();
 
+		// If the user presses enter, assume that they want single player and go to the difficulty state.
 		if(!multiplayer && input.isKeyPressed(Input.KEY_ENTER)){
 			sbg.enterState(Game.DIFFICULTY_STATE, new FadeOutTransition(), new FadeInTransition()); 
 		}

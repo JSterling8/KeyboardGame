@@ -23,9 +23,9 @@ public class Death extends BasicGameState{
 	private double accuracy;					// The player's accuracy.
 	private double wpm;							// The player's average words per minute.
 	
-	private String dead;						// The string that annoucnes the player has died.
+	private String dead;						// The string that announces the player has died.
 	
-	private ScoreBoardCon sbc;					// The scoreboard controller for adding scores to the table.
+	private ScoreBoardCon sbc;					// The score-board controller for adding scores to the table.
 	private TextField nameTF;					// The TextField for the user to enter their name.
 	private String name;						// The user's name.
 	private Score score;						// The user's score with their name attached to it.

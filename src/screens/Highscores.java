@@ -16,7 +16,7 @@ import controllers.Game;
 import controllers.ScoreBoardCon;
 
 /**
- * This is the highscores screen.
+ * This is the high scores screen.
  * The user can go back to the main menu, quit, or clear the scores.
  * 
  * @author Jonathan Sterling
@@ -24,7 +24,7 @@ import controllers.ScoreBoardCon;
  */
 public class Highscores extends BasicGameState{
 
-	private static ScoreBoardCon sbc;				// The scoreboard controller.
+	private static ScoreBoardCon sbc;				// The score-board controller.
 	private int dy;									// Delta y.  (The change in position of y).
 	private Sound clapping;							// Clapping sound.
 	private boolean justOpened;						// Was the screen just opened?
@@ -105,7 +105,7 @@ public class Highscores extends BasicGameState{
 			dy--;
 		}
 		
-		// If the user presses f1, clear the highscores.
+		// If the user presses f1, clear the high scores.
 		if (input.isKeyDown(Input.KEY_F1)){
 			if(sbg.getCurrentStateID() == Game.HIGHSCORE_STATE){
 				sbc.clear();

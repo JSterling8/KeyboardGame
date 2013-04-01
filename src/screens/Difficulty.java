@@ -56,7 +56,7 @@ public class Difficulty extends BasicGameState{
 	 * @param sbg The game itself.
 	 */
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException{
-		// Initializes the local pointer to sbg  and gc for use in other methods.
+		// Initialises the local pointer to sbg  and gc for use in other methods.
 		this.sbg = sbg;
 		this.gc = gc;
 

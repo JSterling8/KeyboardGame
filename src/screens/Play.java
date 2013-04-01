@@ -8,7 +8,6 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
-import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 import org.newdawn.slick.gui.GUIContext;
@@ -47,15 +46,14 @@ public class Play extends BasicGameState{
 	private boolean wordListGenerated;					// Has the word list been generated?
 	private Image gameBackground;						// The games background.
 	private Image enemyImage;							// The enemy image.
-	// private Image turret90;							// The turret at the bottom of the screen that fires.
 	private Image bomb;									// An image of a bomb.
-	private Image fullhealth;							// An image of a fullhealth pack.
+	private Image fullhealth;							// An image of a full-health pack.
 
 	private int randX;									// A random x coordinate.
 	private int randY;									// A random y coordinate.
 
 	private boolean bombOnScreen; 						// Is there a bomb on the screen?
-	private boolean fullhealthOnScreen;					// Is there a fullhealth pack on the screen?
+	private boolean fullhealthOnScreen;					// Is there a full-health pack on the screen?
 
 	private TextField wordEnteredTF;			// User input text field.
 	private TextField scoreTF;					// Score text field.
@@ -72,7 +70,7 @@ public class Play extends BasicGameState{
 	private boolean started;					// Is the game started?
 
 	private Sound explode;						// The sound when an enemy is shot.
-	private Sound healthRestored;				// The sound when a health pack is used.
+	private Sound healthRestored;				// The sound when a full-health pack is used.
 	private Sound detonate;						// The sound when a bomb is detonated.
 	
 	public Play(int state){
@@ -84,7 +82,7 @@ public class Play extends BasicGameState{
 	 * @param sbg The game itself.
 	 */
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException{
-		// Initializes the time left to play.
+		// Initialises the time left to play.
 		if(Settings.level == 1){timeLeft = 60;}
 		if(Settings.level == 2){timeLeft = 80;}
 		if(Settings.level == 3){timeLeft = 100;}
@@ -93,70 +91,70 @@ public class Play extends BasicGameState{
 		if(Settings.level == 6){timeLeft = 160;}
 		if(Settings.level == 7){timeLeft = 180;}
 		
-		// Initializes the enemy spawner.
+		// Initialises the enemy spawner.
 		spawner = new EnemySpawner();
 
-		// Initializes the background image
+		// Initialises the background image
 		gameBackground = new Image("res/gamebg.png");
 
-		//Initializes the enemy's image.
+		//Initialises the enemy's image.
 		enemyImage = new Image("res/enemies/missile.png");
 
-		// Initializes the bomb image.
+		// Initialises the bomb image.
 		bomb = new Image("res/bomb.png");
 
-		// Initializes the fullhealth image.
+		// Initialises the full health image.
 		fullhealth = new Image("res/fullhealth.png");
 
-		// Initializes bomb on screen to false.
+		// Initialises bomb on screen to false.
 		bombOnScreen = false;
 
-		// Initializes fullhealth on screen to false.
+		// Initialises full-health on screen to false.
 		fullhealthOnScreen = false;
 
-		// Initializes the keyboard input text field.
+		// Initialises the keyboard input text field.
 		wordEnteredTF = new TextField((GUIContext)gc, gc.getDefaultFont(), 0, 380, 200, 20);
 
-		// Initializes the score text field.
+		// Initialises the score text field.
 		scoreTF = new TextField((GUIContext)gc, gc.getDefaultFont(), 200, 380, 190, 20);
 
-		// Initializes the multiplier text field.
+		// Initialises the multiplier text field.
 		multiplierTF = new TextField((GUIContext)gc, gc.getDefaultFont(), 390, 380, 140, 20);
 
-		// Initializes the health text field.
+		// Initialises the health text field.
 		healthTF = new TextField((GUIContext)gc, gc.getDefaultFont(), 530, 380, 110, 20);
 
-		// Initializes the missed target variable to false.
+		// Initialises the missed target variable to false.
 		missed = false;
 
-		// Initializes the Random Location variable
+		// Initialises the Random Location variable
 		randLoc = new RandomLocation();
 
-		// Initializes the paused variable to true.
+		// Initialises the paused variable to true.
 		paused = true;
 
-		// Initializes the started variable to false.
+		// Initialises the started variable to false.
 		started = false;
 
-		// Initializes the boolean variable to whether or not a Word List has been generated to false.
+		// Initialises the boolean variable to whether or not a Word List has been generated to false.
 		wordListGenerated = false;
 
-		// Initializes the level time to 0 seconds.
+		// Initialises the level time to 0 seconds.
 		time = 0;
 
-		// Initializes the score.
+		// Initialises the score.
 		score = new ScoreCon();
 
-		// Initializes the player's health to 100 and score to 0 if they're just starting the first level.
+		// Initialises the player's health to 100 and score to 0 if they're just starting the first level.
 		if (Settings.level == 1){
 			Settings.health = 100;
 			Settings.score = 0;
 		}
 
-		// Initializes the enemies on screen ArrayList.
+		// Initialises the enemies on screen ArrayList.
 		enemiesOnScreen = new ArrayList<Enemy>();
 
-		// Initializes the bullets on the screen ArrayList.
+		// Initialises the bullets on the screen ArrayList.
 		bulletList = new ArrayList<Bullet>();
 
 		// Sets the multiplier to its default for the level.
@@ -187,13 +185,13 @@ public class Play extends BasicGameState{
 			clear = false;
 		}
 
+		// Draws the player number, level, and time left on the top right of the screen.
+		drawPlayerInfo(g);
+		
 		// Draws the enemies and bullets.
 		drawEnemiesAndBullets(g);
 
-		// Draws the player number, level, and time left on the top right of the screen.
-		drawPlayerInfo(g);
-
-		// Randomly spawn either a fullhealth or a bomb.
+		// Randomly spawn either a full-health or a bomb.
 		if (!paused && started && secondsPlayed > 0 && secondsPlayed % 10 == 0 && !bombOnScreen && !fullhealthOnScreen){
 			try {
 				specialItemSpawner();
@@ -208,7 +206,7 @@ public class Play extends BasicGameState{
 			g.drawString("detonate", randX + 25, randY + 25);
 		}
 
-		// Draws the fullhealth on the screen if it was spawned.
+		// Draws the full-health on the screen if it was spawned.
 		if (fullhealthOnScreen){
 			g.drawImage(fullhealth, randX, randY);
 			g.drawString("fullhealth", randX + 25, randY + 25);
@@ -338,7 +336,7 @@ public class Play extends BasicGameState{
 	}
 
 	/**
-	 * Spawns either a bomb or fullhealth pack 25% of the time every 10 seconds.
+	 * Spawns either a bomb or full-health pack 25% of the time every 10 seconds.
 	 * 
 	 * @throws Exception Throws exception if the random number requested is less that 0.
 	 */
@@ -354,10 +352,10 @@ public class Play extends BasicGameState{
 		 * The random number will be 240 one in 240 times.
 		 * A new number is made 60 times per second due to the frame rate and the way Update() works.
 		 * Therefore, there is a 60 out of 240 (25%) chance that this if statement will be true.
-		 * Simply put, every ten seconds, the player has a 1 in 4 chance of getting either a fullhealth pack or a bomb.
+		 * Simply put, every ten seconds, the player has a 1 in 4 chance of getting either a full-health pack or a bomb.
 		 */
 		if (randCheck % 240 == 0){
-			// If the users health is greater than 60, don't waste their time by giving them a fullhealth.
+			// If the users health is greater than 60, don't waste their time by giving them a full-health.
 			if (Settings.health > 60){
 				bombOnScreen = true;
 			}
@@ -365,7 +363,7 @@ public class Play extends BasicGameState{
 			else if (randCheck <= 120){
 				bombOnScreen = true;
 			}
-			// 50% chance(approx.) that they get a fullhealth.
+			// 50% chance(approx.) that they get a full-health.
 			else if (randCheck > 120){
 				fullhealthOnScreen = true;
 			}
@@ -504,7 +502,7 @@ public class Play extends BasicGameState{
 				break;
 			}
 
-			// If the user hit enter but the word was incorrect and a bomb or fullhealth isn't on the screen.
+			// If the user hit enter but the word was incorrect and a bomb or full-health isn't on the screen.
 			else{
 				missed = true;
 			}
@@ -523,7 +521,7 @@ public class Play extends BasicGameState{
 			bombOnScreen = false;
 		}
 
-		// If there's a fullhealth pack on the screen and the user types fullhealth, restore their health to 100.
+		// If there's a full-health pack on the screen and the user types full-health, restore their health to 100.
 		else if (!paused && fullhealthOnScreen && wordEnteredTF.getText().equals("fullhealth")){
 			Settings.health = 100;
 			healthRestored.play();

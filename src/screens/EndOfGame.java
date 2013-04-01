@@ -29,7 +29,7 @@ public class EndOfGame extends BasicGameState{
 
 	private String winner;				// The String that announces the game is won.
 	private String name;				// The user's name.
-	private ScoreBoardCon sbc;			// A scoreboard controller.
+	private ScoreBoardCon sbc;			// A score-board controller.
 	private TextField nameTF;			// The name TexField.
 	private boolean addScore;			// Does the user want to add their score?
 	private boolean added;				// Has the user added this score already?
@@ -43,7 +43,7 @@ public class EndOfGame extends BasicGameState{
 	 * @param sbg The game itself.
 	 */
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException{
-		// Initialises the scoreboard controller
+		// Initialises the score-board controller
 		sbc = new ScoreBoardCon();
 		
 		// Initialises winner.
@@ -54,9 +54,10 @@ public class EndOfGame extends BasicGameState{
 				"(P)lay again.\n" +
 				"(Q)uit";
 		
+		// Initialises the name of the player.
 		name = "";
 		
-		// Initializes the name text field.
+		// Initialises the name text field.
 		nameTF = new TextField((GUIContext)gc, gc.getDefaultFont(), 50, 380, 540, 20);
 		
 		// Sets the two boolean checks to false.

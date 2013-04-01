@@ -13,7 +13,7 @@ import screens.MainMenu;
 import screens.Play;
 
 /**
- * This is the control hub for the game.  It holds the state ID's 
+ * This is the control hub for the game.  It holds the state IDs 
  * and initialises most of them.  This class also contains the main method.
  * 
  * Some aspects of this game were adapted from
@@ -21,7 +21,7 @@ import screens.Play;
  * 
  * Specifics used:
  * Click to start
- * Detonate and fullhealth
+ * Detonate and full-health pack
  * Bottom TextField layout
  * Enemies with words associated to them
  * Health system
@@ -33,9 +33,10 @@ import screens.Play;
  */
 public class Game extends StateBasedGame{
 	
-	public static final String gameName = "Keyboard Missile Defense!";				// This is the game's title.
+	// The game's title.
+	public static final String gameName = "Keyboard Missile Defense!";				
 	
-	// The game's state ID's:
+	// The game's state ID's.
 	public static final int MAIN_MENU_STATE = 0;
 	public static final int DIFFICULTY_STATE = 1;
 	public static final int PLAY_STATE = 2;
