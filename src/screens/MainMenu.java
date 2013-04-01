@@ -191,7 +191,6 @@ public class MainMenu extends BasicGameState{
 				sbg.enterState(Game.HIGHSCORE_STATE, new FadeOutTransition(), new FadeInTransition()); 
 			}
 		}
-
 	}
 
 	/**
