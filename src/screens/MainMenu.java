@@ -128,7 +128,13 @@ public class MainMenu extends BasicGameState{
 		// If single player is clicked.
 		if((mouseX >= 20 && mouseX < 320) && (mouseY >= 80 && mouseY <= 280)){
 			if(input.isMousePressed(0)){
+				// Set number of players to 1.
 				Settings.players = 1;
+				
+				// Reset the boolean variables.
+				multiplayer = false;
+				validPlayerNum = false;
+				clear = true;
 				sbg.enterState(Game.DIFFICULTY_STATE, new FadeOutTransition(), new FadeInTransition()); 
 			}
 		}
@@ -140,8 +146,8 @@ public class MainMenu extends BasicGameState{
 			}
 		}
 
-		// If multiplayer has been clicked and the click enter.
-		if (multiplayer && input.isKeyPressed(Input.KEY_ENTER)){
+		// If multiplayer has been clicked and the click enter..
+		if (multiplayer && input.isKeyDown(Input.KEY_ENTER)){
 			try{
 				Settings.players = Integer.parseInt(playNumTF.getText());
 				if(Settings.players <=7 && Settings.players >1){
@@ -149,6 +155,7 @@ public class MainMenu extends BasicGameState{
 				}
 				else{
 					validPlayerNum = false;
+					clear = true;
 				}
 			}catch(Exception e){
 				validPlayerNum = false;
@@ -156,6 +163,12 @@ public class MainMenu extends BasicGameState{
 			}
 
 			if (validPlayerNum){
+				// Reset the boolean variables.
+				multiplayer = false;
+				validPlayerNum = false;
+				clear = true;
+				
+				// Go to the difficulty state.
 				sbg.enterState(Game.DIFFICULTY_STATE, new FadeOutTransition(), new FadeInTransition()); 
 			}
 		}
@@ -170,6 +183,11 @@ public class MainMenu extends BasicGameState{
 		// If the user clicks on the highscores button, then go to the highscores state.
 		if ((input.getMouseX() >= 0 && input.getMouseX() <= 200) && (input.getMouseY() >= 315 && input.getMouseY() < 400)){
 			if(input.isMousePressed(0)){
+				// Reset the boolean variables.
+				multiplayer = false;
+				validPlayerNum = false;
+				clear = true;
+				
 				sbg.enterState(Game.HIGHSCORE_STATE, new FadeOutTransition(), new FadeInTransition()); 
 			}
 		}
