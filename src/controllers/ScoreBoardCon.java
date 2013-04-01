@@ -38,7 +38,6 @@ public class ScoreBoardCon implements Serializable, Comparator<Score> {
 
 		// Sets the path to the users current working directory/save/highscores.save
 		ps = System.getProperty("path.separator");
-		
 		path = Paths.get(System.getProperty("user.dir") + ps + "save" + ps + "highscores.save");
 		File file = new File(path.toString());
 		
@@ -87,7 +86,7 @@ public class ScoreBoardCon implements Serializable, Comparator<Score> {
 	}
 	
 	/**
-	 * Saves the high scores table to C:/tmp/highscores.save
+	 * Saves the high scores table to the current working dir/save/highscores.save
 	 * 
 	 * @throws FileNotFoundException 
 	 * @throws IOException Indicates an error whilst saving.
@@ -100,7 +99,7 @@ public class ScoreBoardCon implements Serializable, Comparator<Score> {
 	}
 	
 	/**
-	 * Loads the high scores from C:/tmp/highscores.save
+	 * Loads the high scores from the current working dir/save/highscores.save
 	 * 
 	 * @throws FileNotFoundException Indicates that the save file couldn't be found.
 	 * @throws IOException Indicates that there was an error loading the file.
