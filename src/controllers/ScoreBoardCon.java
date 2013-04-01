@@ -27,7 +27,7 @@ import entities.Score;
 public class ScoreBoardCon implements Serializable, Comparator<Score> {
 	
 	private static ArrayList<Score> scores;						// An ArrayList of all of the high scores.
-	private String ps;											// The System's path separator.
+	private String fs;											// The System's file separator.
 	private Path path;											// The path to the save file.
 	
 	/**
@@ -37,8 +37,8 @@ public class ScoreBoardCon implements Serializable, Comparator<Score> {
 		scores = new ArrayList<Score>();
 
 		// Sets the path to the users current working directory/save/highscores.save
-		ps = System.getProperty("path.separator");
-		path = Paths.get(System.getProperty("user.dir") + ps + "save" + ps + "highscores.save");
+		fs = System.getProperty("file.separator");
+		path = Paths.get(System.getProperty("user.dir") + fs + "save" + fs + "highscores.save");
 		File file = new File(path.toString());
 		
 		// If the file already exists, load it.
