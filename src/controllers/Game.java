@@ -13,7 +13,7 @@ import screens.MainMenu;
 import screens.Play;
 
 /**
- * This is the control hub for the game.  It holds the state IDs 
+ * This is the control hub for the game.  It holds the state IDs
  * and initialises most of them.  This class also contains the main method.
  * 
  * Some aspects of this game were adapted from
@@ -28,8 +28,25 @@ import screens.Play;
  * 
  * All aspects were used with permission.
  * 
+ * 
+ * 
+ * NOTE: IF YOU'RE RUNNING THIS GAME IN AN OPERATING SYSTEM OTHER THAN WINDOWS:
+ * 
+ * Right click on the project
+ * Click "Properties"
+ * Click "Java Build Path"
+ * Open the "Libraries" tab
+ * Expand "lwjgl.jar"
+ * Click on "Native library location:"
+ * Click "Edit..."
+ * Click "Workspace"
+ * Select KMD/lib/native/YOUR_OS
+ * Click OK
+ * Click OK
+ * Click OK
+ * Run the game.
+ * 
  * @author Jonathan Sterling
- *
  */
 public class Game extends StateBasedGame{
 	
