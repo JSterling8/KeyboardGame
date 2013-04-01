@@ -1,10 +1,8 @@
 package entities;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
-import controllers.Settings;
-
+@SuppressWarnings("serial")
 public class Score implements Serializable {
 
 	private int score;

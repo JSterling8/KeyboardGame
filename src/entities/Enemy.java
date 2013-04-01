@@ -2,13 +2,12 @@ package entities;
 
 import java.awt.geom.Ellipse2D;
 
-import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
 import screens.Play;
-import controllers.RandomLocation;
 import controllers.Settings;
 
+@SuppressWarnings("serial")
 public class Enemy extends Ellipse2D.Float{
 
 	private int startX;							// The starting x-coordinate of the enemy.

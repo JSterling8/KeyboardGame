@@ -2,7 +2,6 @@ package entities;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -10,7 +9,8 @@ import java.util.Scanner;
 import controllers.RandomLocation;
 import controllers.Settings;
 
-public class WordList implements Serializable {
+
+public class WordList{
 
 	public static HashMap<Integer, String> dic;			// A HashMap of all of the words in the generated dictionary.
 	private InputStream input;

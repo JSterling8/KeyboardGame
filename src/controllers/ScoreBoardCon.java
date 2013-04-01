@@ -23,6 +23,7 @@ import entities.Score;
  * @author Jonathan Sterling
  *
  */
+@SuppressWarnings("serial")
 public class ScoreBoardCon implements Serializable, Comparator<Score> {
 	
 	private static ArrayList<Score> scores;						// An ArrayList of all of the high scores.
@@ -101,6 +102,7 @@ public class ScoreBoardCon implements Serializable, Comparator<Score> {
 	 * @throws IOException Indicates that there was an error loading the file.
 	 * @throws ClassNotFoundException Indicates that the class the serializable object is being cast to cannot be found.
 	 */
+	@SuppressWarnings("unchecked")
 	public void load() throws FileNotFoundException, IOException, ClassNotFoundException{
 		ObjectInputStream objIn = new ObjectInputStream(new FileInputStream("C:/tmp/highscores.save"));
 		scores = (ArrayList<Score>)objIn.readObject();
