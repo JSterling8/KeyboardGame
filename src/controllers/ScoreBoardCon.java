@@ -27,6 +27,8 @@ import entities.Score;
 public class ScoreBoardCon implements Serializable, Comparator<Score> {
 	
 	private static ArrayList<Score> scores;						// An ArrayList of all of the high scores.
+	private String ps;											// The System's path separator.
+	private Path path;											// The path to the save file.
 	
 	/**
 	 * Initialises the scores ArrayList and tries to load one if one already exists.
@@ -34,8 +36,10 @@ public class ScoreBoardCon implements Serializable, Comparator<Score> {
 	public ScoreBoardCon() {
 		scores = new ArrayList<Score>();
 
-		// Sets the path to C:/tmp/highscores.save
-		Path path = Paths.get("C:/tmp/highscores.save");
+		// Sets the path to the users current working directory/save/highscores.save
+		ps = System.getProperty("path.separator");
+		
+		path = Paths.get(System.getProperty("user.dir") + ps + "save" + ps + "highscores.save");
 		File file = new File(path.toString());
 		
 		// If the file already exists, load it.
@@ -89,7 +93,7 @@ public class ScoreBoardCon implements Serializable, Comparator<Score> {
 	 * @throws IOException Indicates an error whilst saving.
 	 */
 	public void save() throws IOException{
-		ObjectOutputStream objOut = new ObjectOutputStream(new FileOutputStream("C:/tmp/highscores.save"));
+		ObjectOutputStream objOut = new ObjectOutputStream(new FileOutputStream(path.toString()));
 		objOut.writeObject(scores);
 		objOut.flush();
 		objOut.close();
@@ -104,7 +108,7 @@ public class ScoreBoardCon implements Serializable, Comparator<Score> {
 	 */
 	@SuppressWarnings("unchecked")
 	public void load() throws FileNotFoundException, IOException, ClassNotFoundException{
-		ObjectInputStream objIn = new ObjectInputStream(new FileInputStream("C:/tmp/highscores.save"));
+		ObjectInputStream objIn = new ObjectInputStream(new FileInputStream(path.toString()));
 		scores = (ArrayList<Score>)objIn.readObject();
 		objIn.close();
 	}
