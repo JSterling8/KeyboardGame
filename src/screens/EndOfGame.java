@@ -34,6 +34,7 @@ public class EndOfGame extends BasicGameState{
 	private boolean addScore;			// Does the user want to add their score?
 	private boolean added;				// Has the user added this score already?
 	private Score score;				// The user's score with their name attached.
+	private Input input;				// The user's input.
 	
 	public EndOfGame(int state){}
 	
@@ -43,6 +44,10 @@ public class EndOfGame extends BasicGameState{
 	 * @param sbg The game itself.
 	 */
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException{
+		// Clear the key-press record.
+		input = gc.getInput();
+		input.clearKeyPressedRecord();
+		
 		// Initialises the score-board controller
 		sbc = new ScoreBoardCon();
 		
@@ -101,35 +106,41 @@ public class EndOfGame extends BasicGameState{
 	 * @param delta The time in milliseconds between frames.
 	 */
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException{
-		Input input = gc.getInput();
+		input = gc.getInput();
 
 		// If the user presses "a", allow them to add their score.
-		if (input.isKeyPressed(Input.KEY_A)){
+		if (!added && input.isKeyDown(Input.KEY_A)){
 			addScore = true;
 		}
 
 		// If the user has typed in their name and clicked enter, add their score.
 		if (addScore && !added){
 			if (input.isKeyPressed(Input.KEY_ENTER)){
+				// Get their name and score.
 				name = nameTF.getText();
 				score = new Score(name, Settings.score);
+				
+				// Add them to the score board.
 				sbc.addScore(score);
+				
+				// Set added to true and addScore back to false.
 				added = true;
+				addScore = false;
 			}
 		}
 
 		// If the user presses "p", go to the main menu state.
-		if (input.isKeyPressed(Input.KEY_P)){
+		if (!addScore && input.isKeyDown(Input.KEY_P)){
 			sbg.enterState(Game.MAIN_MENU_STATE, new FadeOutTransition(), new FadeInTransition());
 		}
 
 		// If the user presses "v", go to the high scores state.
-		if (input.isKeyPressed(Input.KEY_V)){
+		if (!addScore && input.isKeyDown(Input.KEY_V)){
 			sbg.enterState(Game.HIGHSCORE_STATE, new FadeOutTransition(), new FadeInTransition());
 		}
 		
 		// If the user presses "q", close the game.
-		if (input.isKeyPressed(Input.KEY_Q)){
+		if (!addScore && input.isKeyDown(Input.KEY_Q)){
 			System.exit(0);
 		}
 	}
