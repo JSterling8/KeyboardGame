@@ -16,7 +16,7 @@ public class ScoreTest {
 	@Test
 	public void testToString() {
 		score = new Score("Jonathan", 100);
-		assertTrue(score.toString().equals("Name: Jonathan\nScore: 100\n"));
+		assertTrue(score.toString().equals("Jonathan\nScore: 100\n"));
 	}
 
 	@Test
