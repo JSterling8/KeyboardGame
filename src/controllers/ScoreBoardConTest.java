@@ -34,11 +34,11 @@ public class ScoreBoardConTest {
 
 		// Add score one and assert that .toString() returns it correctly.
 		sbc.addScore(score1);
-		assertEquals(sbc.toString(), (score1.toString()));
+		assertEquals(sbc.toString(), ("1. " + score1.toString()));
 		
 		// Add score two and assert that .toString() returns both score1 and score2 correctly.
 		sbc.addScore(score2);
-		assertEquals(sbc.toString(), (score2.toString() + score1.toString()));
+		assertEquals(sbc.toString(), ("1. " + score2.toString() + "2. " + score1.toString()));
 		
 		// Clear the scores to clean up after this test.
 		sbc.clear();
@@ -106,7 +106,9 @@ public class ScoreBoardConTest {
 		sbc.addScore(score2);
 		
 		// the toString() method in ScoreBoardCon calls sortList(), so there's no need to do it twice.
-		assertEquals(sbc.toString(), score3.toString() + score2.toString() + score1.toString());
+		assertEquals(sbc.toString(), "1. " + score3.toString() + 
+									"2. " + score2.toString() + 
+									"3. " + score1.toString());
 	}
 
 }
