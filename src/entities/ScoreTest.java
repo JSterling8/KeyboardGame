@@ -7,7 +7,7 @@ import org.junit.Test;
 
 public class ScoreTest {
 
-	Score score;
+	private Score score;
 	
 	@Before
 	public void setUp() throws Exception {
