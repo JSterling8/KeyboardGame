@@ -41,6 +41,7 @@ public class Play extends BasicGameState{
 	public static int secondsPlayed;						// The number of seconds into the round.
 	public static RandomLocation randLoc;					// A random location generator.
 
+	private EnemySpawner spawner;				// This controls when the enemies spawn based on the round time.
 	private Input input;								// The users keyboard and mouse inputs.
 
 	private boolean wordListGenerated;					// Has the word list been generated?
@@ -64,7 +65,6 @@ public class Play extends BasicGameState{
 	private int time;							// The time that the level has been running.
 	private int timeLeft;						// The time until the level is over.
 
-	private EnemySpawner spawner;				// This controls when the enemies spawn based on the round time.
 	private boolean missed;						// Was an enemy missed?
 	private boolean paused;						// Is the game paused?
 	private boolean started;					// Is the game started?

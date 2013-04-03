@@ -9,7 +9,13 @@ import java.util.Scanner;
 import controllers.RandomLocation;
 import controllers.Settings;
 
-
+/**
+ * This class is responsible for loading text files and putting
+ * them into a randomly-accessible HashMap.
+ * 
+ * @author Jonathan Sterling
+ *
+ */
 public class WordList{
 
 	public static HashMap<Integer, String> dic;			// A HashMap of all of the words in the generated dictionary.
