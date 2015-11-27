@@ -1,5 +1,8 @@
 package controllers;
 
+import java.io.File;
+
+import org.lwjgl.LWJGLUtil;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
@@ -87,11 +90,9 @@ public class Game extends StateBasedGame{
 		gc.setShowFPS(false);
 	}
 
-	public static void main(String[] args) throws Exception {
-		// The following commented out lines of code are necessary to run the game outside of Eclipse.
-		
-		// System.setProperty("org.lwjgl.librarypath", new File(new File(System.getProperty("user.dir"), "native"), LWJGLUtil.getPlatformName()).getAbsolutePath());
-		// System.setProperty("net.java.games.input.librarypath", System.getProperty("org.lwjgl.librarypath"));
+	public static void main(String[] args) throws Exception {	
+		System.setProperty("org.lwjgl.librarypath", new File(new File("lib\\native"), LWJGLUtil.getPlatformName()).getAbsolutePath());
+		System.setProperty("net.java.games.input.librarypath", System.getProperty("org.lwjgl.librarypath"));
 		
 		AppGameContainer appgc;
 		try{
