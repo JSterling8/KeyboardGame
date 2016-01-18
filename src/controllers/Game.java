@@ -54,7 +54,7 @@ import screens.Play;
 public class Game extends StateBasedGame{
 	
 	// The game's title.
-	public static final String gameName = "Keyboard Missile Defense!";				
+	public static final String GAME_TITLE = "Keyboard Missile Defense!";				
 	
 	// The game's state ID's.
 	public static final int MAIN_MENU_STATE = 0;
@@ -94,9 +94,9 @@ public class Game extends StateBasedGame{
 		System.setProperty("org.lwjgl.librarypath", new File(new File("lib\\native"), LWJGLUtil.getPlatformName()).getAbsolutePath());
 		System.setProperty("net.java.games.input.librarypath", System.getProperty("org.lwjgl.librarypath"));
 		
-		AppGameContainer appgc;
 		try{
-			appgc = new AppGameContainer(new Game(gameName));			// Makes a new game container with the specified title.
+			AppGameContainer appgc = 
+					new AppGameContainer(new Game(GAME_TITLE));			// Makes a new game container with the specified title.
 			appgc.setDisplayMode(640, 400, false);						// Sets the screen size to 640x400.
 		    appgc.setTargetFrameRate(60);								// Sets the frame rate to 60.
 			appgc.start();												// Starts the game.
